@@ -11,7 +11,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .topbar h1{font-size:15px;font-weight:600;flex:1}
 .topbar .sub{font-size:11px;color:#999}
 .badge{font-size:11px;background:#e8f4fd;color:#1a6fb5;padding:2px 8px;border-radius:20px;font-weight:500}
-.main{max-width:980px;margin:0 auto;padding:16px 14px 60px}
+.main{max-width:1400px;margin:0 auto;padding:16px 14px 60px}
+.main-layout{display:flex;gap:16px;align-items:flex-start}
+.main-form{flex:1;min-width:0}
+.preview-panel{width:420px;flex-shrink:0;position:sticky;top:60px;max-height:calc(100vh - 76px);display:none;flex-direction:column;background:#fff;border:1px solid #e8e8e6;border-radius:12px;overflow:hidden}
+.preview-panel.show{display:flex}
+.preview-header{padding:10px 14px;border-bottom:1px solid #f0f0ee;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.preview-header span{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;flex:1}
+.preview-nav{display:flex;align-items:center;gap:6px}
+.preview-nav button{padding:3px 8px;border:1px solid #ddd;border-radius:6px;background:#fafafa;cursor:pointer;font-size:12px;color:#555}
+.preview-nav button:hover{background:#e8e8e6}
+.preview-nav .pg{font-size:11px;color:#999;min-width:40px;text-align:center}
+.preview-img-wrap{flex:1;overflow:auto;background:#888;display:flex;align-items:flex-start;justify-content:center;padding:8px;min-height:0}
+.preview-img-wrap img{max-width:100%;height:auto;border-radius:4px;cursor:zoom-in;transition:transform .15s;transform-origin:top center}
+.preview-img-wrap img.zoomed{cursor:zoom-out;max-width:none;width:200%}
+.preview-zoom{padding:8px 14px;border-top:1px solid #f0f0ee;display:flex;gap:6px;justify-content:center;flex-shrink:0}
+.preview-zoom button{padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:#fafafa;cursor:pointer;font-size:13px}
+.preview-zoom button:hover{background:#e8e8e6}
+@media(max-width:900px){.main-layout{flex-direction:column}.preview-panel{width:100%;position:relative;top:auto;max-height:50vh}}
 .card{background:#fff;border:1px solid #e8e8e6;border-radius:12px;padding:14px 18px;margin-bottom:12px}
 .card-title{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
 /* API KEY */
@@ -120,6 +137,8 @@ tr:hover td{background:#fafafe}
 </div>
 
 <div class="main">
+<div class="main-layout">
+<div class="main-form">
 
 <!-- API KEY -->
 <div class="card">
@@ -206,6 +225,30 @@ tr:hover td{background:#fafafe}
 <div class="ok-msg" id="copyOk">✔ Berhasil dicopy! Langsung paste (Ctrl+V) di Google Sheet.</div>
 <div class="err-msg" id="saveErr"></div>
 
+</div><!-- /main-form -->
+
+<!-- PREVIEW PANEL -->
+<div class="preview-panel" id="previewPanel">
+  <div class="preview-header">
+    <span>📷 Preview Nota</span>
+    <div class="preview-nav">
+      <button onclick="previewNav(-1)">&#8249;</button>
+      <span class="pg" id="previewPg">-</span>
+      <button onclick="previewNav(+1)">&#8250;</button>
+    </div>
+    <button onclick="closePreview()" style="font-size:11px;padding:3px 8px;border:1px solid #ddd;border-radius:6px;background:#fafafa;cursor:pointer;color:#999">&#x2715;</button>
+  </div>
+  <div class="preview-img-wrap" id="previewImgWrap">
+    <img id="previewImg" src="" alt="Preview nota" onclick="toggleZoom(this)">
+  </div>
+  <div class="preview-zoom">
+    <button onclick="zoomOut()">&#x2212;</button>
+    <button onclick="zoomReset()">100%</button>
+    <button onclick="zoomIn()">&#xff0b;</button>
+  </div>
+</div>
+
+</div><!-- /main-layout -->
 </div><!-- end main -->
 
 <!-- AUTOCOMPLETE LIST (shared) -->
@@ -283,6 +326,72 @@ function findBestMatch(namaMaster, namaNota, hargaNota) {
   return kandidat ? { master: kandidat, matchType } : { master: null, matchType: 'none' };
 }
 
+// ===================== PREVIEW =====================
+let previewZoom = 1;
+let previewIdx = 0; // index dalam queue yg sedang ditampilkan
+
+function openPreview(idx) {
+  previewIdx = idx !== undefined ? idx : (queueIdx >= 0 ? queueIdx : 0);
+  refreshPreviewImg();
+  document.getElementById('previewPanel').classList.add('show');
+}
+
+function closePreview() {
+  document.getElementById('previewPanel').classList.remove('show');
+}
+
+function refreshPreviewImg() {
+  if(!queue.length) return;
+  const idx = Math.max(0, Math.min(previewIdx, queue.length-1));
+  const q = queue[idx];
+  if(!q) return;
+  const img = document.getElementById('previewImg');
+  img.src = q.dataUrl;
+  img.className = ''; // reset zoom
+  previewZoom = 1;
+  document.getElementById('previewPg').textContent = `${idx+1}/${queue.length}`;
+  document.getElementById('previewPanel').classList.add('show');
+}
+
+function previewNav(dir) {
+  previewIdx = Math.max(0, Math.min(previewIdx + dir, queue.length-1));
+  refreshPreviewImg();
+}
+
+function toggleZoom(img) {
+  if(img.classList.contains('zoomed')) {
+    img.classList.remove('zoomed');
+    previewZoom = 1;
+  } else {
+    img.classList.add('zoomed');
+    previewZoom = 2;
+  }
+}
+
+function zoomIn() {
+  previewZoom = Math.min(previewZoom + 0.25, 3);
+  applyZoom();
+}
+function zoomOut() {
+  previewZoom = Math.max(previewZoom - 0.25, 0.5);
+  applyZoom();
+}
+function zoomReset() {
+  previewZoom = 1;
+  applyZoom();
+}
+function applyZoom() {
+  const img = document.getElementById('previewImg');
+  img.classList.remove('zoomed');
+  if(previewZoom === 1) {
+    img.style.width = '';
+    img.style.maxWidth = '100%';
+  } else {
+    img.style.maxWidth = 'none';
+    img.style.width = (previewZoom * 100) + '%';
+  }
+}
+
 // ===================== KEY =====================
 function toggleKey() {
   keyVis = !keyVis;
@@ -304,6 +413,7 @@ function addToQueue(inp) {
     r.onload = e => {
       queue.push({file:f, data:e.target.result, done:false});
       renderQueue();
+      if(queue.length === 1) setTimeout(()=>openPreview(0), 100);
     };
     r.readAsDataURL(f);
   });
@@ -314,7 +424,7 @@ function renderQueue() {
   document.getElementById('queueBadge').textContent = queue.length + ' foto';
   const box = document.getElementById('queueThumbs');
   box.innerHTML = queue.map((q,i) => `
-    <div class="thumb${i===queueIdx?' active':''}${q.done?' done':''}" onclick="jumpTo(${i})" title="Nota ${i+1}">
+    <div class="thumb${i===queueIdx?' active':''}${q.done?' done':''}" onclick="jumpTo(${i});openPreview(${i})" title="Nota ${i+1} (klik untuk preview)">
       <img src="${q.data}" alt="${i+1}">
       <div class="num">${i+1}</div>
       ${!q.done ? `<div class="del-th" onclick="event.stopPropagation();removeFromQueue(${i})">×</div>` : ''}
@@ -372,6 +482,8 @@ async function processNext() {
   queueIdx = nextIdx;
   renderQueue();
   resetForm();
+  previewIdx = queueIdx;
+  refreshPreviewImg();
   await extractCurrent();
 }
 

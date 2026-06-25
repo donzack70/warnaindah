@@ -84,19 +84,19 @@ tr:hover td{background:#fafafe}
 .nama-wrap{position:relative}
 .nama-inp{width:100%;padding:5px 7px;border:1px solid #ddd;border-radius:6px;font-size:12px;background:#fafafa;min-width:180px}
 .nama-inp:focus{outline:none;border-color:#1a6fb5;background:#fff}
-.nama-inp.warn{border-color:#e6a817;background:#fffbf0}
+.nama-inp.warn{border-color:#b7600a;background:#fffbf0}
 .nama-inp.ok{border-color:#2d8a4e}
 /* NUMBER INPUTS */
 .num{width:72px;padding:5px 6px;border:1px solid #ddd;border-radius:6px;font-size:12px;text-align:right;background:#fafafa}
 .num:focus{outline:none;border-color:#1a6fb5;background:#fff}
-.num.price-diff{border-color:#e6a817;background:#fffbf0}
+.num.price-diff{border-color:#b7600a;background:#fffbf0}
 /* CELLS */
 .sub-cell{font-weight:600;text-align:right;white-space:nowrap}
 .master-price{font-size:11px;color:#888;white-space:nowrap}
-.master-price.diff{color:#e6a817;font-weight:600}
-.ket-cell{font-size:11px;color:#e6a817;max-width:140px}
-.ket-cell .tag-fuzzy{color:#9b59b6;font-weight:600}
-.ket-cell .tag-harga{color:#2980b9;font-weight:600}
+.master-price.diff{color:#b7600a;font-weight:600}
+.ket-cell{font-size:11px;color:#c0392b;max-width:140px}
+.ket-cell .tag-fuzzy{color:#7d3c98;font-weight:600}
+.ket-cell .tag-harga{color:#1a5276;font-weight:600}
 .del-btn{background:none;border:none;cursor:pointer;color:#ccc;padding:3px 5px;border-radius:5px;font-size:14px}
 .del-btn:hover{color:#c0392b;background:#fdf5f5}
 .add-row-btn{width:100%;padding:7px;border:1px dashed #ddd;border-radius:8px;background:none;font-size:12px;cursor:pointer;color:#888;margin-top:8px;transition:all .15s}
@@ -346,7 +346,7 @@ function refreshPreviewImg() {
   const q = queue[idx];
   if(!q) return;
   const img = document.getElementById('previewImg');
-  img.src = q.dataUrl;
+  img.src = q.data;
   img.className = ''; // reset zoom
   previewZoom = 1;
   document.getElementById('previewPg').textContent = `${idx+1}/${queue.length}`;

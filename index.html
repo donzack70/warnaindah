@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Input Nota — CV Warna Indah Chemical</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;background:#f5f5f3;color:#1a1a1a;min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid #e5e5e3;padding:11px 20px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.topbar h1{font-size:15px;font-weight:600;flex:1}
+.topbar .sub{font-size:11px;color:#999}
+.badge{font-size:11px;background:#e8f4fd;color:#1a6fb5;padding:2px 8px;border-radius:20px;font-weight:500}
+.main{max-width:980px;margin:0 auto;padding:16px 14px 60px}
+.card{background:#fff;border:1px solid #e8e8e6;border-radius:12px;padding:14px 18px;margin-bottom:12px}
+.card-title{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+/* API KEY */
+.key-row{display:flex;align-items:center;gap:8px}
+.key-row input{flex:1;padding:7px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;font-family:monospace;background:#fafafa}
+.key-row input:focus{outline:none;border-color:#1a6fb5}
+.key-hint{font-size:11px;color:#bbb;margin-top:5px}
+.key-hint a{color:#1a6fb5}
+/* QUEUE */
+.queue-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.queue-count{font-size:12px;color:#666;background:#f0f0ee;padding:3px 10px;border-radius:20px}
+.queue-thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.thumb{position:relative;width:64px;height:64px;border-radius:8px;overflow:hidden;border:2px solid #e8e8e6;cursor:pointer;flex-shrink:0}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb .num{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:10px;text-align:center;padding:2px 0}
+.thumb.active{border-color:#1a6fb5}
+.thumb.done{border-color:#2d8a4e}
+.thumb.done::after{content:'✓';position:absolute;top:2px;right:4px;color:#2d8a4e;font-size:14px;font-weight:700;text-shadow:0 0 3px #fff}
+.thumb.processing{border-color:#f0a500}
+.thumb .del-th{position:absolute;top:-1px;right:-1px;background:#fff;border:1px solid #ddd;border-radius:50%;width:16px;height:16px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#999}
+.upload-zone{border:2px dashed #ddd;border-radius:10px;padding:22px 16px;text-align:center;cursor:pointer;transition:all .15s;background:#fafafa}
+.upload-zone:hover{background:#f0f0ee;border-color:#bbb}
+.upload-zone p{color:#888;font-size:13px;margin-top:6px}
+.upload-zone p.sub{font-size:11px;color:#bbb;margin-top:3px}
+input[type=file]{display:none}
+/* PROGRESS */
+.progress-wrap{margin-top:10px;display:none}
+.progress-bar{height:4px;background:#e8e8e6;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:#1a6fb5;transition:width .3s}
+.progress-label{font-size:11px;color:#888;margin-top:4px;text-align:center}
+/* EXTRACT BTN */
+.ext-btn{width:100%;padding:9px;border:1px solid #ddd;border-radius:8px;font-size:13px;cursor:pointer;background:#fff;color:#333;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;transition:all .15s}
+.ext-btn:hover:not(:disabled){background:#f7f7f5}
+.ext-btn:disabled{opacity:.4;cursor:not-allowed}
+.ext-btn.success{border-color:#2d8a4e;color:#2d8a4e;background:#f0faf4}
+.ext-btn.err{border-color:#c0392b;color:#c0392b;background:#fdf5f5}
+.spinner{width:13px;height:13px;border:2px solid #ddd;border-top-color:#555;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* META */
+.meta-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.meta-grid-2{display:grid;grid-template-columns:1fr 2fr;gap:8px}
+.field label{font-size:11px;color:#888;display:block;margin-bottom:3px;font-weight:500}
+.field input{width:100%;padding:7px 9px;border:1px solid #ddd;border-radius:7px;font-size:13px;background:#fafafa}
+.field input:focus{outline:none;border-color:#1a6fb5;background:#fff}
+/* TABLE */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;padding:7px 8px;border-bottom:1.5px solid #e8e8e6;color:#888;font-weight:500;white-space:nowrap;font-size:11px;background:#fafafa}
+td{padding:6px 7px;border-bottom:1px solid #f0f0ee;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafe}
+/* CUSTOM DATALIST INPUT */
+.nama-wrap{position:relative}
+.nama-inp{width:100%;padding:5px 7px;border:1px solid #ddd;border-radius:6px;font-size:12px;background:#fafafa;min-width:180px}
+.nama-inp:focus{outline:none;border-color:#1a6fb5;background:#fff}
+.nama-inp.warn{border-color:#e6a817;background:#fffbf0}
+.nama-inp.ok{border-color:#2d8a4e}
+/* NUMBER INPUTS */
+.num{width:72px;padding:5px 6px;border:1px solid #ddd;border-radius:6px;font-size:12px;text-align:right;background:#fafafa}
+.num:focus{outline:none;border-color:#1a6fb5;background:#fff}
+.num.price-diff{border-color:#e6a817;background:#fffbf0}
+/* CELLS */
+.sub-cell{font-weight:600;text-align:right;white-space:nowrap}
+.master-price{font-size:11px;color:#888;white-space:nowrap}
+.master-price.diff{color:#e6a817;font-weight:600}
+.ket-cell{font-size:11px;color:#e6a817;max-width:120px}
+.del-btn{background:none;border:none;cursor:pointer;color:#ccc;padding:3px 5px;border-radius:5px;font-size:14px}
+.del-btn:hover{color:#c0392b;background:#fdf5f5}
+.add-row-btn{width:100%;padding:7px;border:1px dashed #ddd;border-radius:8px;background:none;font-size:12px;cursor:pointer;color:#888;margin-top:8px;transition:all .15s}
+.add-row-btn:hover{background:#f7f7f5;border-color:#bbb}
+/* FOOTER */
+.footer-card{background:#fff;border:1px solid #e8e8e6;border-radius:12px;padding:14px 18px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.total-lbl{font-size:11px;color:#888;margin-bottom:2px}
+.total-val{font-size:20px;font-weight:700}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap}
+.btn-copy{padding:9px 18px;background:#1a6fb5;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .15s}
+.btn-copy:hover{background:#155fa0}
+.btn-next{padding:9px 18px;background:#2d8a4e;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .15s}
+.btn-next:hover{background:#256b3d}
+.btn-next:disabled{background:#bbb;cursor:not-allowed}
+.btn-reset{padding:9px 14px;background:none;color:#888;border:1px solid #ddd;border-radius:8px;font-size:13px;cursor:pointer}
+.btn-reset:hover{background:#f7f7f5}
+/* MESSAGES */
+.ok-msg{background:#f0faf4;border:1px solid #b2dfc5;border-radius:8px;padding:8px 12px;font-size:12px;color:#2d8a4e;margin-top:8px;display:none}
+.err-msg{background:#fdf5f5;border:1px solid #f5c6c6;border-radius:8px;padding:8px 12px;font-size:12px;color:#c0392b;margin-top:8px;display:none}
+/* AUTOCOMPLETE DROPDOWN */
+.ac-wrap{position:relative}
+.ac-list{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #ddd;border-radius:7px;box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:200;max-height:180px;overflow-y:auto;display:none}
+.ac-list.show{display:block}
+.ac-item{padding:6px 10px;cursor:pointer;font-size:12px;border-bottom:1px solid #f5f5f5}
+.ac-item:last-child{border-bottom:none}
+.ac-item:hover,.ac-item.active{background:#e8f4fd;color:#1a6fb5}
+.ac-item .kat{font-size:10px;color:#bbb;margin-left:5px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="flex:1">
+    <div style="font-size:15px;font-weight:600">Input Nota Penjualan</div>
+    <div class="sub">CV Warna Indah Chemical — Surabaya</div>
+  </div>
+  <span class="badge" id="queueBadge">0 foto</span>
+</div>
+
+<div class="main">
+
+<!-- API KEY -->
+<div class="card">
+  <div class="card-title">🔑 Google Gemini API Key</div>
+  <div class="key-row">
+    <input type="password" id="apiKey" placeholder="Paste API key di sini..." oninput="checkKey()">
+    <button class="btn-reset" onclick="toggleKey()" id="eyeBtn">👁</button>
+    <span id="keyStatus" style="font-size:12px;white-space:nowrap;padding:0 6px;color:#bbb">⬤ Belum diisi</span>
+  </div>
+  <div class="key-hint">Gratis di <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a></div>
+</div>
+
+<!-- UPLOAD & QUEUE -->
+<div class="card">
+  <div class="card-title">📸 Antrian Foto Nota</div>
+  <div class="upload-zone" onclick="document.getElementById('imgInput').click()">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    <p>Klik atau drag foto nota di sini</p>
+    <p class="sub">Bisa pilih puluhan foto sekaligus — diproses satu per satu</p>
+    <input type="file" id="imgInput" accept="image/*" multiple onchange="addToQueue(this)">
+  </div>
+  <div class="queue-thumbs" id="queueThumbs"></div>
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-label" id="progressLabel"></div>
+  </div>
+  <button class="ext-btn" id="extBtn" onclick="processNext()" disabled>
+    <span id="extIcon">✨</span>
+    <span id="extLabel">Upload foto dulu</span>
+  </button>
+  <div class="err-msg" id="extErr"></div>
+</div>
+
+<!-- INFO NOTA -->
+<div class="card">
+  <div class="card-title">📋 Info Nota <span id="notaCounter" style="font-weight:400;color:#aaa"></span></div>
+  <div class="meta-grid">
+    <div class="field"><label>Tanggal</label><input type="date" id="tgl"></div>
+    <div class="field"><label>Nama pelanggan</label><input type="text" id="pelanggan" placeholder="Nama toko / pembeli"></div>
+    <div class="field"><label>Kota asal</label><input type="text" id="kota" placeholder="Kota"></div>
+  </div>
+  <div class="meta-grid-2">
+    <div class="field"><label>No. nota</label><input type="text" id="noNota" placeholder="001/VI/2026"></div>
+    <div class="field"><label>Keterangan (opsional)</label><input type="text" id="ket" placeholder="Catatan tambahan"></div>
+  </div>
+</div>
+
+<!-- TABEL BARANG -->
+<div class="card">
+  <div class="card-title">🧾 Daftar Barang</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:24px">#</th>
+          <th style="min-width:190px">Nama Barang</th>
+          <th style="width:70px;text-align:right">Qty</th>
+          <th style="width:55px">Sat</th>
+          <th style="width:105px;text-align:right">Harga Nota</th>
+          <th style="width:105px;text-align:right">Harga Master</th>
+          <th style="width:110px;text-align:right">Subtotal</th>
+          <th style="width:120px">Keterangan</th>
+          <th style="width:28px"></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <button class="add-row-btn" onclick="addRow()">+ Tambah baris</button>
+</div>
+
+<!-- FOOTER -->
+<div class="footer-card">
+  <div>
+    <div class="total-lbl">Total nota</div>
+    <div class="total-val" id="grandTotal">Rp 0</div>
+  </div>
+  <div class="btn-group">
+    <button class="btn-reset" onclick="resetForm()">🔄 Reset form</button>
+    <button class="btn-copy" onclick="copyToClipboard()" id="btnCopy">📋 Copy ke Google Sheet</button>
+    <button class="btn-next" onclick="goNext()" id="btnNext" disabled>Nota berikutnya →</button>
+  </div>
+</div>
+<div class="ok-msg" id="copyOk">✔ Berhasil dicopy! Langsung paste (Ctrl+V) di Google Sheet.</div>
+<div class="err-msg" id="saveErr"></div>
+
+</div><!-- end main -->
+
+<!-- AUTOCOMPLETE LIST (shared) -->
+<div class="ac-list" id="acList"></div>
+
+<script>
+// ===================== MASTER DATA =====================
+const MASTER=[{"no":1,"nama":"NAPHTOL ASBS","kat":"Naphtol","sat":"kg","harga":205000,"total":183.0},{"no":2,"nama":"ASG DIAL","kat":"Naphtol","sat":"kg","harga":150000,"total":355.0},{"no":3,"nama":"ASG SHANGHAI","kat":"Naphtol","sat":"kg","harga":275000,"total":455.0},{"no":4,"nama":"AS","kat":"Naphtol","sat":"kg","harga":140000,"total":67.0},{"no":5,"nama":"ASOL","kat":"Naphtol","sat":"kg","harga":155000,"total":114.0},{"no":6,"nama":"ASD","kat":"Naphtol","sat":"kg","harga":140000,"total":205.0},{"no":7,"nama":"ASBR","kat":"Naphtol","sat":"kg","harga":150000,"total":10.0},{"no":8,"nama":"ASLB","kat":"Naphtol","sat":"kg","harga":950000,"total":7.0},{"no":9,"nama":"ASBO PUTIH","kat":"Naphtol","sat":"kg","harga":150000,"total":91.0},{"no":10,"nama":"ASBO 80% INDIA","kat":"Naphtol","sat":"kg","harga":160000,"total":80.0},{"no":11,"nama":"ASBO 100% INDIA","kat":"Naphtol","sat":"kg","harga":200000,"total":122.0},{"no":12,"nama":"ASBO 100% RRT","kat":"Naphtol","sat":"kg","harga":200000,"total":186.0},{"no":13,"nama":"ASBO HC INDIA","kat":"Naphtol","sat":"kg","harga":165000,"total":30.0},{"no":14,"nama":"ASBO 80% TONGLI","kat":"Naphtol","sat":"kg","harga":160000,"total":719.0},{"no":15,"nama":"REACTIVE YELLOW M4R","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":176.0},{"no":16,"nama":"REACTIVE YELLOW M4G","kat":"Reactive/Remazol","sat":"kg","harga":95000,"total":69.0},{"no":17,"nama":"REACTIVE YELLOW M8G","kat":"Reactive/Remazol","sat":"kg","harga":110000,"total":142.0},{"no":18,"nama":"REACTIVE YELLOW FG 100%","kat":"Reactive/Remazol","sat":"kg","harga":85000,"total":211.0},{"no":19,"nama":"REACTIVE GOLD YELLOW RNL","kat":"Reactive/Remazol","sat":"kg","harga":130000,"total":137.0},{"no":20,"nama":"REACTIVE YELLOW HD8G","kat":"Reactive/Remazol","sat":"kg","harga":95000,"total":470.0},{"no":21,"nama":"REACTIVE YELLOW HE-4R","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":95.0},{"no":22,"nama":"REACTIVE YELLOW HE-4G","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":270.0},{"no":23,"nama":"REACTIVE BLUE M2R H/C SUPRA","kat":"Reactive/Remazol","sat":"kg","harga":165000,"total":80.0},{"no":24,"nama":"REACTIVE BLUE M2R HA","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":48.0},{"no":25,"nama":"REACTIVE BLUE HE-GN","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":5.0},{"no":26,"nama":"REACTIVE BRILL BLUE R SPEC","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":144.0},{"no":27,"nama":"REACTIVE TURKIS BLUE","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":51.0},{"no":28,"nama":"REACTIVE NAVY BLUE HER","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":72.0},{"no":29,"nama":"REACTIVE BROWN RB","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},{"no":30,"nama":"REACTIVE BROWN GR","kat":"Reactive/Remazol","sat":"kg","harga":115000,"total":187.0},{"no":31,"nama":"REACTIVE RED RB","kat":"Reactive/Remazol","sat":"kg","harga":185000,"total":33.0},{"no":32,"nama":"REACTIVE RED K2BP","kat":"Reactive/Remazol","sat":"kg","harga":125000,"total":113.0},{"no":33,"nama":"REACTIVE RED M5B","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":68.0},{"no":34,"nama":"REACTIVE RED M8B","kat":"Reactive/Remazol","sat":"kg","harga":110000,"total":50.0},{"no":35,"nama":"REACTIVE RED HE-3B","kat":"Reactive/Remazol","sat":"kg","harga":130000,"total":39.0},{"no":36,"nama":"REACTIVE RED HE-7B","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":5.0},{"no":37,"nama":"REACTIVE MAGENTA","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":14.0},{"no":38,"nama":"REACTIVE BRILL VIOLET 5R","kat":"Reactive/Remazol","sat":"kg","harga":135000,"total":165.0},{"no":39,"nama":"REACTIVE ORANGE HER","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":138.0},{"no":40,"nama":"REACTIVE ORANGE M2R","kat":"Reactive/Remazol","sat":"kg","harga":120000,"total":326.0},{"no":41,"nama":"REACTIVE ORANGE 3R","kat":"Reactive/Remazol","sat":"kg","harga":300000,"total":11.0},{"no":42,"nama":"REACTIVE BLACK B","kat":"Reactive/Remazol","sat":"kg","harga":110000,"total":61.0},{"no":43,"nama":"REACTIVE BLACK KWNN","kat":"Reactive/Remazol","sat":"kg","harga":105000,"total":66.0},{"no":44,"nama":"REACTIVE BLACK HF-GR","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},{"no":45,"nama":"REACTIVE BLACK HD","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},{"no":46,"nama":"REACTIVE GREEN HE-4BD","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":21.0},{"no":47,"nama":"SYNOSOL ULTRA BLACK DR","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},{"no":48,"nama":"POLKATIVE BLUE PX-2R","kat":"Reactive/Remazol","sat":"kg","harga":145000,"total":0.0},{"no":49,"nama":"POLKATIVE VIOLET 2-BNH","kat":"Reactive/Remazol","sat":"kg","harga":155000,"total":17.0},{"no":50,"nama":"REMAZOL GOLD YELLOW RNL","kat":"Reactive/Remazol","sat":"kg","harga":170000,"total":32.0},{"no":51,"nama":"REMAZOL YELLOW FG (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":185000,"total":41.0},{"no":52,"nama":"REMAZOL RED RB (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":185000,"total":37.0},{"no":53,"nama":"REMAZOL TURKIS BLUE (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":145000,"total":100.0},{"no":54,"nama":"REMAZOL DEEP BLACK N","kat":"Reactive/Remazol","sat":"kg","harga":170000,"total":47.0},{"no":55,"nama":"POLKATIVE BROWN 3RD","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":25.0},{"no":56,"nama":"REACTIVE RED X3B","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":9.0},{"no":57,"nama":"REMAZOL YELLOW GL","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":4.0},{"no":58,"nama":"REMAZOL BLACK B (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":150000,"total":77.0},{"no":59,"nama":"DISPERSE YELLOW 4GN (Y211)","kat":"Disperse","sat":"kg","harga":0,"total":75.0},{"no":60,"nama":"BLUE E2BLN (BLUE 56)","kat":"Disperse","sat":"kg","harga":250000,"total":123.0},{"no":61,"nama":"DARK BLUE 3RN (BLUE 148)","kat":"Disperse","sat":"kg","harga":200000,"total":147.0},{"no":62,"nama":"BLUE SE-BR (BLUE 183)","kat":"Disperse","sat":"kg","harga":250000,"total":0.0},{"no":63,"nama":"BRILL TURKIS BLUE SBG","kat":"Disperse","sat":"kg","harga":0,"total":15.0},{"no":64,"nama":"NAVY BLUE SE-RF 400%","kat":"Disperse","sat":"kg","harga":125000,"total":179.0},{"no":65,"nama":"NAVY BLUE S-2GL (BLUE 79)","kat":"Disperse","sat":"kg","harga":0,"total":7.0},{"no":66,"nama":"RED FBB (RED 60)","kat":"Disperse","sat":"kg","harga":275000,"total":75.0},{"no":67,"nama":"RED FTS","kat":"Disperse","sat":"kg","harga":0,"total":0.0},{"no":68,"nama":"RUBINE RD-FLN (RED 73)","kat":"Disperse","sat":"kg","harga":190000,"total":49.0},{"no":69,"nama":"RUBINE 2GFL","kat":"Disperse","sat":"kg","harga":0,"total":18.0},{"no":70,"nama":"VIOLET S3R (VIOLET 63)","kat":"Disperse","sat":"kg","harga":200000,"total":43.0},{"no":71,"nama":"SCARLET BRN","kat":"Disperse","sat":"kg","harga":140000,"total":0.0},{"no":72,"nama":"YELLOW 5SGN","kat":"Disperse","sat":"kg","harga":0,"total":0.0},{"no":73,"nama":"YELLOW BROWN GLH","kat":"Disperse","sat":"kg","harga":150000,"total":23.0},{"no":74,"nama":"BLACK EX-SF","kat":"Disperse","sat":"kg","harga":110000,"total":242.0},{"no":75,"nama":"YELLOW 3GE (YELLOW 54)","kat":"Disperse","sat":"kg","harga":150000,"total":0.0},{"no":76,"nama":"BROWN 3RL","kat":"Disperse","sat":"kg","harga":140000,"total":0.0},{"no":77,"nama":"SULPHUR BRILL YELLOW","kat":"Sulphur","sat":"kg","harga":75000,"total":112.0},{"no":78,"nama":"SULPHUR DARK GREEN","kat":"Sulphur","sat":"kg","harga":90000,"total":472.0},{"no":79,"nama":"SULPHUR LIGHT GREEN","kat":"Sulphur","sat":"kg","harga":150000,"total":92.0},{"no":80,"nama":"SULPHUR BORDO 3B","kat":"Sulphur","sat":"kg","harga":105000,"total":363.0},{"no":81,"nama":"SULPHUR BLUE BRN","kat":"Sulphur","sat":"kg","harga":110000,"total":113.0},{"no":82,"nama":"SULPHUR BROWN GDR","kat":"Sulphur","sat":"kg","harga":65000,"total":555.0},{"no":83,"nama":"SULPHUR BROWN MR","kat":"Sulphur","sat":"kg","harga":115000,"total":122.0},{"no":84,"nama":"SULPHUR YELLOW BROWN 5G","kat":"Sulphur","sat":"kg","harga":65000,"total":415.0},{"no":85,"nama":"SULPHUR OLIVE 2200","kat":"Sulphur","sat":"kg","harga":0,"total":0.0},{"no":86,"nama":"SULPHUR OLIVE GREEN G","kat":"Sulphur","sat":"kg","harga":70000,"total":45.0},{"no":87,"nama":"SULPHUR BLACK B 300% (T)","kat":"Sulphur","sat":"kg","harga":25000,"total":550.0},{"no":88,"nama":"SULPHUR BLACK B 200% (IC)","kat":"Sulphur","sat":"kg","harga":44000,"total":1312.0},{"no":89,"nama":"SULPHUR BLACK B 200% SUPER A","kat":"Sulphur","sat":"kg","harga":58000,"total":167.0},{"no":90,"nama":"SULPHUR BLACK B 200% (MTK)B","kat":"Sulphur","sat":"kg","harga":0,"total":0.0},{"no":91,"nama":"SULPHUR YELLOW GC","kat":"Sulphur","sat":"kg","harga":65000,"total":20.0},{"no":92,"nama":"SULPHUR BROWN M6R","kat":"Sulphur","sat":"kg","harga":105000,"total":12.0},{"no":93,"nama":"SULPHUR BROWN FGR","kat":"Sulphur","sat":"kg","harga":105000,"total":13.0},{"no":94,"nama":"INDANTHREN GREY M","kat":"Vat/Indanthren","sat":"kg","harga":320000,"total":14.0},{"no":95,"nama":"GOLD ORANGE G","kat":"Vat/Indanthren","sat":"kg","harga":600000,"total":15.0},{"no":96,"nama":"BLACK MD","kat":"Vat/Indanthren","sat":"kg","harga":375000,"total":18.0},{"no":97,"nama":"OLIVE T","kat":"Vat/Indanthren","sat":"kg","harga":210000,"total":45.0},{"no":98,"nama":"PINK RS","kat":"Vat/Indanthren","sat":"kg","harga":525000,"total":8.0},{"no":99,"nama":"DARK BLUE BOA","kat":"Vat/Indanthren","sat":"kg","harga":290000,"total":64.0},{"no":100,"nama":"OLIVE GREEN B","kat":"Vat/Indanthren","sat":"kg","harga":300000,"total":95.0},{"no":101,"nama":"GREEN B / FFB","kat":"Vat/Indanthren","sat":"kg","harga":425000,"total":139.0},{"no":102,"nama":"GREEN XBN (YUNITA)","kat":"Vat/Indanthren","sat":"kg","harga":455000,"total":89.0},{"no":103,"nama":"GREEN XBN H/C GRANIS","kat":"Vat/Indanthren","sat":"kg","harga":350000,"total":30.0},{"no":104,"nama":"BROWN BR (YUNITA)","kat":"Vat/Indanthren","sat":"kg","harga":370000,"total":53.0},{"no":105,"nama":"BROWN BR (MTK)","kat":"Vat/Indanthren","sat":"kg","harga":500000,"total":56.0},{"no":106,"nama":"BLUE RSN (MTK)","kat":"Vat/Indanthren","sat":"kg","harga":430000,"total":142.0},{"no":107,"nama":"BLUE RSN GRANIS","kat":"Vat/Indanthren","sat":"kg","harga":350000,"total":80.0},{"no":108,"nama":"BLUE RSN Y","kat":"Vat/Indanthren","sat":"kg","harga":190000,"total":42.0},{"no":109,"nama":"BLUE RSN 200%","kat":"Vat/Indanthren","sat":"kg","harga":350000,"total":62.0},{"no":110,"nama":"YELLOW GCN (MTK)","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":20.0},{"no":111,"nama":"YELLOW GCN 130%","kat":"Vat/Indanthren","sat":"kg","harga":290000,"total":94.0},{"no":112,"nama":"VIOLET RR 100%","kat":"Vat/Indanthren","sat":"kg","harga":250000,"total":0.0},{"no":113,"nama":"VIOLET 200% (Y)","kat":"Vat/Indanthren","sat":"kg","harga":440000,"total":36.0},{"no":114,"nama":"VIOLET RR 150%","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":8.0},{"no":115,"nama":"VIOLET RR (MTK) 2","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":108.0},{"no":116,"nama":"RED R","kat":"Vat/Indanthren","sat":"kg","harga":520000,"total":21.0},{"no":117,"nama":"INDIGO BLUE","kat":"Vat/Indanthren","sat":"kg","harga":340000,"total":18.0},{"no":118,"nama":"BROWN BR (WI)","kat":"Vat/Indanthren","sat":"kg","harga":260000,"total":74.0},{"no":119,"nama":"BROWN BR (HA)","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":20.0},{"no":120,"nama":"BASIS METHELENE BLUE","kat":"Basis","sat":"kg","harga":260000,"total":120.0},{"no":121,"nama":"MAGENTA PUDER","kat":"Basis","sat":"kg","harga":235000,"total":173.0},{"no":122,"nama":"MALACHITE GREEN","kat":"Basis","sat":"kg","harga":180000,"total":140.0},{"no":123,"nama":"BRILL GREEN CRYSTAL","kat":"Basis","sat":"kg","harga":330000,"total":153.0},{"no":124,"nama":"AURAMINE INDIA","kat":"Basis","sat":"kg","harga":0,"total":0.0},{"no":125,"nama":"AURAMINE RRT","kat":"Basis","sat":"kg","harga":95000,"total":189.0},{"no":126,"nama":"AURAMINE JERMAN","kat":"Basis","sat":"kg","harga":130000,"total":193.0},{"no":127,"nama":"RODHAMINE","kat":"Basis","sat":"kg","harga":240000,"total":231.0},{"no":128,"nama":"BISMARK BROWN","kat":"Basis","sat":"kg","harga":105000,"total":32.0},{"no":129,"nama":"DIRECT BROWN M INDIA","kat":"Direct","sat":"kg","harga":130000,"total":164.0},{"no":130,"nama":"BROWN M RRT","kat":"Direct","sat":"kg","harga":85000,"total":93.0},{"no":131,"nama":"BROWN MN RRT","kat":"Direct","sat":"kg","harga":0,"total":0.0},{"no":132,"nama":"BROWN MM 125%","kat":"Direct","sat":"kg","harga":80000,"total":3.0},{"no":133,"nama":"BROWN GG","kat":"Direct","sat":"kg","harga":70000,"total":57.0},{"no":134,"nama":"CONGGO RED (YUNITA)","kat":"Direct","sat":"kg","harga":0,"total":500.0},{"no":135,"nama":"CONGGO RED (WI)","kat":"Direct","sat":"kg","harga":75000,"total":252.0},{"no":136,"nama":"CONGGO RED (MTK)","kat":"Direct","sat":"kg","harga":0,"total":0.0},{"no":137,"nama":"COPPER BLUE","kat":"Direct","sat":"kg","harga":100000,"total":229.0},{"no":138,"nama":"IJO MUDA GCN","kat":"Direct","sat":"kg","harga":80000,"total":33.0},{"no":139,"nama":"SCARLET 4BS","kat":"Direct","sat":"kg","harga":85000,"total":102.0},{"no":140,"nama":"SKY BLUE","kat":"Direct","sat":"kg","harga":85000,"total":37.0},{"no":141,"nama":"RED 12 B","kat":"Direct","sat":"kg","harga":75000,"total":12.0},{"no":142,"nama":"KUNING MAS / GOLD GXA","kat":"Direct","sat":"kg","harga":50000,"total":128.0},{"no":143,"nama":"DIRECT CHRYSHOPENIN G 100%","kat":"Direct","sat":"kg","harga":110000,"total":211.0},{"no":144,"nama":"DIRECT CHRYSHOPENIN G 80%","kat":"Direct","sat":"kg","harga":0,"total":0.0},{"no":145,"nama":"KUNING G H/C (MTK)","kat":"Direct","sat":"kg","harga":180000,"total":72.0},{"no":146,"nama":"BLACK G","kat":"Direct","sat":"kg","harga":75000,"total":5.0},{"no":147,"nama":"BLACK EX 170%","kat":"Direct","sat":"kg","harga":75000,"total":118.0},{"no":148,"nama":"BLACK EX 200%","kat":"Direct","sat":"kg","harga":100000,"total":472.0},{"no":149,"nama":"BLACK EX 300%","kat":"Direct","sat":"kg","harga":110000,"total":72.0},{"no":150,"nama":"BLACK VSF","kat":"Direct","sat":"kg","harga":65000,"total":0.0},{"no":151,"nama":"ORANGE S","kat":"Direct","sat":"kg","harga":95000,"total":111.0},{"no":152,"nama":"GREY VGR","kat":"Direct","sat":"kg","harga":90000,"total":45.0},{"no":153,"nama":"BORDO B RRT","kat":"Direct","sat":"kg","harga":90000,"total":39.0},{"no":154,"nama":"VIOLET 5BL","kat":"Direct","sat":"kg","harga":105000,"total":66.0},{"no":155,"nama":"BLUE 2B","kat":"Direct","sat":"kg","harga":80000,"total":37.0},{"no":156,"nama":"IJO B /DARK GREEN B","kat":"Direct","sat":"kg","harga":87500,"total":473.0},{"no":157,"nama":"TURQIS BLUE (WI)","kat":"Direct","sat":"kg","harga":65000,"total":175.0},{"no":158,"nama":"TURKIS BLUE (MTK)","kat":"Direct","sat":"kg","harga":0,"total":450.0},{"no":159,"nama":"PINK","kat":"Direct","sat":"kg","harga":70000,"total":75.0},{"no":160,"nama":"GARAM BIRU B 27% LUTA","kat":"Garam","sat":"kg","harga":97500,"total":2327.0},{"no":161,"nama":"GARAM BIRU B 27% WARIN","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":162,"nama":"GARAM BIRU B WI (MTK)","kat":"Garam","sat":"kg","harga":0,"total":25.0},{"no":163,"nama":"GARAM BIRU B H/C","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":164,"nama":"GARAM BIRU B JP INDIA","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":165,"nama":"GARAM BIRU B JP","kat":"Garam","sat":"kg","harga":150000,"total":107.0},{"no":166,"nama":"GARAM BIRU B GOLD","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":167,"nama":"GARAM BIRU BB JP","kat":"Garam","sat":"kg","harga":560000,"total":14.0},{"no":168,"nama":"GARAM BIRU B BASE","kat":"Garam","sat":"kg","harga":175000,"total":105.0},{"no":169,"nama":"GARAM MERAH B BASE","kat":"Garam","sat":"kg","harga":140000,"total":69.0},{"no":170,"nama":"GARAM MERAH B 15%","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":171,"nama":"GARAM MERAH B 27% LUTA","kat":"Garam","sat":"kg","harga":105000,"total":2065.0},{"no":172,"nama":"GARAM MERAH B 27% WARIN","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":173,"nama":"GARAM MERAH B WI (MTK)","kat":"Garam","sat":"kg","harga":0,"total":250.0},{"no":174,"nama":"GARAM MERAH B H/C","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":175,"nama":"GARAM MERAH B JP","kat":"Garam","sat":"kg","harga":155000,"total":158.0},{"no":176,"nama":"GARAM MERAH B GOLD","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":177,"nama":"GARAM MERAH B JP INDIA","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":178,"nama":"GARAM R 15%","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":179,"nama":"GARAM R 27% LUTA","kat":"Garam","sat":"kg","harga":75000,"total":1600.0},{"no":180,"nama":"GARAM R 27% WARIN","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":181,"nama":"GARAM R 27% WI (MTK)","kat":"Garam","sat":"kg","harga":0,"total":209.0},{"no":182,"nama":"GARAM R JP INDIA","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":183,"nama":"GARAM R JP","kat":"Garam","sat":"kg","harga":130000,"total":141.0},{"no":184,"nama":"GARAM R H/C","kat":"Garam","sat":"kg","harga":90000,"total":38.0},{"no":185,"nama":"GARAM GG H/C","kat":"Garam","sat":"kg","harga":100000,"total":42.0},{"no":186,"nama":"GARAM GG JP","kat":"Garam","sat":"kg","harga":175000,"total":19.0},{"no":187,"nama":"GARAM GG STD JP","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":188,"nama":"GARAM BORDO GP JP","kat":"Garam","sat":"kg","harga":195000,"total":86.0},{"no":189,"nama":"GARAM BORDO GP BASE","kat":"Garam","sat":"kg","harga":235000,"total":71.0},{"no":190,"nama":"GARAM BORDO GP H/C","kat":"Garam","sat":"kg","harga":90000,"total":99.0},{"no":191,"nama":"GARAM BORDO GP STD JP","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":192,"nama":"GARAM GARNAT GBC","kat":"Garam","sat":"kg","harga":0,"total":95.0},{"no":193,"nama":"GARAM GARNAT GBC SUPER","kat":"Garam","sat":"kg","harga":145000,"total":40.0},{"no":194,"nama":"GARAM RC BASE","kat":"Garam","sat":"kg","harga":145000,"total":277.0},{"no":195,"nama":"GARAM RED 3GL JP","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":196,"nama":"GARAM YELLOW GC JP","kat":"Garam","sat":"kg","harga":175000,"total":23.0},{"no":197,"nama":"GARAM ORANGE GC BASE","kat":"Garam","sat":"kg","harga":160000,"total":18.0},{"no":198,"nama":"GARAM ORANGE GC STD JP","kat":"Garam","sat":"kg","harga":155000,"total":10.0},{"no":199,"nama":"GARAM HITAM B INDIA (YUNITA)","kat":"Garam","sat":"kg","harga":250000,"total":44.0},{"no":200,"nama":"GARAM HITAM B JP (MTK)","kat":"Garam","sat":"kg","harga":345000,"total":77.0},{"no":201,"nama":"SOL IJO IB","kat":"Sol","sat":"kg","harga":520000,"total":39.0},{"no":202,"nama":"SOL YELLOW","kat":"Sol","sat":"kg","harga":640000,"total":17.0},{"no":203,"nama":"SOL BLUE","kat":"Sol","sat":"kg","harga":490000,"total":71.0},{"no":204,"nama":"SOL ORANGE HR","kat":"Sol","sat":"kg","harga":860000,"total":5.0},{"no":205,"nama":"SOL VIOLET BL","kat":"Sol","sat":"kg","harga":650000,"total":7.0},{"no":206,"nama":"SOL GREY IBL","kat":"Sol","sat":"kg","harga":450000,"total":15.0},{"no":207,"nama":"SOL BROWN IRRD","kat":"Sol","sat":"kg","harga":490000,"total":11.0},{"no":208,"nama":"SOL PINK IR","kat":"Sol","sat":"kg","harga":860000,"total":4.0},{"no":209,"nama":"SN MERAH","kat":"Campuran","sat":"kg","harga":0,"total":0.0},{"no":210,"nama":"SN KUNING","kat":"Campuran","sat":"kg","harga":15000,"total":2441.0},{"no":211,"nama":"SODIUM NITRITE","kat":"Campuran","sat":"kg","harga":18000,"total":423.0},{"no":212,"nama":"SODIUM SULPHATE","kat":"Campuran","sat":"kg","harga":5000,"total":235.0},{"no":213,"nama":"KAPORITE","kat":"Campuran","sat":"kg","harga":35000,"total":131.0},{"no":214,"nama":"UVITEX CID","kat":"Campuran","sat":"kg","harga":290000,"total":51.0},{"no":215,"nama":"HAKKOL","kat":"Campuran","sat":"kg","harga":0,"total":0.0},{"no":216,"nama":"ACID BLACK ATT","kat":"Campuran","sat":"kg","harga":95000,"total":40.0},{"no":217,"nama":"ACID ORANGE II","kat":"Campuran","sat":"kg","harga":75000,"total":39.0},{"no":218,"nama":"SODA ASH","kat":"Campuran","sat":"kg","harga":11000,"total":403.0},{"no":219,"nama":"CUKA","kat":"Campuran","sat":"kg","harga":27500,"total":470.0},{"no":220,"nama":"KUSTIK SODA","kat":"Campuran","sat":"kg","harga":20000,"total":943.0},{"no":221,"nama":"RAPID MERAH","kat":"Campuran","sat":"kg","harga":145000,"total":77.0},{"no":222,"nama":"HYDROSULPHITE BASF","kat":"Campuran","sat":"kg","harga":68000,"total":54.0},{"no":223,"nama":"HYDROSULPHITE RRT","kat":"Campuran","sat":"kg","harga":33000,"total":763.0},{"no":224,"nama":"RAPID HITAM","kat":"Campuran","sat":"kg","harga":145000,"total":22.0},{"no":225,"nama":"TRO POWDER","kat":"Campuran","sat":"kg","harga":14000,"total":51.0},{"no":226,"nama":"MANOTEX","kat":"Campuran","sat":"kg","harga":90000,"total":174.0},{"no":227,"nama":"PERSOFTAL FLAKE","kat":"Campuran","sat":"kg","harga":90000,"total":155.0},{"no":228,"nama":"SOGA 91","kat":"Campuran","sat":"kg","harga":360000,"total":28.0},{"no":229,"nama":"SUPER GLOW","kat":"Campuran","sat":"kg","harga":0,"total":10.0},{"no":230,"nama":"KENFIX","kat":"Campuran","sat":"kg","harga":25000,"total":260.0},{"no":231,"nama":"SODA KUE","kat":"Campuran","sat":"kg","harga":11000,"total":794.0},{"no":232,"nama":"TUNJUNG","kat":"Campuran","sat":"kg","harga":10000,"total":84.0},{"no":233,"nama":"GUN 30","kat":"Campuran","sat":"pcs","harga":160,"total":55.0},{"no":234,"nama":"GUN 26","kat":"Campuran","sat":"pcs","harga":160,"total":462.5},{"no":235,"nama":"TEROPONG","kat":"Campuran","sat":"pcs","harga":95000,"total":350.0},{"no":236,"nama":"RELL GUN 140 CM","kat":"Campuran","sat":"pcs","harga":15000,"total":57.0},{"no":237,"nama":"RELL GUN 150 CM (BEKAS)","kat":"Campuran","sat":"pcs","harga":11000,"total":123.0},{"no":238,"nama":"RELL GUN 190 CM","kat":"Campuran","sat":"pcs","harga":19000,"total":56.0},{"no":239,"nama":"KARET TANGAN ENGGAL","kat":"Campuran","sat":"pcs","harga":25000,"total":109.0},{"no":240,"nama":"GLOVE B45 BLACK MTK","kat":"Campuran","sat":"pcs","harga":42500,"total":698.0},{"no":241,"nama":"GLOVE K1 WHITE MTK","kat":"Campuran","sat":"pcs","harga":12500,"total":120.0},{"no":242,"nama":"SILICON EMULSION","kat":"Campuran","sat":"kg","harga":0,"total":62.0},{"no":243,"nama":"WHITENING CN","kat":"Campuran","sat":"kg","harga":0,"total":30.0},{"no":244,"nama":"DISPERSING AGENT MF","kat":"Campuran","sat":"kg","harga":0,"total":150.0},{"no":245,"nama":"DISPERSING AGENT NNO","kat":"Campuran","sat":"kg","harga":0,"total":0.0},{"no":246,"nama":"TAWAS","kat":"Campuran","sat":"kg","harga":0,"total":54.0},{"no":247,"nama":"WATERGLASS / WATER GLASS","kat":"Sablon/Campuran","sat":"kg","harga":9000,"total":760.0},{"no":248,"nama":"CALATAC / APPRETAN EM","kat":"Sablon/Campuran","sat":"kg","harga":70000,"total":171.0},{"no":249,"nama":"BORDO FR","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":250,"nama":"PINK SP","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":251,"nama":"NEGROSIN","kat":"Sablon/Campuran","sat":"kg","harga":125000,"total":76.0},{"no":252,"nama":"ORANGE TGR","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":30.0},{"no":253,"nama":"GREEN L5G","kat":"Sablon/Campuran","sat":"kg","harga":170000,"total":10.0},{"no":254,"nama":"YELLOW GSN","kat":"Sablon/Campuran","sat":"kg","harga":95000,"total":245.0},{"no":255,"nama":"BINDER MTB / HELICRON B","kat":"Sablon/Campuran","sat":"kg","harga":45000,"total":60.0},{"no":256,"nama":"SANDOFIX","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":257,"nama":"VIOLET BL","kat":"Sablon/Campuran","sat":"kg","harga":250000,"total":6.0},{"no":258,"nama":"SUPER WHITE IG","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":259,"nama":"BLUE SIN","kat":"Sablon/Campuran","sat":"kg","harga":175000,"total":13.0},{"no":260,"nama":"VIOLET SIN","kat":"Sablon/Campuran","sat":"kg","harga":335000,"total":16.0},{"no":261,"nama":"PINK SIN","kat":"Sablon/Campuran","sat":"kg","harga":180000,"total":20.0},{"no":262,"nama":"ORANGE SIN","kat":"Sablon/Campuran","sat":"kg","harga":175000,"total":16.0},{"no":263,"nama":"GREEN SIN","kat":"Sablon/Campuran","sat":"kg","harga":200000,"total":25.0},{"no":264,"nama":"LEMON SIN","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":265,"nama":"YELLOW SIN","kat":"Sablon/Campuran","sat":"kg","harga":180000,"total":155.0},{"no":266,"nama":"PIKER BAGUS","kat":"Sablon/Campuran","sat":"pcs","harga":80000,"total":249.0},{"no":267,"nama":"PIKER TIDAK BAGUS","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":100.0},{"no":268,"nama":"LADY GUESS / RULO","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":269,"nama":"CANTING NO. 0","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":85.0},{"no":270,"nama":"CANTING NO. 1","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":67.0},{"no":271,"nama":"CANTING NO. 2","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":0.0},{"no":272,"nama":"CANTING NO. 3","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":88.0},{"no":273,"nama":"CANTING NO. 4","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":108.0},{"no":274,"nama":"CANTING NO. 5","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":76.0},{"no":275,"nama":"CANTING NO. 6","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":97.0},{"no":276,"nama":"CANTING NO. 7","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":33.0},{"no":277,"nama":"CANTING NO. 8","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":16.0},{"no":278,"nama":"CANTING LUBANG 2","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},{"no":279,"nama":"CANTING LUBANG 3","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},{"no":280,"nama":"TALI PUYUH","kat":"Sablon/Campuran","sat":"pcs","harga":400000,"total":80.0},{"no":281,"nama":"PALET KAYU","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},{"no":282,"nama":"PALET KERTAS","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},{"no":283,"nama":"KLOSAN","kat":"Sablon/Campuran","sat":"pcs","harga":2000,"total":1535.0},{"no":284,"nama":"CARIER","kat":"Sablon/Campuran","sat":"pcs","harga":50000,"total":10.0},{"no":285,"nama":"PRIMA LEVEL","kat":"Sablon/Campuran","sat":"pcs","harga":30000,"total":0.0},{"no":286,"nama":"LEAVANT","kat":"Sablon/Campuran","sat":"kg","harga":22500,"total":50.0},{"no":287,"nama":"SCOT RUBINE","kat":"Sablon/Campuran","sat":"kg","harga":130000,"total":11.0},{"no":288,"nama":"RED FFG","kat":"Sablon/Campuran","sat":"kg","harga":155000,"total":10.0},{"no":289,"nama":"BROWN RR","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":290,"nama":"NAVY BLUE SABLON","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":291,"nama":"EVOSOFT","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":292,"nama":"SISIR 52","kat":"Sablon/Campuran","sat":"pcs","harga":255000,"total":31.0},{"no":293,"nama":"SISIR 60","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},{"no":294,"nama":"SISIR 70","kat":"Sablon/Campuran","sat":"pcs","harga":240000,"total":2.0},{"no":295,"nama":"SISIR 80 140 CM","kat":"Sablon/Campuran","sat":"pcs","harga":240000,"total":21.0},{"no":296,"nama":"SISIR 80 160 CM","kat":"Sablon/Campuran","sat":"pcs","harga":255000,"total":1.0},{"no":297,"nama":"SISIR 90 140 CM","kat":"Sablon/Campuran","sat":"pcs","harga":240000,"total":7.0},{"no":298,"nama":"EMULSIFIER","kat":"Sablon/Campuran","sat":"kg","harga":45000,"total":18.0},{"no":299,"nama":"BLACK K SABLON","kat":"Sablon/Campuran","sat":"kg","harga":65000,"total":21.0},{"no":300,"nama":"YELLOW IR SABLON","kat":"Sablon/Campuran","sat":"kg","harga":100000,"total":21.0},{"no":301,"nama":"BLUE FBL SABLON","kat":"Sablon/Campuran","sat":"kg","harga":160000,"total":25.0},{"no":302,"nama":"GREEN LXB SABLON","kat":"Sablon/Campuran","sat":"kg","harga":145000,"total":20.0},{"no":303,"nama":"RED KG3R SABLON","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0}];
+
+// ===================== STATE =====================
+const IDR = v => 'Rp ' + Math.round(v).toLocaleString('id-ID');
+const fmtTgl = d => { if(!d) return ''; const p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; };
+let queue = [];       // [{file, data(base64)}]
+let queueIdx = -1;   // index yang sedang aktif
+let rows = [];
+let rowCounter = 0;
+let keyVis = false;
+let activeAcRow = null;
+
+function findMaster(nama) {
+  if(!nama) return null;
+  return MASTER.find(m => m.nama.toLowerCase() === nama.trim().toLowerCase()) || null;
+}
+function fuzzyMatch(nama) {
+  // Return master jika nama mirip (contained)
+  if(!nama || nama.trim().length < 2) return null;
+  const n = nama.trim().toLowerCase();
+  return MASTER.find(m => m.nama.toLowerCase().includes(n) || n.includes(m.nama.toLowerCase())) || null;
+}
+
+// ===================== KEY =====================
+function toggleKey() {
+  keyVis = !keyVis;
+  document.getElementById('apiKey').type = keyVis ? 'text' : 'password';
+  document.getElementById('eyeBtn').textContent = keyVis ? '🙈' : '👁';
+}
+function checkKey() {
+  const v = document.getElementById('apiKey').value.trim();
+  const ok = v.length > 10;
+  document.getElementById('keyStatus').textContent = ok ? '✔ Siap' : '⬤ Belum diisi';
+  document.getElementById('keyStatus').style.color = ok ? '#2d8a4e' : '#bbb';
+  updateExtBtn();
+}
+
+// ===================== QUEUE =====================
+function addToQueue(inp) {
+  [...inp.files].forEach(f => {
+    const r = new FileReader();
+    r.onload = e => {
+      queue.push({file:f, data:e.target.result, done:false});
+      renderQueue();
+    };
+    r.readAsDataURL(f);
+  });
+  inp.value = '';
+}
+
+function renderQueue() {
+  document.getElementById('queueBadge').textContent = queue.length + ' foto';
+  const box = document.getElementById('queueThumbs');
+  box.innerHTML = queue.map((q,i) => `
+    <div class="thumb${i===queueIdx?' active':''}${q.done?' done':''}" onclick="jumpTo(${i})" title="Nota ${i+1}">
+      <img src="${q.data}" alt="${i+1}">
+      <div class="num">${i+1}</div>
+      ${!q.done ? `<div class="del-th" onclick="event.stopPropagation();removeFromQueue(${i})">×</div>` : ''}
+    </div>`).join('');
+  const pw = document.getElementById('progressWrap');
+  if(queue.length > 0) {
+    pw.style.display = 'block';
+    const done = queue.filter(q=>q.done).length;
+    const pct = queue.length > 0 ? Math.round(done/queue.length*100) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `${done} dari ${queue.length} nota selesai`;
+  } else {
+    pw.style.display = 'none';
+  }
+  updateExtBtn();
+}
+
+function removeFromQueue(i) {
+  queue.splice(i, 1);
+  if(queueIdx >= queue.length) queueIdx = queue.length - 1;
+  renderQueue();
+}
+
+function jumpTo(i) {
+  if(i === queueIdx) return;
+  if(!queue[i].done) {
+    queueIdx = i;
+    renderQueue();
+    resetForm();
+  }
+}
+
+function updateExtBtn() {
+  const key = document.getElementById('apiKey').value.trim();
+  const hasKey = key.length > 10;
+  const hasQueue = queue.length > 0 && queue.some(q=>!q.done);
+  const btn = document.getElementById('extBtn');
+  const lbl = document.getElementById('extLabel');
+  btn.disabled = !(hasKey && hasQueue);
+  if(!hasKey) lbl.textContent = 'Isi API key dulu';
+  else if(queue.length === 0) lbl.textContent = 'Upload foto dulu';
+  else if(!hasQueue) lbl.textContent = '✔ Semua nota sudah diproses';
+  else {
+    const next = queue.findIndex(q=>!q.done);
+    lbl.textContent = `Proses nota ${next+1} dari ${queue.length}`;
+  }
+  document.getElementById('btnNext').disabled = !queue.some(q=>!q.done) || queueIdx < 0;
+  document.getElementById('notaCounter').textContent = queue.length > 0 ? `(${(queueIdx>=0?queueIdx:0)+1} / ${queue.length})` : '';
+}
+
+// ===================== EXTRACT =====================
+async function processNext() {
+  const nextIdx = queue.findIndex(q=>!q.done);
+  if(nextIdx < 0) return;
+  queueIdx = nextIdx;
+  renderQueue();
+  resetForm();
+  await extractCurrent();
+}
+
+async function extractCurrent() {
+  if(queueIdx < 0 || !queue[queueIdx]) return;
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const btn = document.getElementById('extBtn');
+  const lbl = document.getElementById('extLabel');
+  const icon = document.getElementById('extIcon');
+  const errEl = document.getElementById('extErr');
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  icon.innerHTML = '<div class="spinner"></div>';
+  lbl.textContent = `Membaca nota ${queueIdx+1}...`;
+
+  const img = queue[queueIdx];
+  const parts = [
+    { inline_data: { mime_type: img.file.type||'image/jpeg', data: img.data.split(',')[1] } },
+    { text: buildPrompt() }
+  ];
+
+  const models = ['gemini-2.5-flash','gemini-2.5-flash-lite','gemini-3.5-flash'];
+  let data = null, lastErr = '';
+  for(const model of models) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        { method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ contents:[{parts}], generationConfig:{temperature:0, maxOutputTokens:8192} }) }
+      );
+      const json = await res.json();
+      if(!res.ok){ lastErr = json.error?.message||'HTTP '+res.status; continue; }
+      data = json; break;
+    } catch(e){ lastErr = e.message; }
+  }
+
+  if(!data) {
+    btn.className = 'ext-btn err'; icon.textContent = '✕'; lbl.textContent = 'Gagal — coba lagi';
+    errEl.textContent = 'Error: ' + lastErr; errEl.style.display = 'block';
+    btn.disabled = false; return;
+  }
+
+  try {
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    let cleaned = text.replace(/```json|```/g,"").trim();
+    const s = cleaned.indexOf("{");
+    if(s < 0) throw new Error("Tidak ada JSON");
+    let depth = 0, e2 = -1;
+    for(let ci = s; ci < cleaned.length; ci++) {
+      if(cleaned[ci] === "{") depth++;
+      else if(cleaned[ci] === "}") { depth--; if(depth === 0){ e2 = ci; break; } }
+    }
+    if(e2 < 0) throw new Error("JSON tidak lengkap");
+    const parsed = JSON.parse(cleaned.substring(s, e2+1));
+
+    if(parsed.tanggal) document.getElementById('tgl').value = parsed.tanggal;
+    if(parsed.pelanggan) document.getElementById('pelanggan').value = parsed.pelanggan;
+    if(parsed.kota) document.getElementById('kota').value = parsed.kota;
+    if(parsed.no_nota) document.getElementById('noNota').value = parsed.no_nota;
+
+    rows = []; rowCounter = 0;
+    (parsed.items||[]).forEach(item => {
+      const m = findMaster(item.nama_master) || findMaster(item.nama_nota);
+      addRow(m?m.nama:item.nama_nota||'', item.qty||'', item.harga||(m?m.harga:0), item.satuan||'kg', item.nama_nota||'');
+    });
+
+    btn.className = 'ext-btn success'; icon.textContent = '✔';
+    lbl.textContent = `Nota ${queueIdx+1} berhasil diekstrak — ${rows.length} item`;
+    document.getElementById('btnNext').disabled = false;
+  } catch(err) {
+    btn.className = 'ext-btn err'; icon.textContent = '✕'; lbl.textContent = 'Gagal parse — coba lagi';
+    errEl.textContent = 'Parse error: ' + err.message; errEl.style.display = 'block';
+  }
+  btn.disabled = false;
+}
+
+function buildPrompt() {
+  const masterNames = MASTER.map(m=>`${m.nama}|${m.kat}`).join('\n');
+  return `Kamu adalah asisten OCR nota penjualan pewarna tekstil Indonesia.
+Baca gambar nota dan ekstrak data berikut dalam format JSON.
+
+MASTER PRODUK:
+${masterNames}
+
+Aturan:
+- nama_master harus persis dari master list (case-insensitive)
+- Jika tidak ada padanan, isi nama_master dengan string kosong ""
+- qty adalah angka, harga adalah integer (0 jika tidak tertulis)
+- Balas HANYA JSON tanpa penjelasan tanpa markdown
+
+{"tanggal":"YYYY-MM-DD","pelanggan":"","kota":"","no_nota":"","items":[{"nama_nota":"","nama_master":"","qty":0,"satuan":"kg","harga":0}]}`;
+}
+
+// ===================== NEXT NOTA =====================
+function goNext() {
+  if(queueIdx >= 0) queue[queueIdx].done = true;
+  renderQueue();
+  const nextIdx = queue.findIndex(q=>!q.done);
+  if(nextIdx < 0) {
+    document.getElementById('extLabel').textContent = '✔ Semua nota selesai!';
+    return;
+  }
+  queueIdx = nextIdx;
+  renderQueue();
+  resetForm();
+  extractCurrent();
+}
+
+// ===================== ROWS =====================
+function addRow(nama='', qty='', harga='', sat='kg', raw='') {
+  const id = ++rowCounter;
+  const m = findMaster(nama);
+  const h = harga!=='' ? parseFloat(harga)||0 : (m?m.harga:0);
+  rows.push({id, nama:m?m.nama:nama, qty, harga:h, sat:sat||(m?m.sat:'kg'), raw});
+  renderTable();
+}
+
+function getKet(r) {
+  const m = findMaster(r.nama);
+  const msgs = [];
+  if(r.raw && r.nama && r.raw.toLowerCase() !== r.nama.toLowerCase()) {
+    msgs.push(`Nama di nota: "${r.raw}"`);
+  }
+  if(!m && r.nama) msgs.push('⚠ Tidak ada di master');
+  if(m && r.harga > 0 && m.harga > 0 && r.harga !== m.harga) {
+    const selisih = r.harga - m.harga;
+    msgs.push(`Harga ${selisih>0?'+':''}${IDR(selisih)} vs master`);
+  }
+  return msgs.join(' | ');
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  rows.forEach((r,i) => {
+    const sub = (parseFloat(r.qty)||0)*(parseFloat(r.harga)||0);
+    const m = findMaster(r.nama);
+    const masterHarga = m ? m.harga : 0;
+    const hargaDiff = r.harga>0 && masterHarga>0 && parseFloat(r.harga)!==masterHarga;
+    const namaWarn = !m && r.nama;
+    const ket = getKet(r);
+    tbody.innerHTML += `<tr>
+      <td style="color:#ccc;text-align:center;font-size:11px">${i+1}</td>
+      <td>
+        <div class="ac-wrap">
+          <input class="nama-inp${namaWarn?' warn':m?' ok':''}" 
+            id="nama_${r.id}" value="${r.nama}" 
+            oninput="onNamaInput(${i},this)" 
+            onblur="hideAc()" 
+            onfocus="showAllAc(${i},this)"
+            placeholder="Ketik nama atau pilih...">
+        </div>
+      </td>
+      <td><input class="num" type="text" inputmode="decimal" id="qty_${r.id}" value="${r.qty}" oninput="onNumInput(${i},'qty',this)" placeholder="0"></td>
+      <td><input style="width:52px;padding:4px 5px;border:1px solid #ddd;border-radius:6px;font-size:12px" value="${r.sat}" oninput="rows[${i}].sat=this.value"></td>
+      <td><input class="num${hargaDiff?' price-diff':''}" type="text" inputmode="numeric" id="harga_${r.id}" value="${r.harga>0?r.harga:\'\'}" oninput="onNumInput(${i},'harga',this)" placeholder="0" style="width:100px"></td>
+      <td class="master-price${hargaDiff?' diff':''}">
+        ${masterHarga>0 ? IDR(masterHarga) : (m?'<span style="color:#bbb">-</span>':'<span style="color:#ccc">tidak ada</span>')}
+        ${hargaDiff?'⚠':''}
+      </td>
+      <td class="sub-cell">${sub>0?IDR(sub):'-'}</td>
+      <td class="ket-cell" title="${ket}">${ket||''}</td>
+      <td><button class="del-btn" onclick="rows.splice(${i},1);renderTable()">✕</button></td>
+    </tr>`;
+  });
+  const grand = rows.reduce((s,r)=>(s+(parseFloat(r.qty)||0)*(parseFloat(r.harga)||0)),0);
+  document.getElementById('grandTotal').textContent = IDR(grand);
+}
+
+// ===================== AUTOCOMPLETE =====================
+function showAllAc(idx, inp) {
+  activeAcRow = idx;
+  const list = document.getElementById('acList');
+  const matches = MASTER.slice(0,30);
+  positionAc(inp, matches, idx);
+}
+
+function onNamaInput(idx, inp) {
+  activeAcRow = idx;
+  const val = inp.value.trim().toLowerCase();
+  const list = document.getElementById('acList');
+
+  // Update data tanpa rebuild tabel
+  rows[idx].nama = inp.value;
+  const exactM = findMaster(inp.value);
+  if(exactM) {
+    rows[idx].harga = exactM.harga;
+    rows[idx].sat = exactM.sat;
+    // Update harga field langsung tanpa renderTable
+    const hEl = document.getElementById('harga_'+rows[idx].id);
+    if(hEl && hEl !== document.activeElement) hEl.value = exactM.harga;
+    // Update subtotal & total
+    refreshSubtotals();
+  }
+
+  const matches = val.length === 0
+    ? MASTER.slice(0,30)
+    : MASTER.filter(m => m.nama.toLowerCase().includes(val)).slice(0,20);
+
+  if(matches.length === 0) { list.classList.remove('show'); return; }
+  positionAc(inp, matches, idx);
+}
+
+function positionAc(inp, matches, idx) {
+  const list = document.getElementById('acList');
+  const rect = inp.getBoundingClientRect();
+  list.style.position = 'fixed';
+  list.style.top = (rect.bottom+2)+'px';
+  list.style.left = rect.left+'px';
+  list.style.width = Math.max(rect.width,220)+'px';
+  list.innerHTML = matches.map(m=>
+    `<div class="ac-item" onmousedown="selectAc(${idx},'${m.nama.replace(/'/g,"\\'")}')">
+      ${m.nama}<span class="kat">${m.kat}</span>
+    </div>`).join('');
+  list.classList.add('show');
+}
+
+function selectAc(idx, nama) {
+  rows[idx].nama = nama;
+  const m = findMaster(nama);
+  if(m) { rows[idx].harga = m.harga; rows[idx].sat = m.sat; }
+  document.getElementById('acList').classList.remove('show');
+  // Update DOM langsung tanpa rebuild tabel
+  const r = rows[idx];
+  const namaEl = document.getElementById('nama_'+r.id);
+  const hargaEl = document.getElementById('harga_'+r.id);
+  if(namaEl) {
+    namaEl.value = nama;
+    namaEl.className = 'nama-inp' + (m ? ' ok' : ' warn');
+  }
+  if(hargaEl && m) { hargaEl.value = m.harga; }
+  refreshSubtotals();
+}
+
+function hideAc() {
+  setTimeout(()=>document.getElementById('acList').classList.remove('show'), 150);
+}
+
+function updateKetCell(idx) {
+  // No-op: subtotals handled by refreshSubtotals
+}
+
+function onNumInput(idx, field, inp) {
+  const val = inp.value.replace(/[^0-9.]/g, '');
+  rows[idx][field] = parseFloat(val) || 0;
+  refreshSubtotals();
+}
+
+function refreshSubtotals() {
+  let grand = 0;
+  rows.forEach((r, i) => {
+    const sub = (parseFloat(r.qty)||0) * (parseFloat(r.harga)||0);
+    grand += sub;
+    // Update subtotal cell
+    const cells = document.getElementById('tbody').rows;
+    if(cells[i]) {
+      const subCell = cells[i].querySelector('.sub-cell');
+      if(subCell) subCell.textContent = sub > 0 ? IDR(sub) : '-';
+    }
+  });
+  document.getElementById('grandTotal').textContent = IDR(grand);
+}
+
+// ===================== COPY TO GOOGLE SHEET =====================
+function copyToClipboard() {
+  const tgl = document.getElementById('tgl').value;
+  const pel = document.getElementById('pelanggan').value.trim();
+  const kota = document.getElementById('kota').value.trim();
+  const noNota = document.getElementById('noNota').value.trim();
+  const ket = document.getElementById('ket').value.trim();
+  const valid = rows.filter(r=>r.nama && r.qty);
+  if(!valid.length) { alert('Tidak ada data barang.'); return; }
+
+  // Format: Tanggal \t Pelanggan \t Kota \t No.Nota \t Nama Barang \t Qty \t Sat \t Harga \t Subtotal \t Harga Master \t Keterangan
+  const lines = valid.map(r => {
+    const sub = (parseFloat(r.qty)||0)*(parseFloat(r.harga)||0);
+    const m = findMaster(r.nama);
+    const masterH = m ? m.harga : 0;
+    const ketRow = getKet(r);
+    return [
+      fmtTgl(tgl),
+      pel,
+      kota,
+      noNota,
+      r.nama,
+      r.qty,
+      r.sat,
+      parseFloat(r.harga)||0,
+      Math.round(sub),
+      masterH||'',
+      ketRow||''
+    ].join('\t');
+  });
+
+  // Header row
+  const header = ['Tanggal','Pelanggan','Kota','No.Nota','Nama Barang','Qty','Sat','Harga','Subtotal','Harga Master','Keterangan'].join('\t');
+  const tsv = header + '\n' + lines.join('\n');
+
+  navigator.clipboard.writeText(tsv).then(() => {
+    const ok = document.getElementById('copyOk');
+    ok.style.display = 'block';
+    setTimeout(()=>ok.style.display='none', 3000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = tsv; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    const ok = document.getElementById('copyOk');
+    ok.style.display = 'block';
+    setTimeout(()=>ok.style.display='none', 3000);
+  });
+}
+
+// ===================== RESET =====================
+function resetForm() {
+  document.getElementById('tgl').value = new Date().toISOString().split('T')[0];
+  document.getElementById('pelanggan').value = '';
+  document.getElementById('kota').value = '';
+  document.getElementById('noNota').value = '';
+  document.getElementById('ket').value = '';
+  rows = []; rowCounter = 0;
+  renderTable();
+  document.getElementById('extBtn').className = 'ext-btn';
+  document.getElementById('extIcon').textContent = '✨';
+  document.getElementById('extErr').style.display = 'none';
+  document.getElementById('copyOk').style.display = 'none';
+  updateExtBtn();
+}
+
+// ===================== INIT =====================
+document.getElementById('tgl').value = new Date().toISOString().split('T')[0];
+addRow();
+renderQueue();
+</script>
+</body>
+</html>

@@ -77,7 +77,9 @@ tr:hover td{background:#fafafe}
 .sub-cell{font-weight:600;text-align:right;white-space:nowrap}
 .master-price{font-size:11px;color:#888;white-space:nowrap}
 .master-price.diff{color:#e6a817;font-weight:600}
-.ket-cell{font-size:11px;color:#e6a817;max-width:120px}
+.ket-cell{font-size:11px;color:#e6a817;max-width:140px}
+.ket-cell .tag-fuzzy{color:#9b59b6;font-weight:600}
+.ket-cell .tag-harga{color:#2980b9;font-weight:600}
 .del-btn{background:none;border:none;cursor:pointer;color:#ccc;padding:3px 5px;border-radius:5px;font-size:14px}
 .del-btn:hover{color:#c0392b;background:#fdf5f5}
 .add-row-btn{width:100%;padding:7px;border:1px dashed #ddd;border-radius:8px;background:none;font-size:12px;cursor:pointer;color:#888;margin-top:8px;transition:all .15s}
@@ -234,6 +236,53 @@ function fuzzyMatch(nama) {
   return MASTER.find(m => m.nama.toLowerCase().includes(n) || n.includes(m.nama.toLowerCase())) || null;
 }
 
+function findBestMatch(namaMaster, namaNota, hargaNota) {
+  // Step 1: cari kandidat dari nama — catat cara menemukannya
+  let kandidat = null;
+  let matchType = 'exact';
+
+  if(findMaster(namaMaster) || findMaster(namaNota)) {
+    kandidat = findMaster(namaMaster) || findMaster(namaNota);
+    matchType = 'exact';
+  } else if(fuzzyMatch(namaMaster) || fuzzyMatch(namaNota)) {
+    kandidat = fuzzyMatch(namaMaster) || fuzzyMatch(namaNota);
+    matchType = 'fuzzy';
+  }
+
+  // Step 2: jika harga nota ada, cek apakah ada master lain yang harganya lebih dekat
+  if(hargaNota > 0) {
+    const selisihKandidat = kandidat ? Math.abs(kandidat.harga - hargaNota) : Infinity;
+
+    const words = (namaMaster + ' ' + namaNota).toLowerCase()
+      .split(/\s+/).filter(w => w.length >= 3);
+
+    const calonNama = MASTER.filter(m => {
+      const mn = m.nama.toLowerCase();
+      return words.some(w => mn.includes(w));
+    });
+
+    let bestHarga = null;
+    let selisihTerkecil = selisihKandidat;
+    calonNama.forEach(m => {
+      if(m.harga <= 0) return;
+      const selisih = Math.abs(m.harga - hargaNota);
+      const pctSelisih = selisih / hargaNota;
+      if(selisih < selisihTerkecil && pctSelisih < 0.10) {
+        selisihTerkecil = selisih;
+        bestHarga = m;
+      }
+    });
+
+    if(bestHarga) {
+      // Apakah ini ganti kandidat sebelumnya, atau kandidat baru?
+      const wasExact = kandidat && matchType === 'exact';
+      return { master: bestHarga, matchType: wasExact ? 'harga' : 'fuzzy+harga' };
+    }
+  }
+
+  return kandidat ? { master: kandidat, matchType } : { master: null, matchType: 'none' };
+}
+
 // ===================== KEY =====================
 function toggleKey() {
   keyVis = !keyVis;
@@ -385,14 +434,16 @@ async function extractCurrent() {
 
     rows = []; rowCounter = 0;
     (parsed.items||[]).forEach(item => {
-      // Exact match dulu, lalu fuzzy fallback
-      const m = findMaster(item.nama_master) || findMaster(item.nama_nota) || fuzzyMatch(item.nama_master) || fuzzyMatch(item.nama_nota);
-      // Auto-fix harga: jika harga < 500 dan ada harga master, kemungkinan ribuan terpotong
+      // Auto-fix harga dulu sebelum matching
       let harga = parseFloat(item.harga) || 0;
       if(harga > 0 && harga < 500) harga = harga * 1000;
+
+      // Cari master terbaik: nama cocok + harga nota dipertimbangkan
+      const { master: m, matchType } = findBestMatch(item.nama_master, item.nama_nota, harga);
+
       // Jika harga masih 0, pakai harga master
       if(harga === 0 && m && m.harga > 0) harga = m.harga;
-      addRow(m?m.nama:item.nama_nota||'', item.qty||'', harga, item.satuan||'kg', item.nama_nota||'');
+      addRow(m?m.nama:item.nama_nota||'', item.qty||'', harga, item.satuan||'kg', item.nama_nota||'', matchType);
     });
 
     btn.className = 'ext-btn success'; icon.textContent = '✔';
@@ -439,19 +490,29 @@ function goNext() {
 }
 
 // ===================== ROWS =====================
-function addRow(nama='', qty='', harga='', sat='kg', raw='') {
+function addRow(nama='', qty='', harga='', sat='kg', raw='', matchType='') {
   const id = ++rowCounter;
   const m = findMaster(nama);
   const h = harga!=='' ? parseFloat(harga)||0 : (m?m.harga:0);
-  rows.push({id, nama:m?m.nama:nama, qty, harga:h, sat:sat||(m?m.sat:'kg'), raw});
+  rows.push({id, nama:m?m.nama:nama, qty, harga:h, sat:sat||(m?m.sat:'kg'), raw, matchType});
   renderTable();
 }
 
 function getKet(r) {
   const m = findMaster(r.nama);
   const msgs = [];
+
+  // Label metode pencocokan
+  if(r.matchType === 'fuzzy') {
+    msgs.push('🔀 Fuzzy match — cek nama');
+  } else if(r.matchType === 'harga') {
+    msgs.push('💰 Match by harga — cek nama');
+  } else if(r.matchType === 'fuzzy+harga') {
+    msgs.push('🔀💰 Fuzzy + match harga — cek nama & harga');
+  }
+
   if(r.raw && r.nama && r.raw.toLowerCase() !== r.nama.toLowerCase()) {
-    msgs.push(`Nama di nota: "${r.raw}"`);
+    msgs.push(`Nama nota: "${r.raw}"`);
   }
   if(!m && r.nama) msgs.push('⚠ Tidak ada di master');
   if(m && r.harga > 0 && m.harga > 0 && r.harga !== m.harga) {

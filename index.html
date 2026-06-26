@@ -176,7 +176,19 @@ tr:hover td{background:#fafafe}
 <div class="card">
   <div class="card-title">📋 Info Nota <span id="notaCounter" style="font-weight:400;color:#aaa"></span></div>
   <div class="meta-grid">
-    <div class="field"><label>Tanggal</label><input type="date" id="tgl"></div>
+    <div class="field"><label>Tanggal</label>
+  <div style="display:flex;align-items:center;gap:6px">
+    <input type="number" id="tglTgl" min="1" max="31" placeholder="DD" 
+      style="width:60px;padding:6px 8px;border:1px solid #ddd;border-radius:8px;font-size:14px;text-align:center"
+      oninput="syncTgl()">
+    <span style="color:#999">/</span>
+    <input type="number" id="tglBln" min="1" max="12" placeholder="MM"
+      style="width:60px;padding:6px 8px;border:1px solid #ddd;border-radius:8px;font-size:14px;text-align:center"
+      oninput="syncTgl()">
+    <span style="color:#bbb;font-size:13px">/ 2026</span>
+    <input type="hidden" id="tgl">
+  </div>
+</div>
     <div class="field"><label>Nama pelanggan</label><input type="text" id="pelanggan" placeholder="Nama toko / pembeli"></div>
     <div class="field"><label>Kota asal</label><input type="text" id="kota" placeholder="Kota"></div>
   </div>
@@ -451,6 +463,19 @@ function applyZoom() {
   }
 }
 
+// ===================== TANGGAL =====================
+function syncTgl() {
+  const d = parseInt(document.getElementById('tglTgl').value) || 0;
+  const m = parseInt(document.getElementById('tglBln').value) || 0;
+  if(d > 0 && m > 0) {
+    const dd = String(d).padStart(2,'0');
+    const mm = String(m).padStart(2,'0');
+    document.getElementById('tgl').value = '2026-' + mm + '-' + dd;
+  } else {
+    document.getElementById('tgl').value = '';
+  }
+}
+
 // ===================== KEY =====================
 function toggleKey() {
   keyVis = !keyVis;
@@ -598,7 +623,15 @@ async function extractCurrent() {
     if(e2 < 0) throw new Error("JSON tidak lengkap");
     const parsed = JSON.parse(cleaned.substring(s, e2+1));
 
-    if(parsed.tanggal) document.getElementById('tgl').value = parsed.tanggal;
+    if(parsed.tanggal) {
+      const parts = parsed.tanggal.split('-');
+      // parts = [YYYY, MM, DD]
+      if(parts.length === 3) {
+        document.getElementById('tglTgl').value = parseInt(parts[2]);
+        document.getElementById('tglBln').value = parseInt(parts[1]);
+        syncTgl();
+      }
+    }
     if(parsed.pelanggan) document.getElementById('pelanggan').value = parsed.pelanggan;
     if(parsed.kota) document.getElementById('kota').value = parsed.kota;
     if(parsed.no_nota) document.getElementById('noNota').value = parsed.no_nota;
@@ -908,7 +941,12 @@ function copyToClipboard() {
 
 // ===================== RESET =====================
 function resetForm() {
-  document.getElementById('tgl').value = new Date().toISOString().split('T')[0];
+  (function(){
+  const now = new Date();
+  document.getElementById('tglTgl').value = now.getDate();
+  document.getElementById('tglBln').value = now.getMonth()+1;
+  syncTgl();
+})();
   document.getElementById('pelanggan').value = '';
   document.getElementById('kota').value = '';
   document.getElementById('noNota').value = '';
@@ -923,7 +961,12 @@ function resetForm() {
 }
 
 // ===================== INIT =====================
-document.getElementById('tgl').value = new Date().toISOString().split('T')[0];
+(function(){
+  const now = new Date();
+  document.getElementById('tglTgl').value = now.getDate();
+  document.getElementById('tglBln').value = now.getMonth()+1;
+  syncTgl();
+})();
 addRow();
 renderQueue();
 </script>

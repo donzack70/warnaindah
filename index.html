@@ -95,6 +95,9 @@ tr:hover td{background:#fafafe}
 .master-price{font-size:11px;color:#888;white-space:nowrap}
 .master-price.diff{color:#b7600a;font-weight:600}
 .ket-cell{font-size:11px;color:#c0392b;max-width:140px}
+.cand-btn{font-size:10px;padding:2px 7px;border:1px solid #c0392b;border-radius:12px;background:#fff5f5;color:#c0392b;cursor:pointer;white-space:nowrap}
+.cand-btn:hover{background:#fde8e8}
+.cand-btn.cand-active{background:#c0392b;color:#fff;border-color:#c0392b}
 .ket-cell .tag-fuzzy{color:#7d3c98;font-weight:600}
 .ket-cell .tag-harga{color:#1a5276;font-weight:600}
 .del-btn{background:none;border:none;cursor:pointer;color:#ccc;padding:3px 5px;border-radius:5px;font-size:14px}
@@ -351,7 +354,7 @@ function fuzzyMatch(nama) {
 }
 
 function findBestMatch(namaMaster, namaNota, hargaNota) {
-  // Step 1: cari kandidat dari nama — catat cara menemukannya
+  // Step 1: cari kandidat dari nama
   let kandidat = null;
   let matchType = 'exact';
 
@@ -363,34 +366,34 @@ function findBestMatch(namaMaster, namaNota, hargaNota) {
     matchType = 'fuzzy';
   }
 
-  // Step 2: jika harga nota ada, cek apakah ada master lain yang harganya lebih dekat
+  // Step 2: cari semua calon berdasarkan nama (bukan hanya satu)
   if(hargaNota > 0) {
     const selisihKandidat = kandidat ? Math.abs(kandidat.harga - hargaNota) : Infinity;
-
     const words = (namaMaster + ' ' + namaNota).toLowerCase()
       .split(/\s+/).filter(w => w.length >= 3);
-
     const calonNama = MASTER.filter(m => {
       const mn = m.nama.toLowerCase();
       return words.some(w => mn.includes(w));
     });
 
-    let bestHarga = null;
-    let selisihTerkecil = selisihKandidat;
-    calonNama.forEach(m => {
-      if(m.harga <= 0) return;
-      const selisih = Math.abs(m.harga - hargaNota);
-      const pctSelisih = selisih / hargaNota;
-      if(selisih < selisihTerkecil && pctSelisih < 0.10) {
-        selisihTerkecil = selisih;
-        bestHarga = m;
-      }
+    // Kumpulkan SEMUA calon yang harganya sangat dekat (< 10%)
+    const calonDekat = calonNama.filter(m => {
+      if(m.harga <= 0) return false;
+      return (Math.abs(m.harga - hargaNota) / hargaNota) < 0.10;
     });
 
-    if(bestHarga) {
-      // Apakah ini ganti kandidat sebelumnya, atau kandidat baru?
+    if(calonDekat.length > 1) {
+      // AMBIGU: ada >1 produk dengan harga serupa — minta user pilih
       const wasExact = kandidat && matchType === 'exact';
-      return { master: bestHarga, matchType: wasExact ? 'harga' : 'fuzzy+harga' };
+      return {
+        master: calonDekat[0],
+        matchType: wasExact ? 'harga' : 'fuzzy+harga',
+        ambiguous: true,
+        candidates: calonDekat
+      };
+    } else if(calonDekat.length === 1 && Math.abs(calonDekat[0].harga - hargaNota) < selisihKandidat) {
+      const wasExact = kandidat && matchType === 'exact';
+      return { master: calonDekat[0], matchType: wasExact ? 'harga' : 'fuzzy+harga' };
     }
   }
 
@@ -643,11 +646,13 @@ async function extractCurrent() {
       if(harga > 0 && harga < 500) harga = harga * 1000;
 
       // Cari master terbaik: nama cocok + harga nota dipertimbangkan
-      const { master: m, matchType } = findBestMatch(item.nama_master, item.nama_nota, harga);
+      const result = findBestMatch(item.nama_master, item.nama_nota, harga);
+      const m = result.master;
+      const matchType = result.matchType;
 
       // Jika harga masih 0, pakai harga master
       if(harga === 0 && m && m.harga > 0) harga = m.harga;
-      addRow(m?m.nama:item.nama_nota||'', item.qty||'', harga, item.satuan||'kg', item.nama_nota||'', matchType);
+      addRow(m?m.nama:item.nama_nota||'', item.qty||'', harga, item.satuan||'kg', item.nama_nota||'', matchType, result.ambiguous ? result.candidates : []);
     });
 
     btn.className = 'ext-btn success'; icon.textContent = '✔';
@@ -694,11 +699,11 @@ function goNext() {
 }
 
 // ===================== ROWS =====================
-function addRow(nama='', qty='', harga='', sat='kg', raw='', matchType='') {
+function addRow(nama='', qty='', harga='', sat='kg', raw='', matchType='', candidates=[]) {
   const id = ++rowCounter;
   const m = findMaster(nama);
   const h = harga!=='' ? parseFloat(harga)||0 : (m?m.harga:0);
-  rows.push({id, nama:m?m.nama:nama, qty, harga:h, sat:sat||(m?m.sat:'kg'), raw, matchType});
+  rows.push({id, nama:m?m.nama:nama, qty, harga:h, sat:sat||(m?m.sat:'kg'), raw, matchType, candidates});
   renderTable();
 }
 
@@ -707,7 +712,9 @@ function getKet(r) {
   const msgs = [];
 
   // Label metode pencocokan
-  if(r.matchType === 'fuzzy') {
+  if(r.candidates && r.candidates.length > 1) {
+    msgs.push('⚠️ Ambigu — pilih produk yang benar');
+  } else if(r.matchType === 'fuzzy') {
     msgs.push('🔀 Fuzzy match — cek nama');
   } else if(r.matchType === 'harga') {
     msgs.push('💰 Match by harga — cek nama');
@@ -740,6 +747,7 @@ function renderTable() {
       <td style="color:#ccc;text-align:center;font-size:11px">${i+1}</td>
       <td>
         <div class="ac-wrap">
+          ${r.candidates&&r.candidates.length>1?`<div style="display:flex;gap:3px;margin-bottom:4px;flex-wrap:wrap">${r.candidates.map((c,ci)=>`<button class="cand-btn${r.nama===c.nama?' cand-active':''}" onmousedown="event.preventDefault();pickCandidate(${i},'${c.nama.replace(/'/g,"\\'")}')">${c.nama}</button>`).join('')}</div>`:''}
           <input class="nama-inp${namaWarn?' warn':m?' ok':''}" 
             id="nama_${r.id}" value="${r.nama}" 
             oninput="onNamaInput(${i},this)" 
@@ -830,6 +838,21 @@ function hideAc() {
 
 function updateKetCell(idx) {
   // No-op: subtotals handled by refreshSubtotals
+}
+
+function pickCandidate(idx, nama) {
+  rows[idx].nama = nama;
+  rows[idx].matchType = 'exact';
+  // Hapus flag ambigu setelah user pilih
+  rows[idx].candidates = [];
+  const m = findMaster(nama);
+  if(m) rows[idx].sat = m.sat;
+  renderTable();
+  // Scroll ke baris tersebut
+  setTimeout(() => {
+    const el = document.getElementById('nama_' + rows[idx]?.id);
+    if(el) el.scrollIntoView({block:'nearest'});
+  }, 50);
 }
 
 function updateMasterCell(r) {

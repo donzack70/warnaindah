@@ -273,10 +273,69 @@ function findMaster(nama) {
   return MASTER.find(m => m.nama.toLowerCase() === nama.trim().toLowerCase()) || null;
 }
 function fuzzyMatch(nama) {
-  // Return master jika nama mirip (contained)
   if(!nama || nama.trim().length < 2) return null;
   const n = nama.trim().toLowerCase();
-  return MASTER.find(m => m.nama.toLowerCase().includes(n) || n.includes(m.nama.toLowerCase())) || null;
+
+  // Tier 1: contained (sama seperti sebelumnya)
+  const t1 = MASTER.find(m => {
+    const mn = m.nama.toLowerCase();
+    return mn.includes(n) || n.includes(mn);
+  });
+  if(t1) return t1;
+
+  // Tier 2: semua kata dari input ada di nama master (minimal 3 huruf per kata)
+  const words = n.split(/\s+/).filter(w => w.length >= 3);
+  if(words.length > 0) {
+    const t2 = MASTER.find(m => {
+      const mn = m.nama.toLowerCase();
+      return words.every(w => mn.includes(w));
+    });
+    if(t2) return t2;
+  }
+
+  // Tier 3: normalisasi fonetik lalu trigram similarity
+  // Normalisasi: ganti variasi ejaan umum bahasa Indonesia/Inggris campur
+  function normalize(s) {
+    return s
+      .replace(/ou/g, 'u').replace(/ck/g, 'k').replace(/ph/g, 'f')
+      .replace(/oe/g, 'u').replace(/ae/g, 'e').replace(/ie/g, 'i')
+      .replace(/c(?=[aourlm])/g, 'k')  // "cou" -> "ku", "ca" -> "ka"
+      .replace(/c(?=[ei])/g, 's')       // "ce" -> "se"
+      .replace(/th/g, 't').replace(/sh/g, 's')
+      .replace(/[aeiou]+/g, 'a')        // vokal jadi satu (skeleton konsonan)
+      .replace(/(.)+/g, '$1');         // hapus dobel konsonan
+  }
+
+  function trigrams(s) {
+    const set = new Set();
+    const p = ' ' + s + ' ';
+    for(let i = 0; i < p.length - 2; i++) set.add(p.slice(i, i+3));
+    return set;
+  }
+  function similarity(a, b) {
+    const ta = trigrams(a), tb = trigrams(b);
+    let common = 0;
+    ta.forEach(t => { if(tb.has(t)) common++; });
+    return (2 * common) / (ta.size + tb.size);
+  }
+
+  // Cari master dengan trigram similarity tertinggi (raw dulu)
+  let best = null, bestScore = 0;
+  MASTER.forEach(m => {
+    const score = similarity(n, m.nama.toLowerCase());
+    if(score > bestScore) { bestScore = score; best = m; }
+  });
+  if(bestScore >= 0.25) return best;
+
+  // Tier 4: trigram di atas skeleton konsonan (lebih toleran typo parah)
+  const nNorm = normalize(n);
+  let best4 = null, bestScore4 = 0;
+  MASTER.forEach(m => {
+    const mNorm = normalize(m.nama.toLowerCase());
+    const score = similarity(nNorm, mNorm);
+    if(score > bestScore4) { bestScore4 = score; best4 = m; }
+  });
+  return bestScore4 >= 0.30 ? best4 : null;
 }
 
 function findBestMatch(namaMaster, namaNota, hargaNota) {

@@ -659,7 +659,7 @@ function renderTable() {
       <td><input class="num" type="text" inputmode="decimal" id="qty_${r.id}" value="${r.qty}" oninput="onNumInput(${i},'qty',this)" placeholder="0"></td>
       <td><input style="width:52px;padding:4px 5px;border:1px solid #ddd;border-radius:6px;font-size:12px" value="${r.sat}" oninput="rows[${i}].sat=this.value"></td>
       <td><input class="num${hargaDiff?' price-diff':''}" type="text" inputmode="numeric" id="harga_${r.id}" value="${r.harga>0?r.harga:''}" oninput="onNumInput(${i},'harga',this)" placeholder="0" style="width:100px"></td>
-      <td class="master-price${hargaDiff?' diff':''}">
+      <td class="master-price${hargaDiff?' diff':''}" id="mharga_${r.id}">
         ${masterHarga>0 ? IDR(masterHarga) : (m?'<span style="color:#bbb">-</span>':'<span style="color:#ccc">tidak ada</span>')}
         ${hargaDiff?'⚠':''}
       </td>
@@ -687,14 +687,13 @@ function onNamaInput(idx, inp) {
   rows[idx].nama = inp.value;
   const exactM = findMaster(inp.value);
   if(exactM) {
-    rows[idx].harga = exactM.harga;
+    // Hanya update sat & matchType, BUKAN harga nota
     rows[idx].sat = exactM.sat;
-    // Update harga field langsung tanpa renderTable
-    const hEl = document.getElementById('harga_'+rows[idx].id);
-    if(hEl && hEl !== document.activeElement) hEl.value = exactM.harga;
-    // Update subtotal & total
-    refreshSubtotals();
+    rows[idx].matchType = 'exact';
   }
+  // Selalu update sel master & status warna (termasuk saat nama tidak match)
+  updateMasterCell(rows[idx]);
+  refreshSubtotals();
 
   const matches = val.length === 0
     ? MASTER
@@ -720,18 +719,16 @@ function positionAc(inp, matches, idx) {
 
 function selectAc(idx, nama) {
   rows[idx].nama = nama;
+  rows[idx].matchType = 'exact'; // reset matchType saat pilih manual
   const m = findMaster(nama);
-  if(m) { rows[idx].harga = m.harga; rows[idx].sat = m.sat; }
+  if(m) { rows[idx].sat = m.sat; } // BUKAN harga — harga nota tetap
   document.getElementById('acList').classList.remove('show');
-  // Update DOM langsung tanpa rebuild tabel
   const r = rows[idx];
+  // Update input nama
   const namaEl = document.getElementById('nama_'+r.id);
-  const hargaEl = document.getElementById('harga_'+r.id);
-  if(namaEl) {
-    namaEl.value = nama;
-    namaEl.className = 'nama-inp' + (m ? ' ok' : ' warn');
-  }
-  if(hargaEl && m) { hargaEl.value = m.harga; }
+  if(namaEl) namaEl.value = nama;
+  // Update sel Harga Master + status warna (harga nota tidak diubah)
+  updateMasterCell(r);
   refreshSubtotals();
 }
 
@@ -741,6 +738,41 @@ function hideAc() {
 
 function updateKetCell(idx) {
   // No-op: subtotals handled by refreshSubtotals
+}
+
+function updateMasterCell(r) {
+  const m = findMaster(r.nama);
+  const masterHarga = m ? m.harga : 0;
+  const hargaDiff = r.harga > 0 && masterHarga > 0 && parseFloat(r.harga) !== masterHarga;
+
+  // Update sel Harga Master
+  const mEl = document.getElementById('mharga_' + r.id);
+  if(mEl) {
+    mEl.className = 'master-price' + (hargaDiff ? ' diff' : '');
+    mEl.innerHTML = masterHarga > 0
+      ? IDR(masterHarga) + (hargaDiff ? ' ⚠' : '')
+      : (m ? '<span style="color:#bbb">-</span>' : '<span style="color:#ccc">tidak ada</span>');
+  }
+
+  // Update border warna nama input (ok/warn)
+  const namaEl = document.getElementById('nama_' + r.id);
+  if(namaEl) {
+    namaEl.className = 'nama-inp' + (!m && r.nama ? ' warn' : m ? ' ok' : '');
+  }
+
+  // Update border warna harga nota (price-diff)
+  const hEl = document.getElementById('harga_' + r.id);
+  if(hEl) {
+    hEl.className = 'num' + (hargaDiff ? ' price-diff' : '');
+  }
+
+  // Update keterangan
+  const ketEl = document.querySelector(`#tbody tr:nth-child(${rows.indexOf(r)+1}) .ket-cell`);
+  if(ketEl) {
+    const ket = getKet(r);
+    ketEl.textContent = ket;
+    ketEl.title = ket;
+  }
 }
 
 function onNumInput(idx, field, inp) {

@@ -95,9 +95,7 @@ tr:hover td{background:#fafafe}
 .master-price{font-size:11px;color:#888;white-space:nowrap}
 .master-price.diff{color:#b7600a;font-weight:600}
 .ket-cell{font-size:11px;color:#c0392b;max-width:140px}
-.cand-btn{font-size:10px;padding:2px 7px;border:1px solid #c0392b;border-radius:12px;background:#fff5f5;color:#c0392b;cursor:pointer;white-space:nowrap}
-.cand-btn:hover{background:#fde8e8}
-.cand-btn.cand-active{background:#c0392b;color:#fff;border-color:#c0392b}
+
 .ket-cell .tag-fuzzy{color:#7d3c98;font-weight:600}
 .ket-cell .tag-harga{color:#1a5276;font-weight:600}
 .del-btn{background:none;border:none;cursor:pointer;color:#ccc;padding:3px 5px;border-radius:5px;font-size:14px}
@@ -271,7 +269,338 @@ tr:hover td{background:#fafafe}
 
 <script>
 // ===================== MASTER DATA =====================
-const MASTER=[{"no":1,"nama":"NAPHTOL ASBS","kat":"Naphtol","sat":"kg","harga":205000,"total":183.0},{"no":2,"nama":"ASG DIAL","kat":"Naphtol","sat":"kg","harga":150000,"total":355.0},{"no":3,"nama":"ASG SHANGHAI","kat":"Naphtol","sat":"kg","harga":275000,"total":455.0},{"no":4,"nama":"AS","kat":"Naphtol","sat":"kg","harga":140000,"total":67.0},{"no":5,"nama":"ASOL","kat":"Naphtol","sat":"kg","harga":155000,"total":114.0},{"no":6,"nama":"ASD","kat":"Naphtol","sat":"kg","harga":140000,"total":205.0},{"no":7,"nama":"ASBR","kat":"Naphtol","sat":"kg","harga":150000,"total":10.0},{"no":8,"nama":"ASLB","kat":"Naphtol","sat":"kg","harga":950000,"total":7.0},{"no":9,"nama":"ASBO PUTIH","kat":"Naphtol","sat":"kg","harga":150000,"total":91.0},{"no":10,"nama":"ASBO 80% INDIA","kat":"Naphtol","sat":"kg","harga":160000,"total":80.0},{"no":11,"nama":"ASBO 100% INDIA","kat":"Naphtol","sat":"kg","harga":200000,"total":122.0},{"no":12,"nama":"ASBO 100% RRT","kat":"Naphtol","sat":"kg","harga":200000,"total":186.0},{"no":13,"nama":"ASBO HC INDIA","kat":"Naphtol","sat":"kg","harga":165000,"total":30.0},{"no":14,"nama":"ASBO 80% TONGLI","kat":"Naphtol","sat":"kg","harga":160000,"total":719.0},{"no":15,"nama":"REACTIVE YELLOW M4R","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":176.0},{"no":16,"nama":"REACTIVE YELLOW M4G","kat":"Reactive/Remazol","sat":"kg","harga":95000,"total":69.0},{"no":17,"nama":"REACTIVE YELLOW M8G","kat":"Reactive/Remazol","sat":"kg","harga":110000,"total":142.0},{"no":18,"nama":"REACTIVE YELLOW FG 100%","kat":"Reactive/Remazol","sat":"kg","harga":85000,"total":211.0},{"no":19,"nama":"REACTIVE GOLD YELLOW RNL","kat":"Reactive/Remazol","sat":"kg","harga":130000,"total":137.0},{"no":20,"nama":"REACTIVE YELLOW HD8G","kat":"Reactive/Remazol","sat":"kg","harga":95000,"total":470.0},{"no":21,"nama":"REACTIVE YELLOW HE-4R","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":95.0},{"no":22,"nama":"REACTIVE YELLOW HE-4G","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":270.0},{"no":23,"nama":"REACTIVE BLUE M2R H/C SUPRA","kat":"Reactive/Remazol","sat":"kg","harga":165000,"total":80.0},{"no":24,"nama":"REACTIVE BLUE M2R HA","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":48.0},{"no":25,"nama":"REACTIVE BLUE HE-GN","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":5.0},{"no":26,"nama":"REACTIVE BRILL BLUE R SPEC","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":144.0},{"no":27,"nama":"REACTIVE TURKIS BLUE","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":51.0},{"no":28,"nama":"REACTIVE NAVY BLUE HER","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":72.0},{"no":29,"nama":"REACTIVE BROWN RB","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},{"no":30,"nama":"REACTIVE BROWN GR","kat":"Reactive/Remazol","sat":"kg","harga":115000,"total":187.0},{"no":31,"nama":"REACTIVE RED RB","kat":"Reactive/Remazol","sat":"kg","harga":185000,"total":33.0},{"no":32,"nama":"REACTIVE RED K2BP","kat":"Reactive/Remazol","sat":"kg","harga":125000,"total":113.0},{"no":33,"nama":"REACTIVE RED M5B","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":68.0},{"no":34,"nama":"REACTIVE RED M8B","kat":"Reactive/Remazol","sat":"kg","harga":110000,"total":50.0},{"no":35,"nama":"REACTIVE RED HE-3B","kat":"Reactive/Remazol","sat":"kg","harga":130000,"total":39.0},{"no":36,"nama":"REACTIVE RED HE-7B","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":5.0},{"no":37,"nama":"REACTIVE MAGENTA","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":14.0},{"no":38,"nama":"REACTIVE BRILL VIOLET 5R","kat":"Reactive/Remazol","sat":"kg","harga":135000,"total":165.0},{"no":39,"nama":"REACTIVE ORANGE HER","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":138.0},{"no":40,"nama":"REACTIVE ORANGE M2R","kat":"Reactive/Remazol","sat":"kg","harga":120000,"total":326.0},{"no":41,"nama":"REACTIVE ORANGE 3R","kat":"Reactive/Remazol","sat":"kg","harga":300000,"total":11.0},{"no":42,"nama":"REACTIVE BLACK B","kat":"Reactive/Remazol","sat":"kg","harga":110000,"total":61.0},{"no":43,"nama":"REACTIVE BLACK KWNN","kat":"Reactive/Remazol","sat":"kg","harga":105000,"total":66.0},{"no":44,"nama":"REACTIVE BLACK HF-GR","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},{"no":45,"nama":"REACTIVE BLACK HD","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},{"no":46,"nama":"REACTIVE GREEN HE-4BD","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":21.0},{"no":47,"nama":"SYNOSOL ULTRA BLACK DR","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},{"no":48,"nama":"POLKATIVE BLUE PX-2R","kat":"Reactive/Remazol","sat":"kg","harga":145000,"total":0.0},{"no":49,"nama":"POLKATIVE VIOLET 2-BNH","kat":"Reactive/Remazol","sat":"kg","harga":155000,"total":17.0},{"no":50,"nama":"REMAZOL GOLD YELLOW RNL","kat":"Reactive/Remazol","sat":"kg","harga":170000,"total":32.0},{"no":51,"nama":"REMAZOL YELLOW FG (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":185000,"total":41.0},{"no":52,"nama":"REMAZOL RED RB (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":185000,"total":37.0},{"no":53,"nama":"REMAZOL TURKIS BLUE (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":145000,"total":100.0},{"no":54,"nama":"REMAZOL DEEP BLACK N","kat":"Reactive/Remazol","sat":"kg","harga":170000,"total":47.0},{"no":55,"nama":"POLKATIVE BROWN 3RD","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":25.0},{"no":56,"nama":"REACTIVE RED X3B","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":9.0},{"no":57,"nama":"REMAZOL YELLOW GL","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":4.0},{"no":58,"nama":"REMAZOL BLACK B (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":150000,"total":77.0},{"no":59,"nama":"DISPERSE YELLOW 4GN (Y211)","kat":"Disperse","sat":"kg","harga":0,"total":75.0},{"no":60,"nama":"BLUE E2BLN (BLUE 56)","kat":"Disperse","sat":"kg","harga":250000,"total":123.0},{"no":61,"nama":"DARK BLUE 3RN (BLUE 148)","kat":"Disperse","sat":"kg","harga":200000,"total":147.0},{"no":62,"nama":"BLUE SE-BR (BLUE 183)","kat":"Disperse","sat":"kg","harga":250000,"total":0.0},{"no":63,"nama":"BRILL TURKIS BLUE SBG","kat":"Disperse","sat":"kg","harga":0,"total":15.0},{"no":64,"nama":"NAVY BLUE SE-RF 400%","kat":"Disperse","sat":"kg","harga":125000,"total":179.0},{"no":65,"nama":"NAVY BLUE S-2GL (BLUE 79)","kat":"Disperse","sat":"kg","harga":0,"total":7.0},{"no":66,"nama":"RED FBB (RED 60)","kat":"Disperse","sat":"kg","harga":275000,"total":75.0},{"no":67,"nama":"RED FTS","kat":"Disperse","sat":"kg","harga":0,"total":0.0},{"no":68,"nama":"RUBINE RD-FLN (RED 73)","kat":"Disperse","sat":"kg","harga":190000,"total":49.0},{"no":69,"nama":"RUBINE 2GFL","kat":"Disperse","sat":"kg","harga":0,"total":18.0},{"no":70,"nama":"VIOLET S3R (VIOLET 63)","kat":"Disperse","sat":"kg","harga":200000,"total":43.0},{"no":71,"nama":"SCARLET BRN","kat":"Disperse","sat":"kg","harga":140000,"total":0.0},{"no":72,"nama":"YELLOW 5SGN","kat":"Disperse","sat":"kg","harga":0,"total":0.0},{"no":73,"nama":"YELLOW BROWN GLH","kat":"Disperse","sat":"kg","harga":150000,"total":23.0},{"no":74,"nama":"BLACK EX-SF","kat":"Disperse","sat":"kg","harga":110000,"total":242.0},{"no":75,"nama":"YELLOW 3GE (YELLOW 54)","kat":"Disperse","sat":"kg","harga":150000,"total":0.0},{"no":76,"nama":"BROWN 3RL","kat":"Disperse","sat":"kg","harga":140000,"total":0.0},{"no":77,"nama":"SULPHUR BRILL YELLOW","kat":"Sulphur","sat":"kg","harga":75000,"total":112.0},{"no":78,"nama":"SULPHUR DARK GREEN","kat":"Sulphur","sat":"kg","harga":90000,"total":472.0},{"no":79,"nama":"SULPHUR LIGHT GREEN","kat":"Sulphur","sat":"kg","harga":150000,"total":92.0},{"no":80,"nama":"SULPHUR BORDO 3B","kat":"Sulphur","sat":"kg","harga":105000,"total":363.0},{"no":81,"nama":"SULPHUR BLUE BRN","kat":"Sulphur","sat":"kg","harga":110000,"total":113.0},{"no":82,"nama":"SULPHUR BROWN GDR","kat":"Sulphur","sat":"kg","harga":65000,"total":555.0},{"no":83,"nama":"SULPHUR BROWN MR","kat":"Sulphur","sat":"kg","harga":115000,"total":122.0},{"no":84,"nama":"SULPHUR YELLOW BROWN 5G","kat":"Sulphur","sat":"kg","harga":65000,"total":415.0},{"no":85,"nama":"SULPHUR OLIVE 2200","kat":"Sulphur","sat":"kg","harga":0,"total":0.0},{"no":86,"nama":"SULPHUR OLIVE GREEN G","kat":"Sulphur","sat":"kg","harga":70000,"total":45.0},{"no":87,"nama":"SULPHUR BLACK B 300% (T)","kat":"Sulphur","sat":"kg","harga":25000,"total":550.0},{"no":88,"nama":"SULPHUR BLACK B 200% (IC)","kat":"Sulphur","sat":"kg","harga":44000,"total":1312.0},{"no":89,"nama":"SULPHUR BLACK B 200% SUPER A","kat":"Sulphur","sat":"kg","harga":58000,"total":167.0},{"no":90,"nama":"SULPHUR BLACK B 200% (MTK)B","kat":"Sulphur","sat":"kg","harga":0,"total":0.0},{"no":91,"nama":"SULPHUR YELLOW GC","kat":"Sulphur","sat":"kg","harga":65000,"total":20.0},{"no":92,"nama":"SULPHUR BROWN M6R","kat":"Sulphur","sat":"kg","harga":105000,"total":12.0},{"no":93,"nama":"SULPHUR BROWN FGR","kat":"Sulphur","sat":"kg","harga":105000,"total":13.0},{"no":94,"nama":"INDANTHREN GREY M","kat":"Vat/Indanthren","sat":"kg","harga":320000,"total":14.0},{"no":95,"nama":"GOLD ORANGE G","kat":"Vat/Indanthren","sat":"kg","harga":600000,"total":15.0},{"no":96,"nama":"BLACK MD","kat":"Vat/Indanthren","sat":"kg","harga":375000,"total":18.0},{"no":97,"nama":"OLIVE T","kat":"Vat/Indanthren","sat":"kg","harga":210000,"total":45.0},{"no":98,"nama":"PINK RS","kat":"Vat/Indanthren","sat":"kg","harga":525000,"total":8.0},{"no":99,"nama":"DARK BLUE BOA","kat":"Vat/Indanthren","sat":"kg","harga":290000,"total":64.0},{"no":100,"nama":"OLIVE GREEN B","kat":"Vat/Indanthren","sat":"kg","harga":300000,"total":95.0},{"no":101,"nama":"GREEN B / FFB","kat":"Vat/Indanthren","sat":"kg","harga":425000,"total":139.0},{"no":102,"nama":"GREEN XBN (YUNITA)","kat":"Vat/Indanthren","sat":"kg","harga":455000,"total":89.0},{"no":103,"nama":"GREEN XBN H/C GRANIS","kat":"Vat/Indanthren","sat":"kg","harga":350000,"total":30.0},{"no":104,"nama":"BROWN BR (YUNITA)","kat":"Vat/Indanthren","sat":"kg","harga":370000,"total":53.0},{"no":105,"nama":"BROWN BR (MTK)","kat":"Vat/Indanthren","sat":"kg","harga":500000,"total":56.0},{"no":106,"nama":"BLUE RSN (MTK)","kat":"Vat/Indanthren","sat":"kg","harga":430000,"total":142.0},{"no":107,"nama":"BLUE RSN GRANIS","kat":"Vat/Indanthren","sat":"kg","harga":350000,"total":80.0},{"no":108,"nama":"BLUE RSN Y","kat":"Vat/Indanthren","sat":"kg","harga":190000,"total":42.0},{"no":109,"nama":"BLUE RSN 200%","kat":"Vat/Indanthren","sat":"kg","harga":350000,"total":62.0},{"no":110,"nama":"YELLOW GCN (MTK)","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":20.0},{"no":111,"nama":"YELLOW GCN 130%","kat":"Vat/Indanthren","sat":"kg","harga":290000,"total":94.0},{"no":112,"nama":"VIOLET RR 100%","kat":"Vat/Indanthren","sat":"kg","harga":250000,"total":0.0},{"no":113,"nama":"VIOLET 200% (Y)","kat":"Vat/Indanthren","sat":"kg","harga":440000,"total":36.0},{"no":114,"nama":"VIOLET RR 150%","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":8.0},{"no":115,"nama":"VIOLET RR (MTK) 2","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":108.0},{"no":116,"nama":"RED R","kat":"Vat/Indanthren","sat":"kg","harga":520000,"total":21.0},{"no":117,"nama":"INDIGO BLUE","kat":"Vat/Indanthren","sat":"kg","harga":340000,"total":18.0},{"no":118,"nama":"BROWN BR (WI)","kat":"Vat/Indanthren","sat":"kg","harga":260000,"total":74.0},{"no":119,"nama":"BROWN BR (HA)","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":20.0},{"no":120,"nama":"BASIS METHELENE BLUE","kat":"Basis","sat":"kg","harga":260000,"total":120.0},{"no":121,"nama":"MAGENTA PUDER","kat":"Basis","sat":"kg","harga":235000,"total":173.0},{"no":122,"nama":"MALACHITE GREEN","kat":"Basis","sat":"kg","harga":180000,"total":140.0},{"no":123,"nama":"BRILL GREEN CRYSTAL","kat":"Basis","sat":"kg","harga":330000,"total":153.0},{"no":124,"nama":"AURAMINE INDIA","kat":"Basis","sat":"kg","harga":0,"total":0.0},{"no":125,"nama":"AURAMINE RRT","kat":"Basis","sat":"kg","harga":95000,"total":189.0},{"no":126,"nama":"AURAMINE JERMAN","kat":"Basis","sat":"kg","harga":130000,"total":193.0},{"no":127,"nama":"RODHAMINE","kat":"Basis","sat":"kg","harga":240000,"total":231.0},{"no":128,"nama":"BISMARK BROWN","kat":"Basis","sat":"kg","harga":105000,"total":32.0},{"no":129,"nama":"DIRECT BROWN M INDIA","kat":"Direct","sat":"kg","harga":130000,"total":164.0},{"no":130,"nama":"BROWN M RRT","kat":"Direct","sat":"kg","harga":85000,"total":93.0},{"no":131,"nama":"BROWN MN RRT","kat":"Direct","sat":"kg","harga":0,"total":0.0},{"no":132,"nama":"BROWN MM 125%","kat":"Direct","sat":"kg","harga":80000,"total":3.0},{"no":133,"nama":"BROWN GG","kat":"Direct","sat":"kg","harga":70000,"total":57.0},{"no":134,"nama":"CONGGO RED (YUNITA)","kat":"Direct","sat":"kg","harga":0,"total":500.0},{"no":135,"nama":"CONGGO RED (WI)","kat":"Direct","sat":"kg","harga":75000,"total":252.0},{"no":136,"nama":"CONGGO RED (MTK)","kat":"Direct","sat":"kg","harga":0,"total":0.0},{"no":137,"nama":"COPPER BLUE","kat":"Direct","sat":"kg","harga":100000,"total":229.0},{"no":138,"nama":"IJO MUDA GCN","kat":"Direct","sat":"kg","harga":80000,"total":33.0},{"no":139,"nama":"SCARLET 4BS","kat":"Direct","sat":"kg","harga":85000,"total":102.0},{"no":140,"nama":"SKY BLUE","kat":"Direct","sat":"kg","harga":85000,"total":37.0},{"no":141,"nama":"RED 12 B","kat":"Direct","sat":"kg","harga":75000,"total":12.0},{"no":142,"nama":"KUNING MAS / GOLD GXA","kat":"Direct","sat":"kg","harga":50000,"total":128.0},{"no":143,"nama":"DIRECT CHRYSHOPENIN G 100%","kat":"Direct","sat":"kg","harga":110000,"total":211.0},{"no":144,"nama":"DIRECT CHRYSHOPENIN G 80%","kat":"Direct","sat":"kg","harga":0,"total":0.0},{"no":145,"nama":"KUNING G H/C (MTK)","kat":"Direct","sat":"kg","harga":180000,"total":72.0},{"no":146,"nama":"BLACK G","kat":"Direct","sat":"kg","harga":75000,"total":5.0},{"no":147,"nama":"BLACK EX 170%","kat":"Direct","sat":"kg","harga":75000,"total":118.0},{"no":148,"nama":"BLACK EX 200%","kat":"Direct","sat":"kg","harga":100000,"total":472.0},{"no":149,"nama":"BLACK EX 300%","kat":"Direct","sat":"kg","harga":110000,"total":72.0},{"no":150,"nama":"BLACK VSF","kat":"Direct","sat":"kg","harga":65000,"total":0.0},{"no":151,"nama":"ORANGE S","kat":"Direct","sat":"kg","harga":95000,"total":111.0},{"no":152,"nama":"GREY VGR","kat":"Direct","sat":"kg","harga":90000,"total":45.0},{"no":153,"nama":"BORDO B RRT","kat":"Direct","sat":"kg","harga":90000,"total":39.0},{"no":154,"nama":"VIOLET 5BL","kat":"Direct","sat":"kg","harga":105000,"total":66.0},{"no":155,"nama":"BLUE 2B","kat":"Direct","sat":"kg","harga":80000,"total":37.0},{"no":156,"nama":"IJO B /DARK GREEN B","kat":"Direct","sat":"kg","harga":87500,"total":473.0},{"no":157,"nama":"TURQIS BLUE (WI)","kat":"Direct","sat":"kg","harga":65000,"total":175.0},{"no":158,"nama":"TURKIS BLUE (MTK)","kat":"Direct","sat":"kg","harga":0,"total":450.0},{"no":159,"nama":"PINK","kat":"Direct","sat":"kg","harga":70000,"total":75.0},{"no":160,"nama":"GARAM BIRU B 27% LUTA","kat":"Garam","sat":"kg","harga":97500,"total":2327.0},{"no":161,"nama":"GARAM BIRU B 27% WARIN","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":162,"nama":"GARAM BIRU B WI (MTK)","kat":"Garam","sat":"kg","harga":0,"total":25.0},{"no":163,"nama":"GARAM BIRU B H/C","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":164,"nama":"GARAM BIRU B JP INDIA","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":165,"nama":"GARAM BIRU B JP","kat":"Garam","sat":"kg","harga":150000,"total":107.0},{"no":166,"nama":"GARAM BIRU B GOLD","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":167,"nama":"GARAM BIRU BB JP","kat":"Garam","sat":"kg","harga":560000,"total":14.0},{"no":168,"nama":"GARAM BIRU B BASE","kat":"Garam","sat":"kg","harga":175000,"total":105.0},{"no":169,"nama":"GARAM MERAH B BASE","kat":"Garam","sat":"kg","harga":140000,"total":69.0},{"no":170,"nama":"GARAM MERAH B 15%","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":171,"nama":"GARAM MERAH B 27% LUTA","kat":"Garam","sat":"kg","harga":105000,"total":2065.0},{"no":172,"nama":"GARAM MERAH B 27% WARIN","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":173,"nama":"GARAM MERAH B WI (MTK)","kat":"Garam","sat":"kg","harga":0,"total":250.0},{"no":174,"nama":"GARAM MERAH B H/C","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":175,"nama":"GARAM MERAH B JP","kat":"Garam","sat":"kg","harga":155000,"total":158.0},{"no":176,"nama":"GARAM MERAH B GOLD","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":177,"nama":"GARAM MERAH B JP INDIA","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":178,"nama":"GARAM R 15%","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":179,"nama":"GARAM R 27% LUTA","kat":"Garam","sat":"kg","harga":75000,"total":1600.0},{"no":180,"nama":"GARAM R 27% WARIN","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":181,"nama":"GARAM R 27% WI (MTK)","kat":"Garam","sat":"kg","harga":0,"total":209.0},{"no":182,"nama":"GARAM R JP INDIA","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":183,"nama":"GARAM R JP","kat":"Garam","sat":"kg","harga":130000,"total":141.0},{"no":184,"nama":"GARAM R H/C","kat":"Garam","sat":"kg","harga":90000,"total":38.0},{"no":185,"nama":"GARAM GG H/C","kat":"Garam","sat":"kg","harga":100000,"total":42.0},{"no":186,"nama":"GARAM GG JP","kat":"Garam","sat":"kg","harga":175000,"total":19.0},{"no":187,"nama":"GARAM GG STD JP","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":188,"nama":"GARAM BORDO GP JP","kat":"Garam","sat":"kg","harga":195000,"total":86.0},{"no":189,"nama":"GARAM BORDO GP BASE","kat":"Garam","sat":"kg","harga":235000,"total":71.0},{"no":190,"nama":"GARAM BORDO GP H/C","kat":"Garam","sat":"kg","harga":90000,"total":99.0},{"no":191,"nama":"GARAM BORDO GP STD JP","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":192,"nama":"GARAM GARNAT GBC","kat":"Garam","sat":"kg","harga":0,"total":95.0},{"no":193,"nama":"GARAM GARNAT GBC SUPER","kat":"Garam","sat":"kg","harga":145000,"total":40.0},{"no":194,"nama":"GARAM RC BASE","kat":"Garam","sat":"kg","harga":145000,"total":277.0},{"no":195,"nama":"GARAM RED 3GL JP","kat":"Garam","sat":"kg","harga":0,"total":0.0},{"no":196,"nama":"GARAM YELLOW GC JP","kat":"Garam","sat":"kg","harga":175000,"total":23.0},{"no":197,"nama":"GARAM ORANGE GC BASE","kat":"Garam","sat":"kg","harga":160000,"total":18.0},{"no":198,"nama":"GARAM ORANGE GC STD JP","kat":"Garam","sat":"kg","harga":155000,"total":10.0},{"no":199,"nama":"GARAM HITAM B INDIA (YUNITA)","kat":"Garam","sat":"kg","harga":250000,"total":44.0},{"no":200,"nama":"GARAM HITAM B JP (MTK)","kat":"Garam","sat":"kg","harga":345000,"total":77.0},{"no":201,"nama":"SOL IJO IB","kat":"Sol","sat":"kg","harga":520000,"total":39.0},{"no":202,"nama":"SOL YELLOW","kat":"Sol","sat":"kg","harga":640000,"total":17.0},{"no":203,"nama":"SOL BLUE","kat":"Sol","sat":"kg","harga":490000,"total":71.0},{"no":204,"nama":"SOL ORANGE HR","kat":"Sol","sat":"kg","harga":860000,"total":5.0},{"no":205,"nama":"SOL VIOLET BL","kat":"Sol","sat":"kg","harga":650000,"total":7.0},{"no":206,"nama":"SOL GREY IBL","kat":"Sol","sat":"kg","harga":450000,"total":15.0},{"no":207,"nama":"SOL BROWN IRRD","kat":"Sol","sat":"kg","harga":490000,"total":11.0},{"no":208,"nama":"SOL PINK IR","kat":"Sol","sat":"kg","harga":860000,"total":4.0},{"no":209,"nama":"SN MERAH","kat":"Campuran","sat":"kg","harga":0,"total":0.0},{"no":210,"nama":"SN KUNING","kat":"Campuran","sat":"kg","harga":15000,"total":2441.0},{"no":211,"nama":"SODIUM NITRITE","kat":"Campuran","sat":"kg","harga":18000,"total":423.0},{"no":212,"nama":"SODIUM SULPHATE","kat":"Campuran","sat":"kg","harga":5000,"total":235.0},{"no":213,"nama":"KAPORITE","kat":"Campuran","sat":"kg","harga":35000,"total":131.0},{"no":214,"nama":"UVITEX CID","kat":"Campuran","sat":"kg","harga":290000,"total":51.0},{"no":215,"nama":"HAKKOL","kat":"Campuran","sat":"kg","harga":0,"total":0.0},{"no":216,"nama":"ACID BLACK ATT","kat":"Campuran","sat":"kg","harga":95000,"total":40.0},{"no":217,"nama":"ACID ORANGE II","kat":"Campuran","sat":"kg","harga":75000,"total":39.0},{"no":218,"nama":"SODA ASH","kat":"Campuran","sat":"kg","harga":11000,"total":403.0},{"no":219,"nama":"CUKA","kat":"Campuran","sat":"kg","harga":27500,"total":470.0},{"no":220,"nama":"KUSTIK SODA","kat":"Campuran","sat":"kg","harga":20000,"total":943.0},{"no":221,"nama":"RAPID MERAH","kat":"Campuran","sat":"kg","harga":145000,"total":77.0},{"no":222,"nama":"HYDROSULPHITE BASF","kat":"Campuran","sat":"kg","harga":68000,"total":54.0},{"no":223,"nama":"HYDROSULPHITE RRT","kat":"Campuran","sat":"kg","harga":33000,"total":763.0},{"no":224,"nama":"RAPID HITAM","kat":"Campuran","sat":"kg","harga":145000,"total":22.0},{"no":225,"nama":"TRO POWDER","kat":"Campuran","sat":"kg","harga":14000,"total":51.0},{"no":226,"nama":"MANOTEX","kat":"Campuran","sat":"kg","harga":90000,"total":174.0},{"no":227,"nama":"PERSOFTAL FLAKE","kat":"Campuran","sat":"kg","harga":90000,"total":155.0},{"no":228,"nama":"SOGA 91","kat":"Campuran","sat":"kg","harga":360000,"total":28.0},{"no":229,"nama":"SUPER GLOW","kat":"Campuran","sat":"kg","harga":0,"total":10.0},{"no":230,"nama":"KENFIX","kat":"Campuran","sat":"kg","harga":25000,"total":260.0},{"no":231,"nama":"SODA KUE","kat":"Campuran","sat":"kg","harga":11000,"total":794.0},{"no":232,"nama":"TUNJUNG","kat":"Campuran","sat":"kg","harga":10000,"total":84.0},{"no":233,"nama":"GUN 30","kat":"Campuran","sat":"pcs","harga":160,"total":55.0},{"no":234,"nama":"GUN 26","kat":"Campuran","sat":"pcs","harga":160,"total":462.5},{"no":235,"nama":"TEROPONG","kat":"Campuran","sat":"pcs","harga":95000,"total":350.0},{"no":236,"nama":"RELL GUN 140 CM","kat":"Campuran","sat":"pcs","harga":15000,"total":57.0},{"no":237,"nama":"RELL GUN 150 CM (BEKAS)","kat":"Campuran","sat":"pcs","harga":11000,"total":123.0},{"no":238,"nama":"RELL GUN 190 CM","kat":"Campuran","sat":"pcs","harga":19000,"total":56.0},{"no":239,"nama":"KARET TANGAN ENGGAL","kat":"Campuran","sat":"pcs","harga":25000,"total":109.0},{"no":240,"nama":"GLOVE B45 BLACK MTK","kat":"Campuran","sat":"pcs","harga":42500,"total":698.0},{"no":241,"nama":"GLOVE K1 WHITE MTK","kat":"Campuran","sat":"pcs","harga":12500,"total":120.0},{"no":242,"nama":"SILICON EMULSION","kat":"Campuran","sat":"kg","harga":0,"total":62.0},{"no":243,"nama":"WHITENING CN","kat":"Campuran","sat":"kg","harga":0,"total":30.0},{"no":244,"nama":"DISPERSING AGENT MF","kat":"Campuran","sat":"kg","harga":0,"total":150.0},{"no":245,"nama":"DISPERSING AGENT NNO","kat":"Campuran","sat":"kg","harga":0,"total":0.0},{"no":246,"nama":"TAWAS","kat":"Campuran","sat":"kg","harga":0,"total":54.0},{"no":247,"nama":"WATERGLASS / WATER GLASS","kat":"Sablon/Campuran","sat":"kg","harga":9000,"total":760.0},{"no":248,"nama":"CALATAC / APPRETAN EM","kat":"Sablon/Campuran","sat":"kg","harga":70000,"total":171.0},{"no":249,"nama":"BORDO FR","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":250,"nama":"PINK SP","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":251,"nama":"NEGROSIN","kat":"Sablon/Campuran","sat":"kg","harga":125000,"total":76.0},{"no":252,"nama":"ORANGE TGR","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":30.0},{"no":253,"nama":"GREEN L5G","kat":"Sablon/Campuran","sat":"kg","harga":170000,"total":10.0},{"no":254,"nama":"YELLOW GSN","kat":"Sablon/Campuran","sat":"kg","harga":95000,"total":245.0},{"no":255,"nama":"BINDER MTB / HELICRON B","kat":"Sablon/Campuran","sat":"kg","harga":45000,"total":60.0},{"no":256,"nama":"SANDOFIX","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":257,"nama":"VIOLET BL","kat":"Sablon/Campuran","sat":"kg","harga":250000,"total":6.0},{"no":258,"nama":"SUPER WHITE IG","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":259,"nama":"BLUE SIN","kat":"Sablon/Campuran","sat":"kg","harga":175000,"total":13.0},{"no":260,"nama":"VIOLET SIN","kat":"Sablon/Campuran","sat":"kg","harga":335000,"total":16.0},{"no":261,"nama":"PINK SIN","kat":"Sablon/Campuran","sat":"kg","harga":180000,"total":20.0},{"no":262,"nama":"ORANGE SIN","kat":"Sablon/Campuran","sat":"kg","harga":175000,"total":16.0},{"no":263,"nama":"GREEN SIN","kat":"Sablon/Campuran","sat":"kg","harga":200000,"total":25.0},{"no":264,"nama":"LEMON SIN","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":265,"nama":"YELLOW SIN","kat":"Sablon/Campuran","sat":"kg","harga":180000,"total":155.0},{"no":266,"nama":"PIKER BAGUS","kat":"Sablon/Campuran","sat":"pcs","harga":80000,"total":249.0},{"no":267,"nama":"PIKER TIDAK BAGUS","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":100.0},{"no":268,"nama":"LADY GUESS / RULO","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":269,"nama":"CANTING NO. 0","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":85.0},{"no":270,"nama":"CANTING NO. 1","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":67.0},{"no":271,"nama":"CANTING NO. 2","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":0.0},{"no":272,"nama":"CANTING NO. 3","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":88.0},{"no":273,"nama":"CANTING NO. 4","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":108.0},{"no":274,"nama":"CANTING NO. 5","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":76.0},{"no":275,"nama":"CANTING NO. 6","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":97.0},{"no":276,"nama":"CANTING NO. 7","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":33.0},{"no":277,"nama":"CANTING NO. 8","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":16.0},{"no":278,"nama":"CANTING LUBANG 2","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},{"no":279,"nama":"CANTING LUBANG 3","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},{"no":280,"nama":"TALI PUYUH","kat":"Sablon/Campuran","sat":"pcs","harga":400000,"total":80.0},{"no":281,"nama":"PALET KAYU","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},{"no":282,"nama":"PALET KERTAS","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},{"no":283,"nama":"KLOSAN","kat":"Sablon/Campuran","sat":"pcs","harga":2000,"total":1535.0},{"no":284,"nama":"CARIER","kat":"Sablon/Campuran","sat":"pcs","harga":50000,"total":10.0},{"no":285,"nama":"PRIMA LEVEL","kat":"Sablon/Campuran","sat":"pcs","harga":30000,"total":0.0},{"no":286,"nama":"LEAVANT","kat":"Sablon/Campuran","sat":"kg","harga":22500,"total":50.0},{"no":287,"nama":"SCOT RUBINE","kat":"Sablon/Campuran","sat":"kg","harga":130000,"total":11.0},{"no":288,"nama":"RED FFG","kat":"Sablon/Campuran","sat":"kg","harga":155000,"total":10.0},{"no":289,"nama":"BROWN RR","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":290,"nama":"NAVY BLUE SABLON","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":291,"nama":"EVOSOFT","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},{"no":292,"nama":"SISIR 52","kat":"Sablon/Campuran","sat":"pcs","harga":255000,"total":31.0},{"no":293,"nama":"SISIR 60","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},{"no":294,"nama":"SISIR 70","kat":"Sablon/Campuran","sat":"pcs","harga":240000,"total":2.0},{"no":295,"nama":"SISIR 80 140 CM","kat":"Sablon/Campuran","sat":"pcs","harga":240000,"total":21.0},{"no":296,"nama":"SISIR 80 160 CM","kat":"Sablon/Campuran","sat":"pcs","harga":255000,"total":1.0},{"no":297,"nama":"SISIR 90 140 CM","kat":"Sablon/Campuran","sat":"pcs","harga":240000,"total":7.0},{"no":298,"nama":"EMULSIFIER","kat":"Sablon/Campuran","sat":"kg","harga":45000,"total":18.0},{"no":299,"nama":"BLACK K SABLON","kat":"Sablon/Campuran","sat":"kg","harga":65000,"total":21.0},{"no":300,"nama":"YELLOW IR SABLON","kat":"Sablon/Campuran","sat":"kg","harga":100000,"total":21.0},{"no":301,"nama":"BLUE FBL SABLON","kat":"Sablon/Campuran","sat":"kg","harga":160000,"total":25.0},{"no":302,"nama":"GREEN LXB SABLON","kat":"Sablon/Campuran","sat":"kg","harga":145000,"total":20.0},{"no":303,"nama":"RED KG3R SABLON","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0}];
+const MASTER = [
+  // ===== Naphtol =====
+  {"no":1,"nama":"NAPHTOL ASBS","kat":"Naphtol","sat":"kg","harga":205000,"total":183.0},
+  {"no":2,"nama":"ASG DIAL","kat":"Naphtol","sat":"kg","harga":150000,"total":355.0},
+  {"no":3,"nama":"ASG SHANGHAI","kat":"Naphtol","sat":"kg","harga":275000,"total":455.0},
+  {"no":4,"nama":"AS","kat":"Naphtol","sat":"kg","harga":140000,"total":67.0},
+  {"no":5,"nama":"ASOL","kat":"Naphtol","sat":"kg","harga":155000,"total":114.0},
+  {"no":6,"nama":"ASD","kat":"Naphtol","sat":"kg","harga":140000,"total":205.0},
+  {"no":7,"nama":"ASBR","kat":"Naphtol","sat":"kg","harga":150000,"total":10.0},
+  {"no":8,"nama":"ASLB","kat":"Naphtol","sat":"kg","harga":950000,"total":7.0},
+  {"no":9,"nama":"ASBO PUTIH","kat":"Naphtol","sat":"kg","harga":150000,"total":91.0},
+  {"no":10,"nama":"ASBO 80% INDIA","kat":"Naphtol","sat":"kg","harga":160000,"total":80.0},
+  {"no":11,"nama":"ASBO 100% INDIA","kat":"Naphtol","sat":"kg","harga":200000,"total":122.0},
+  {"no":12,"nama":"ASBO 100% RRT","kat":"Naphtol","sat":"kg","harga":200000,"total":186.0},
+  {"no":13,"nama":"ASBO HC INDIA","kat":"Naphtol","sat":"kg","harga":165000,"total":30.0},
+  {"no":14,"nama":"ASBO 80% TONGLI","kat":"Naphtol","sat":"kg","harga":160000,"total":719.0},
+
+  // ===== Reactive/Remazol =====
+  {"no":15,"nama":"REACTIVE YELLOW M4R","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":176.0},
+  {"no":16,"nama":"REACTIVE YELLOW M4G","kat":"Reactive/Remazol","sat":"kg","harga":95000,"total":69.0},
+  {"no":17,"nama":"REACTIVE YELLOW M8G","kat":"Reactive/Remazol","sat":"kg","harga":110000,"total":142.0},
+  {"no":18,"nama":"REACTIVE YELLOW FG 100%","kat":"Reactive/Remazol","sat":"kg","harga":85000,"total":211.0},
+  {"no":19,"nama":"REACTIVE GOLD YELLOW RNL","kat":"Reactive/Remazol","sat":"kg","harga":130000,"total":137.0},
+  {"no":20,"nama":"REACTIVE YELLOW HD8G","kat":"Reactive/Remazol","sat":"kg","harga":95000,"total":470.0},
+  {"no":21,"nama":"REACTIVE YELLOW HE-4R","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":95.0},
+  {"no":22,"nama":"REACTIVE YELLOW HE-4G","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":270.0},
+  {"no":23,"nama":"REACTIVE BLUE M2R H/C SUPRA","kat":"Reactive/Remazol","sat":"kg","harga":165000,"total":80.0},
+  {"no":24,"nama":"REACTIVE BLUE M2R HA","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":48.0},
+  {"no":25,"nama":"REACTIVE BLUE HE-GN","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":5.0},
+  {"no":26,"nama":"REACTIVE BRILL BLUE R SPEC","kat":"Reactive/Remazol","sat":"kg","harga":425000,"total":144.0},
+  {"no":27,"nama":"REACTIVE TURKIS BLUE","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":51.0},
+  {"no":28,"nama":"REACTIVE NAVY BLUE HER","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":72.0},
+  {"no":29,"nama":"REACTIVE BROWN RB","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},
+  {"no":30,"nama":"REACTIVE BROWN GR","kat":"Reactive/Remazol","sat":"kg","harga":115000,"total":187.0},
+  {"no":31,"nama":"REACTIVE RED RB","kat":"Reactive/Remazol","sat":"kg","harga":185000,"total":33.0},
+  {"no":32,"nama":"REACTIVE RED K2BP","kat":"Reactive/Remazol","sat":"kg","harga":125000,"total":113.0},
+  {"no":33,"nama":"REACTIVE RED M5B","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":68.0},
+  {"no":34,"nama":"REACTIVE RED M8B","kat":"Reactive/Remazol","sat":"kg","harga":110000,"total":50.0},
+  {"no":35,"nama":"REACTIVE RED HE-3B","kat":"Reactive/Remazol","sat":"kg","harga":130000,"total":39.0},
+  {"no":36,"nama":"REACTIVE RED HE-7B","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":5.0},
+  {"no":37,"nama":"REACTIVE MAGENTA","kat":"Reactive/Remazol","sat":"kg","harga":100000,"total":14.0},
+  {"no":38,"nama":"REACTIVE BRILL VIOLET 5R","kat":"Reactive/Remazol","sat":"kg","harga":135000,"total":165.0},
+  {"no":39,"nama":"REACTIVE ORANGE HER","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":138.0},
+  {"no":40,"nama":"REACTIVE ORANGE M2R","kat":"Reactive/Remazol","sat":"kg","harga":120000,"total":326.0},
+  {"no":41,"nama":"REACTIVE ORANGE 3R","kat":"Reactive/Remazol","sat":"kg","harga":300000,"total":11.0},
+  {"no":42,"nama":"REACTIVE BLACK B","kat":"Reactive/Remazol","sat":"kg","harga":110000,"total":61.0},
+  {"no":43,"nama":"REACTIVE BLACK KWNN","kat":"Reactive/Remazol","sat":"kg","harga":105000,"total":66.0},
+  {"no":44,"nama":"REACTIVE BLACK HF-GR","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},
+  {"no":45,"nama":"REACTIVE BLACK HD","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},
+  {"no":46,"nama":"REACTIVE GREEN HE-4BD","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":21.0},
+  {"no":47,"nama":"SYNOSOL ULTRA BLACK DR","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":0.0},
+  {"no":48,"nama":"POLKATIVE BLUE PX-2R","kat":"Reactive/Remazol","sat":"kg","harga":145000,"total":0.0},
+  {"no":49,"nama":"POLKATIVE VIOLET 2-BNH","kat":"Reactive/Remazol","sat":"kg","harga":155000,"total":17.0},
+  {"no":50,"nama":"REMAZOL GOLD YELLOW RNL","kat":"Reactive/Remazol","sat":"kg","harga":170000,"total":32.0},
+  {"no":51,"nama":"REMAZOL YELLOW FG (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":185000,"total":41.0},
+  {"no":52,"nama":"REMAZOL RED RB (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":185000,"total":37.0},
+  {"no":53,"nama":"REMAZOL TURKIS BLUE (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":145000,"total":100.0},
+  {"no":54,"nama":"REMAZOL DEEP BLACK N","kat":"Reactive/Remazol","sat":"kg","harga":170000,"total":47.0},
+  {"no":55,"nama":"POLKATIVE BROWN 3RD","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":25.0},
+  {"no":56,"nama":"REACTIVE RED X3B","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":9.0},
+  {"no":57,"nama":"REMAZOL YELLOW GL","kat":"Reactive/Remazol","sat":"kg","harga":0,"total":4.0},
+  {"no":58,"nama":"REMAZOL BLACK B (DYSTAR)","kat":"Reactive/Remazol","sat":"kg","harga":150000,"total":77.0},
+
+  // ===== Disperse =====
+  {"no":59,"nama":"DISPERSE YELLOW 4GN (Y211)","kat":"Disperse","sat":"kg","harga":0,"total":75.0},
+  {"no":60,"nama":"BLUE E2BLN (BLUE 56)","kat":"Disperse","sat":"kg","harga":250000,"total":123.0},
+  {"no":61,"nama":"DARK BLUE 3RN (BLUE 148)","kat":"Disperse","sat":"kg","harga":200000,"total":147.0},
+  {"no":62,"nama":"BLUE SE-BR (BLUE 183)","kat":"Disperse","sat":"kg","harga":250000,"total":0.0},
+  {"no":63,"nama":"BRILL TURKIS BLUE SBG","kat":"Disperse","sat":"kg","harga":0,"total":15.0},
+  {"no":64,"nama":"NAVY BLUE SE-RF 400%","kat":"Disperse","sat":"kg","harga":125000,"total":179.0},
+  {"no":65,"nama":"NAVY BLUE S-2GL (BLUE 79)","kat":"Disperse","sat":"kg","harga":0,"total":7.0},
+  {"no":66,"nama":"RED FBB (RED 60)","kat":"Disperse","sat":"kg","harga":275000,"total":75.0},
+  {"no":67,"nama":"RED FTS","kat":"Disperse","sat":"kg","harga":0,"total":0.0},
+  {"no":68,"nama":"RUBINE RD-FLN (RED 73)","kat":"Disperse","sat":"kg","harga":190000,"total":49.0},
+  {"no":69,"nama":"RUBINE 2GFL","kat":"Disperse","sat":"kg","harga":0,"total":18.0},
+  {"no":70,"nama":"VIOLET S3R (VIOLET 63)","kat":"Disperse","sat":"kg","harga":200000,"total":43.0},
+  {"no":71,"nama":"SCARLET BRN","kat":"Disperse","sat":"kg","harga":140000,"total":0.0},
+  {"no":72,"nama":"YELLOW 5SGN","kat":"Disperse","sat":"kg","harga":0,"total":0.0},
+  {"no":73,"nama":"YELLOW BROWN GLH","kat":"Disperse","sat":"kg","harga":150000,"total":23.0},
+  {"no":74,"nama":"BLACK EX-SF","kat":"Disperse","sat":"kg","harga":110000,"total":242.0},
+  {"no":75,"nama":"YELLOW 3GE (YELLOW 54)","kat":"Disperse","sat":"kg","harga":150000,"total":0.0},
+  {"no":76,"nama":"BROWN 3RL","kat":"Disperse","sat":"kg","harga":140000,"total":0.0},
+
+  // ===== Sulphur =====
+  {"no":77,"nama":"SULPHUR BRILL YELLOW","kat":"Sulphur","sat":"kg","harga":75000,"total":112.0},
+  {"no":78,"nama":"SULPHUR DARK GREEN","kat":"Sulphur","sat":"kg","harga":90000,"total":472.0},
+  {"no":79,"nama":"SULPHUR LIGHT GREEN","kat":"Sulphur","sat":"kg","harga":150000,"total":92.0},
+  {"no":80,"nama":"SULPHUR BORDO 3B","kat":"Sulphur","sat":"kg","harga":105000,"total":363.0},
+  {"no":81,"nama":"SULPHUR BLUE BRN","kat":"Sulphur","sat":"kg","harga":110000,"total":113.0},
+  {"no":82,"nama":"SULPHUR BROWN GDR","kat":"Sulphur","sat":"kg","harga":65000,"total":555.0},
+  {"no":83,"nama":"SULPHUR BROWN MR","kat":"Sulphur","sat":"kg","harga":115000,"total":122.0},
+  {"no":84,"nama":"SULPHUR YELLOW BROWN 5G","kat":"Sulphur","sat":"kg","harga":65000,"total":415.0},
+  {"no":85,"nama":"SULPHUR OLIVE 2200","kat":"Sulphur","sat":"kg","harga":0,"total":0.0},
+  {"no":86,"nama":"SULPHUR OLIVE GREEN G","kat":"Sulphur","sat":"kg","harga":70000,"total":45.0},
+  {"no":87,"nama":"SULPHUR BLACK B 300% (T)","kat":"Sulphur","sat":"kg","harga":25000,"total":550.0},
+  {"no":88,"nama":"SULPHUR BLACK B 200% (IC)","kat":"Sulphur","sat":"kg","harga":44000,"total":1312.0},
+  {"no":89,"nama":"SULPHUR BLACK B 200% SUPER A","kat":"Sulphur","sat":"kg","harga":58000,"total":167.0},
+  {"no":90,"nama":"SULPHUR BLACK B 200% (MTK)B","kat":"Sulphur","sat":"kg","harga":0,"total":0.0},
+  {"no":91,"nama":"SULPHUR YELLOW GC","kat":"Sulphur","sat":"kg","harga":65000,"total":20.0},
+  {"no":92,"nama":"SULPHUR BROWN M6R","kat":"Sulphur","sat":"kg","harga":105000,"total":12.0},
+  {"no":93,"nama":"SULPHUR BROWN FGR","kat":"Sulphur","sat":"kg","harga":105000,"total":13.0},
+
+  // ===== Vat/Indanthren =====
+  {"no":94,"nama":"INDANTHREN GREY M","kat":"Vat/Indanthren","sat":"kg","harga":320000,"total":14.0},
+  {"no":95,"nama":"GOLD ORANGE G","kat":"Vat/Indanthren","sat":"kg","harga":600000,"total":15.0},
+  {"no":96,"nama":"BLACK MD","kat":"Vat/Indanthren","sat":"kg","harga":375000,"total":18.0},
+  {"no":97,"nama":"OLIVE T","kat":"Vat/Indanthren","sat":"kg","harga":210000,"total":45.0},
+  {"no":98,"nama":"PINK RS","kat":"Vat/Indanthren","sat":"kg","harga":525000,"total":8.0},
+  {"no":99,"nama":"DARK BLUE BOA","kat":"Vat/Indanthren","sat":"kg","harga":290000,"total":64.0},
+  {"no":100,"nama":"OLIVE GREEN B","kat":"Vat/Indanthren","sat":"kg","harga":300000,"total":95.0},
+  {"no":101,"nama":"GREEN B / FFB","kat":"Vat/Indanthren","sat":"kg","harga":425000,"total":139.0},
+  {"no":102,"nama":"GREEN XBN (YUNITA)","kat":"Vat/Indanthren","sat":"kg","harga":455000,"total":89.0},
+  {"no":103,"nama":"GREEN XBN H/C GRANIS","kat":"Vat/Indanthren","sat":"kg","harga":350000,"total":30.0},
+  {"no":104,"nama":"BROWN BR (YUNITA)","kat":"Vat/Indanthren","sat":"kg","harga":370000,"total":53.0},
+  {"no":105,"nama":"BROWN BR (MTK)","kat":"Vat/Indanthren","sat":"kg","harga":500000,"total":56.0},
+  {"no":106,"nama":"BLUE RSN (MTK)","kat":"Vat/Indanthren","sat":"kg","harga":430000,"total":142.0},
+  {"no":107,"nama":"BLUE RSN GRANIS","kat":"Vat/Indanthren","sat":"kg","harga":350000,"total":80.0},
+  {"no":108,"nama":"BLUE RSN Y","kat":"Vat/Indanthren","sat":"kg","harga":190000,"total":42.0},
+  {"no":109,"nama":"BLUE RSN 200%","kat":"Vat/Indanthren","sat":"kg","harga":350000,"total":62.0},
+  {"no":110,"nama":"YELLOW GCN (MTK)","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":20.0},
+  {"no":111,"nama":"YELLOW GCN 130%","kat":"Vat/Indanthren","sat":"kg","harga":290000,"total":94.0},
+  {"no":112,"nama":"VIOLET RR 100%","kat":"Vat/Indanthren","sat":"kg","harga":250000,"total":0.0},
+  {"no":113,"nama":"VIOLET 200% (Y)","kat":"Vat/Indanthren","sat":"kg","harga":440000,"total":36.0},
+  {"no":114,"nama":"VIOLET RR 150%","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":8.0},
+  {"no":115,"nama":"VIOLET RR (MTK) 2","kat":"Vat/Indanthren","sat":"kg","harga":580000,"total":108.0},
+  {"no":116,"nama":"RED R","kat":"Vat/Indanthren","sat":"kg","harga":520000,"total":21.0},
+  {"no":117,"nama":"INDIGO BLUE","kat":"Vat/Indanthren","sat":"kg","harga":340000,"total":18.0},
+  {"no":118,"nama":"BROWN BR (WI)","kat":"Vat/Indanthren","sat":"kg","harga":260000,"total":74.0},
+  {"no":119,"nama":"BROWN BR (HA)","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":20.0},
+  {"no":501,"nama":"BLUE RSN 130%","kat":"Vat/Indanthren","sat":"kg","harga":0,"total":55.0},
+  {"no":502,"nama":"YELLOW GCN 200%","kat":"Vat/Indanthren","sat":"kg","harga":480000,"total":118.0},
+
+  // ===== Basis =====
+  {"no":120,"nama":"BASIS METHELENE BLUE","kat":"Basis","sat":"kg","harga":260000,"total":120.0},
+  {"no":121,"nama":"MAGENTA PUDER","kat":"Basis","sat":"kg","harga":235000,"total":173.0},
+  {"no":122,"nama":"MALACHITE GREEN","kat":"Basis","sat":"kg","harga":180000,"total":140.0},
+  {"no":123,"nama":"BRILL GREEN CRYSTAL","kat":"Basis","sat":"kg","harga":330000,"total":153.0},
+  {"no":124,"nama":"AURAMINE INDIA","kat":"Basis","sat":"kg","harga":0,"total":0.0},
+  {"no":125,"nama":"AURAMINE RRT","kat":"Basis","sat":"kg","harga":95000,"total":189.0},
+  {"no":126,"nama":"AURAMINE JERMAN","kat":"Basis","sat":"kg","harga":130000,"total":193.0},
+  {"no":127,"nama":"RODHAMINE","kat":"Basis","sat":"kg","harga":240000,"total":231.0},
+  {"no":128,"nama":"BISMARK BROWN","kat":"Basis","sat":"kg","harga":105000,"total":32.0},
+  {"no":503,"nama":"METYL VIOLET PUDER","kat":"Basis","sat":"kg","harga":195000,"total":120.0},
+
+  // ===== Direct =====
+  {"no":129,"nama":"DIRECT BROWN M INDIA","kat":"Direct","sat":"kg","harga":130000,"total":164.0},
+  {"no":130,"nama":"BROWN M RRT","kat":"Direct","sat":"kg","harga":85000,"total":93.0},
+  {"no":131,"nama":"BROWN MN RRT","kat":"Direct","sat":"kg","harga":0,"total":0.0},
+  {"no":132,"nama":"BROWN MM 125%","kat":"Direct","sat":"kg","harga":80000,"total":3.0},
+  {"no":133,"nama":"BROWN GG","kat":"Direct","sat":"kg","harga":70000,"total":57.0},
+  {"no":134,"nama":"CONGGO RED (YUNITA)","kat":"Direct","sat":"kg","harga":0,"total":500.0},
+  {"no":135,"nama":"CONGGO RED (WI)","kat":"Direct","sat":"kg","harga":75000,"total":252.0},
+  {"no":136,"nama":"CONGGO RED (MTK)","kat":"Direct","sat":"kg","harga":0,"total":0.0},
+  {"no":137,"nama":"COPPER BLUE","kat":"Direct","sat":"kg","harga":100000,"total":229.0},
+  {"no":138,"nama":"IJO MUDA GCN","kat":"Direct","sat":"kg","harga":80000,"total":33.0},
+  {"no":139,"nama":"SCARLET 4BS","kat":"Direct","sat":"kg","harga":85000,"total":102.0},
+  {"no":140,"nama":"SKY BLUE","kat":"Direct","sat":"kg","harga":85000,"total":37.0},
+  {"no":141,"nama":"RED 12 B","kat":"Direct","sat":"kg","harga":75000,"total":12.0},
+  {"no":142,"nama":"KUNING MAS / GOLD GXA","kat":"Direct","sat":"kg","harga":50000,"total":128.0},
+  {"no":143,"nama":"DIRECT CHRYSHOPENIN G 100%","kat":"Direct","sat":"kg","harga":110000,"total":211.0},
+  {"no":144,"nama":"DIRECT CHRYSHOPENIN G 80%","kat":"Direct","sat":"kg","harga":0,"total":0.0},
+  {"no":145,"nama":"KUNING G H/C (MTK)","kat":"Direct","sat":"kg","harga":180000,"total":72.0},
+  {"no":146,"nama":"BLACK G","kat":"Direct","sat":"kg","harga":75000,"total":5.0},
+  {"no":147,"nama":"BLACK EX 170%","kat":"Direct","sat":"kg","harga":75000,"total":118.0},
+  {"no":148,"nama":"BLACK EX 200%","kat":"Direct","sat":"kg","harga":100000,"total":472.0},
+  {"no":149,"nama":"BLACK EX 300%","kat":"Direct","sat":"kg","harga":110000,"total":72.0},
+  {"no":150,"nama":"BLACK VSF","kat":"Direct","sat":"kg","harga":65000,"total":0.0},
+  {"no":151,"nama":"ORANGE S","kat":"Direct","sat":"kg","harga":95000,"total":111.0},
+  {"no":152,"nama":"GREY VGR","kat":"Direct","sat":"kg","harga":90000,"total":45.0},
+  {"no":153,"nama":"BORDO B RRT","kat":"Direct","sat":"kg","harga":90000,"total":39.0},
+  {"no":154,"nama":"VIOLET 5BL","kat":"Direct","sat":"kg","harga":105000,"total":66.0},
+  {"no":155,"nama":"BLUE 2B","kat":"Direct","sat":"kg","harga":80000,"total":37.0},
+  {"no":156,"nama":"IJO B /DARK GREEN B","kat":"Direct","sat":"kg","harga":87500,"total":473.0},
+  {"no":157,"nama":"TURQIS BLUE (WI)","kat":"Direct","sat":"kg","harga":65000,"total":175.0},
+  {"no":158,"nama":"TURKIS BLUE (MTK)","kat":"Direct","sat":"kg","harga":0,"total":450.0},
+  {"no":159,"nama":"PINK","kat":"Direct","sat":"kg","harga":70000,"total":75.0},
+
+  // ===== Garam =====
+  {"no":160,"nama":"GARAM BIRU B 27% LUTA","kat":"Garam","sat":"kg","harga":97500,"total":2327.0},
+  {"no":161,"nama":"GARAM BIRU B 27% WARIN","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":162,"nama":"GARAM BIRU B WI (MTK)","kat":"Garam","sat":"kg","harga":0,"total":25.0},
+  {"no":163,"nama":"GARAM BIRU B H/C","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":164,"nama":"GARAM BIRU B JP INDIA","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":165,"nama":"GARAM BIRU B JP","kat":"Garam","sat":"kg","harga":150000,"total":107.0},
+  {"no":166,"nama":"GARAM BIRU B GOLD","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":167,"nama":"GARAM BIRU BB JP","kat":"Garam","sat":"kg","harga":560000,"total":14.0},
+  {"no":168,"nama":"GARAM BIRU B BASE","kat":"Garam","sat":"kg","harga":175000,"total":105.0},
+  {"no":169,"nama":"GARAM MERAH B BASE","kat":"Garam","sat":"kg","harga":140000,"total":69.0},
+  {"no":170,"nama":"GARAM MERAH B 15%","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":171,"nama":"GARAM MERAH B 27% LUTA","kat":"Garam","sat":"kg","harga":105000,"total":2065.0},
+  {"no":172,"nama":"GARAM MERAH B 27% WARIN","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":173,"nama":"GARAM MERAH B WI (MTK)","kat":"Garam","sat":"kg","harga":0,"total":250.0},
+  {"no":174,"nama":"GARAM MERAH B H/C","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":175,"nama":"GARAM MERAH B JP","kat":"Garam","sat":"kg","harga":155000,"total":158.0},
+  {"no":176,"nama":"GARAM MERAH B GOLD","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":177,"nama":"GARAM MERAH B JP INDIA","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":178,"nama":"GARAM R 15%","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":179,"nama":"GARAM R 27% LUTA","kat":"Garam","sat":"kg","harga":75000,"total":1600.0},
+  {"no":180,"nama":"GARAM R 27% WARIN","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":181,"nama":"GARAM R 27% WI (MTK)","kat":"Garam","sat":"kg","harga":0,"total":209.0},
+  {"no":182,"nama":"GARAM R JP INDIA","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":183,"nama":"GARAM R JP","kat":"Garam","sat":"kg","harga":130000,"total":141.0},
+  {"no":184,"nama":"GARAM R H/C","kat":"Garam","sat":"kg","harga":90000,"total":38.0},
+  {"no":185,"nama":"GARAM GG H/C","kat":"Garam","sat":"kg","harga":100000,"total":42.0},
+  {"no":186,"nama":"GARAM GG JP","kat":"Garam","sat":"kg","harga":175000,"total":19.0},
+  {"no":187,"nama":"GARAM GG STD JP","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":188,"nama":"GARAM BORDO GP JP","kat":"Garam","sat":"kg","harga":195000,"total":86.0},
+  {"no":189,"nama":"GARAM BORDO GP BASE","kat":"Garam","sat":"kg","harga":235000,"total":71.0},
+  {"no":190,"nama":"GARAM BORDO GP H/C","kat":"Garam","sat":"kg","harga":90000,"total":99.0},
+  {"no":191,"nama":"GARAM BORDO GP STD JP","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":192,"nama":"GARAM GARNAT GBC","kat":"Garam","sat":"kg","harga":0,"total":95.0},
+  {"no":193,"nama":"GARAM GARNAT GBC SUPER","kat":"Garam","sat":"kg","harga":145000,"total":40.0},
+  {"no":194,"nama":"GARAM RC BASE","kat":"Garam","sat":"kg","harga":145000,"total":277.0},
+  {"no":195,"nama":"GARAM RED 3GL JP","kat":"Garam","sat":"kg","harga":0,"total":0.0},
+  {"no":196,"nama":"GARAM YELLOW GC JP","kat":"Garam","sat":"kg","harga":175000,"total":23.0},
+  {"no":197,"nama":"GARAM ORANGE GC BASE","kat":"Garam","sat":"kg","harga":160000,"total":18.0},
+  {"no":198,"nama":"GARAM ORANGE GC STD JP","kat":"Garam","sat":"kg","harga":155000,"total":10.0},
+  {"no":199,"nama":"GARAM HITAM B INDIA (YUNITA)","kat":"Garam","sat":"kg","harga":250000,"total":44.0},
+  {"no":200,"nama":"GARAM HITAM B JP (MTK)","kat":"Garam","sat":"kg","harga":345000,"total":77.0},
+
+  // ===== Sol =====
+  {"no":201,"nama":"SOL IJO IB","kat":"Sol","sat":"kg","harga":520000,"total":39.0},
+  {"no":202,"nama":"SOL YELLOW","kat":"Sol","sat":"kg","harga":640000,"total":17.0},
+  {"no":203,"nama":"SOL BLUE","kat":"Sol","sat":"kg","harga":490000,"total":71.0},
+  {"no":204,"nama":"SOL ORANGE HR","kat":"Sol","sat":"kg","harga":860000,"total":5.0},
+  {"no":205,"nama":"SOL VIOLET BL","kat":"Sol","sat":"kg","harga":650000,"total":7.0},
+  {"no":206,"nama":"SOL GREY IBL","kat":"Sol","sat":"kg","harga":450000,"total":15.0},
+  {"no":207,"nama":"SOL BROWN IRRD","kat":"Sol","sat":"kg","harga":490000,"total":11.0},
+  {"no":208,"nama":"SOL PINK IR","kat":"Sol","sat":"kg","harga":860000,"total":4.0},
+
+  // ===== Campuran =====
+  {"no":209,"nama":"SN MERAH","kat":"Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":210,"nama":"SN KUNING","kat":"Campuran","sat":"kg","harga":15000,"total":2441.0},
+  {"no":211,"nama":"SODIUM NITRITE","kat":"Campuran","sat":"kg","harga":18000,"total":423.0},
+  {"no":212,"nama":"SODIUM SULPHATE","kat":"Campuran","sat":"kg","harga":5000,"total":235.0},
+  {"no":213,"nama":"KAPORITE","kat":"Campuran","sat":"kg","harga":35000,"total":131.0},
+  {"no":214,"nama":"UVITEX CID","kat":"Campuran","sat":"kg","harga":290000,"total":51.0},
+  {"no":215,"nama":"HAKKOL","kat":"Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":216,"nama":"ACID BLACK ATT","kat":"Campuran","sat":"kg","harga":95000,"total":40.0},
+  {"no":217,"nama":"ACID ORANGE II","kat":"Campuran","sat":"kg","harga":75000,"total":39.0},
+  {"no":218,"nama":"SODA ASH","kat":"Campuran","sat":"kg","harga":11000,"total":403.0},
+  {"no":219,"nama":"CUKA","kat":"Campuran","sat":"kg","harga":27500,"total":470.0},
+  {"no":220,"nama":"KUSTIK SODA","kat":"Campuran","sat":"kg","harga":20000,"total":943.0},
+  {"no":221,"nama":"RAPID MERAH","kat":"Campuran","sat":"kg","harga":145000,"total":77.0},
+  {"no":222,"nama":"HYDROSULPHITE BASF","kat":"Campuran","sat":"kg","harga":68000,"total":54.0},
+  {"no":223,"nama":"HYDROSULPHITE RRT","kat":"Campuran","sat":"kg","harga":33000,"total":763.0},
+  {"no":224,"nama":"RAPID HITAM","kat":"Campuran","sat":"kg","harga":145000,"total":22.0},
+  {"no":225,"nama":"TRO POWDER","kat":"Campuran","sat":"kg","harga":14000,"total":51.0},
+  {"no":226,"nama":"MANOTEX","kat":"Campuran","sat":"kg","harga":90000,"total":174.0},
+  {"no":227,"nama":"PERSOFTAL FLAKE","kat":"Campuran","sat":"kg","harga":90000,"total":155.0},
+  {"no":228,"nama":"SOGA 91","kat":"Campuran","sat":"kg","harga":360000,"total":28.0},
+  {"no":229,"nama":"SUPER GLOW","kat":"Campuran","sat":"kg","harga":0,"total":10.0},
+  {"no":230,"nama":"KENFIX","kat":"Campuran","sat":"kg","harga":25000,"total":260.0},
+  {"no":231,"nama":"SODA KUE","kat":"Campuran","sat":"kg","harga":11000,"total":794.0},
+  {"no":232,"nama":"TUNJUNG","kat":"Campuran","sat":"kg","harga":10000,"total":84.0},
+  {"no":233,"nama":"GUN 30","kat":"Campuran","sat":"pcs","harga":160,"total":55.0},
+  {"no":234,"nama":"GUN 26","kat":"Campuran","sat":"pcs","harga":160,"total":462.5},
+  {"no":235,"nama":"TEROPONG","kat":"Campuran","sat":"pcs","harga":95000,"total":350.0},
+  {"no":236,"nama":"RELL GUN 140 CM","kat":"Campuran","sat":"pcs","harga":15000,"total":57.0},
+  {"no":237,"nama":"RELL GUN 150 CM (BEKAS)","kat":"Campuran","sat":"pcs","harga":11000,"total":123.0},
+  {"no":238,"nama":"RELL GUN 190 CM","kat":"Campuran","sat":"pcs","harga":19000,"total":56.0},
+  {"no":239,"nama":"KARET TANGAN ENGGAL","kat":"Campuran","sat":"pcs","harga":25000,"total":109.0},
+  {"no":240,"nama":"KARET TANGAN THOR","kat":"Campuran","sat":"pcs","harga":42500,"total":698.0},
+  {"no":241,"nama":"GLOVE K1 WHITE MTK","kat":"Campuran","sat":"pcs","harga":12500,"total":120.0},
+  {"no":242,"nama":"SILICON EMULSION","kat":"Campuran","sat":"kg","harga":0,"total":62.0},
+  {"no":243,"nama":"WHITENING CN","kat":"Campuran","sat":"kg","harga":0,"total":30.0},
+  {"no":244,"nama":"DISPERSING AGENT MF","kat":"Campuran","sat":"kg","harga":0,"total":150.0},
+  {"no":245,"nama":"DISPERSING AGENT NNO","kat":"Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":246,"nama":"TAWAS","kat":"Campuran","sat":"kg","harga":0,"total":54.0},
+  {"no":510,"nama":"TEEPOL","kat":"Campuran","sat":"kg","harga":0,"total":500.0},
+  {"no":511,"nama":"JERIGEN","kat":"Campuran","sat":"kg","harga":0,"total":300.0},
+  {"no":512,"nama":"WHITENING AGENT","kat":"Campuran","sat":"kg","harga":0,"total":383.0},
+
+  // ===== Sablon/Campuran =====
+  {"no":247,"nama":"WATERGLASS / WATER GLASS","kat":"Sablon/Campuran","sat":"kg","harga":9000,"total":760.0},
+  {"no":248,"nama":"CALATAC / APPRETAN EM","kat":"Sablon/Campuran","sat":"kg","harga":70000,"total":171.0},
+  {"no":249,"nama":"BORDO FR","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":250,"nama":"PINK SP","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":251,"nama":"NEGROSIN","kat":"Sablon/Campuran","sat":"kg","harga":125000,"total":76.0},
+  {"no":252,"nama":"ORANGE TGR","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":30.0},
+  {"no":253,"nama":"GREEN L5G","kat":"Sablon/Campuran","sat":"kg","harga":170000,"total":10.0},
+  {"no":254,"nama":"YELLOW GSN","kat":"Sablon/Campuran","sat":"kg","harga":95000,"total":245.0},
+  {"no":255,"nama":"BINDER MTB / HELICRON B","kat":"Sablon/Campuran","sat":"kg","harga":45000,"total":60.0},
+  {"no":256,"nama":"SANDOFIX","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":257,"nama":"VIOLET BL","kat":"Sablon/Campuran","sat":"kg","harga":250000,"total":6.0},
+  {"no":258,"nama":"SUPER WHITE IG","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":259,"nama":"BLUE SIN","kat":"Sablon/Campuran","sat":"kg","harga":175000,"total":13.0},
+  {"no":260,"nama":"VIOLET SIN","kat":"Sablon/Campuran","sat":"kg","harga":335000,"total":16.0},
+  {"no":261,"nama":"PINK SIN","kat":"Sablon/Campuran","sat":"kg","harga":180000,"total":20.0},
+  {"no":262,"nama":"ORANGE SIN","kat":"Sablon/Campuran","sat":"kg","harga":175000,"total":16.0},
+  {"no":263,"nama":"GREEN SIN","kat":"Sablon/Campuran","sat":"kg","harga":200000,"total":25.0},
+  {"no":264,"nama":"LEMON SIN","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":265,"nama":"YELLOW SIN","kat":"Sablon/Campuran","sat":"kg","harga":180000,"total":155.0},
+  {"no":266,"nama":"PIKER BAGUS","kat":"Sablon/Campuran","sat":"pcs","harga":80000,"total":249.0},
+  {"no":267,"nama":"PIKER TIDAK BAGUS","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":100.0},
+  {"no":268,"nama":"LADY GUESS / RULO","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":269,"nama":"CANTING NO. 0","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":85.0},
+  {"no":270,"nama":"CANTING NO. 1","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":67.0},
+  {"no":271,"nama":"CANTING NO. 2","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":0.0},
+  {"no":272,"nama":"CANTING NO. 3","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":88.0},
+  {"no":273,"nama":"CANTING NO. 4","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":108.0},
+  {"no":274,"nama":"CANTING NO. 5","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":76.0},
+  {"no":275,"nama":"CANTING NO. 6","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":97.0},
+  {"no":276,"nama":"CANTING NO. 7","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":33.0},
+  {"no":277,"nama":"CANTING NO. 8","kat":"Sablon/Campuran","sat":"pcs","harga":5000,"total":16.0},
+  {"no":278,"nama":"CANTING LUBANG 2","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},
+  {"no":279,"nama":"CANTING LUBANG 3","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},
+  {"no":280,"nama":"TALI PUYUH","kat":"Sablon/Campuran","sat":"pcs","harga":400000,"total":80.0},
+  {"no":281,"nama":"PALET KAYU","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},
+  {"no":282,"nama":"PALET KERTAS","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},
+  {"no":283,"nama":"KLOSAN","kat":"Sablon/Campuran","sat":"pcs","harga":2000,"total":1535.0},
+  {"no":284,"nama":"CARIER","kat":"Sablon/Campuran","sat":"pcs","harga":50000,"total":10.0},
+  {"no":285,"nama":"PRIMA LEVEL","kat":"Sablon/Campuran","sat":"pcs","harga":30000,"total":0.0},
+  {"no":286,"nama":"LEAVANT","kat":"Sablon/Campuran","sat":"kg","harga":22500,"total":50.0},
+  {"no":287,"nama":"SCOT RUBINE","kat":"Sablon/Campuran","sat":"kg","harga":130000,"total":11.0},
+  {"no":288,"nama":"RED FFG","kat":"Sablon/Campuran","sat":"kg","harga":155000,"total":10.0},
+  {"no":289,"nama":"BROWN RR","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":290,"nama":"NAVY BLUE SABLON","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":291,"nama":"EVOSOFT","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},
+  {"no":292,"nama":"SISIR 52","kat":"Sablon/Campuran","sat":"pcs","harga":255000,"total":31.0},
+  {"no":293,"nama":"SISIR 60","kat":"Sablon/Campuran","sat":"pcs","harga":0,"total":0.0},
+  {"no":294,"nama":"SISIR 70","kat":"Sablon/Campuran","sat":"pcs","harga":240000,"total":2.0},
+  {"no":295,"nama":"SISIR 80 140 CM","kat":"Sablon/Campuran","sat":"pcs","harga":240000,"total":21.0},
+  {"no":296,"nama":"SISIR 80 160 CM","kat":"Sablon/Campuran","sat":"pcs","harga":255000,"total":1.0},
+  {"no":297,"nama":"SISIR 90 140 CM","kat":"Sablon/Campuran","sat":"pcs","harga":240000,"total":7.0},
+  {"no":298,"nama":"EMULSIFIER","kat":"Sablon/Campuran","sat":"kg","harga":45000,"total":18.0},
+  {"no":299,"nama":"BLACK K SABLON","kat":"Sablon/Campuran","sat":"kg","harga":65000,"total":21.0},
+  {"no":300,"nama":"YELLOW IR SABLON","kat":"Sablon/Campuran","sat":"kg","harga":100000,"total":21.0},
+  {"no":301,"nama":"BLUE FBL SABLON","kat":"Sablon/Campuran","sat":"kg","harga":160000,"total":25.0},
+  {"no":302,"nama":"GREEN LXB SABLON","kat":"Sablon/Campuran","sat":"kg","harga":145000,"total":20.0},
+  {"no":303,"nama":"RED KG3R SABLON","kat":"Sablon/Campuran","sat":"kg","harga":0,"total":0.0},
+];
 
 // ===================== STATE =====================
 const IDR = v => 'Rp ' + Math.round(v).toLocaleString('id-ID');
@@ -354,7 +683,7 @@ function fuzzyMatch(nama) {
 }
 
 function findBestMatch(namaMaster, namaNota, hargaNota) {
-  // Step 1: cari kandidat dari nama
+  // Step 1: cari kandidat dari nama — catat cara menemukannya
   let kandidat = null;
   let matchType = 'exact';
 
@@ -366,7 +695,7 @@ function findBestMatch(namaMaster, namaNota, hargaNota) {
     matchType = 'fuzzy';
   }
 
-  // Step 2: cari semua calon berdasarkan nama (bukan hanya satu)
+  // Step 2: jika harga nota ada, cek apakah ada master lain yang harganya lebih dekat
   if(hargaNota > 0) {
     const selisihKandidat = kandidat ? Math.abs(kandidat.harga - hargaNota) : Infinity;
     const words = (namaMaster + ' ' + namaNota).toLowerCase()
@@ -376,24 +705,21 @@ function findBestMatch(namaMaster, namaNota, hargaNota) {
       return words.some(w => mn.includes(w));
     });
 
-    // Kumpulkan SEMUA calon yang harganya sangat dekat (< 10%)
-    const calonDekat = calonNama.filter(m => {
-      if(m.harga <= 0) return false;
-      return (Math.abs(m.harga - hargaNota) / hargaNota) < 0.10;
+    let bestHarga = null;
+    let selisihTerkecil = selisihKandidat;
+    calonNama.forEach(m => {
+      if(m.harga <= 0) return;
+      const selisih = Math.abs(m.harga - hargaNota);
+      const pctSelisih = selisih / hargaNota;
+      if(selisih < selisihTerkecil && pctSelisih < 0.10) {
+        selisihTerkecil = selisih;
+        bestHarga = m;
+      }
     });
 
-    if(calonDekat.length > 1) {
-      // AMBIGU: ada >1 produk dengan harga serupa — minta user pilih
+    if(bestHarga) {
       const wasExact = kandidat && matchType === 'exact';
-      return {
-        master: calonDekat[0],
-        matchType: wasExact ? 'harga' : 'fuzzy+harga',
-        ambiguous: true,
-        candidates: calonDekat
-      };
-    } else if(calonDekat.length === 1 && Math.abs(calonDekat[0].harga - hargaNota) < selisihKandidat) {
-      const wasExact = kandidat && matchType === 'exact';
-      return { master: calonDekat[0], matchType: wasExact ? 'harga' : 'fuzzy+harga' };
+      return { master: bestHarga, matchType: wasExact ? 'harga' : 'fuzzy+harga' };
     }
   }
 
@@ -646,13 +972,11 @@ async function extractCurrent() {
       if(harga > 0 && harga < 500) harga = harga * 1000;
 
       // Cari master terbaik: nama cocok + harga nota dipertimbangkan
-      const result = findBestMatch(item.nama_master, item.nama_nota, harga);
-      const m = result.master;
-      const matchType = result.matchType;
+      const { master: m, matchType } = findBestMatch(item.nama_master, item.nama_nota, harga);
 
       // Jika harga masih 0, pakai harga master
       if(harga === 0 && m && m.harga > 0) harga = m.harga;
-      addRow(m?m.nama:item.nama_nota||'', item.qty||'', harga, item.satuan||'kg', item.nama_nota||'', matchType, result.ambiguous ? result.candidates : []);
+      addRow(m?m.nama:item.nama_nota||'', item.qty||'', harga, item.satuan||'kg', item.nama_nota||'', matchType);
     });
 
     btn.className = 'ext-btn success'; icon.textContent = '✔';
@@ -699,11 +1023,11 @@ function goNext() {
 }
 
 // ===================== ROWS =====================
-function addRow(nama='', qty='', harga='', sat='kg', raw='', matchType='', candidates=[]) {
+function addRow(nama='', qty='', harga='', sat='kg', raw='', matchType='') {
   const id = ++rowCounter;
   const m = findMaster(nama);
   const h = harga!=='' ? parseFloat(harga)||0 : (m?m.harga:0);
-  rows.push({id, nama:m?m.nama:nama, qty, harga:h, sat:sat||(m?m.sat:'kg'), raw, matchType, candidates});
+  rows.push({id, nama:m?m.nama:nama, qty, harga:h, sat:sat||(m?m.sat:'kg'), raw, matchType});
   renderTable();
 }
 
@@ -712,9 +1036,7 @@ function getKet(r) {
   const msgs = [];
 
   // Label metode pencocokan
-  if(r.candidates && r.candidates.length > 1) {
-    msgs.push('⚠️ Ambigu — pilih produk yang benar');
-  } else if(r.matchType === 'fuzzy') {
+  if(r.matchType === 'fuzzy') {
     msgs.push('🔀 Fuzzy match — cek nama');
   } else if(r.matchType === 'harga') {
     msgs.push('💰 Match by harga — cek nama');
@@ -747,7 +1069,6 @@ function renderTable() {
       <td style="color:#ccc;text-align:center;font-size:11px">${i+1}</td>
       <td>
         <div class="ac-wrap">
-          ${r.candidates&&r.candidates.length>1?`<div style="display:flex;gap:3px;margin-bottom:4px;flex-wrap:wrap">${r.candidates.map((c,ci)=>`<button class="cand-btn${r.nama===c.nama?' cand-active':''}" onmousedown="event.preventDefault();pickCandidate(${i},'${c.nama.replace(/'/g,"\\'")}')">${c.nama}</button>`).join('')}</div>`:''}
           <input class="nama-inp${namaWarn?' warn':m?' ok':''}" 
             id="nama_${r.id}" value="${r.nama}" 
             oninput="onNamaInput(${i},this)" 
@@ -840,20 +1161,6 @@ function updateKetCell(idx) {
   // No-op: subtotals handled by refreshSubtotals
 }
 
-function pickCandidate(idx, nama) {
-  rows[idx].nama = nama;
-  rows[idx].matchType = 'exact';
-  // Hapus flag ambigu setelah user pilih
-  rows[idx].candidates = [];
-  const m = findMaster(nama);
-  if(m) rows[idx].sat = m.sat;
-  renderTable();
-  // Scroll ke baris tersebut
-  setTimeout(() => {
-    const el = document.getElementById('nama_' + rows[idx]?.id);
-    if(el) el.scrollIntoView({block:'nearest'});
-  }, 50);
-}
 
 function updateMasterCell(r) {
   const m = findMaster(r.nama);

@@ -16,19 +16,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .main-form{flex:1;min-width:0}
 .preview-panel{width:420px;flex-shrink:0;position:sticky;top:60px;max-height:calc(100vh - 76px);display:none;flex-direction:column;background:#fff;border:1px solid #e8e8e6;border-radius:12px;overflow:hidden}
 .preview-panel.show{display:flex}
-.preview-header{padding:10px 14px;border-bottom:1px solid #f0f0ee;display:flex;align-items:center;gap:8px;flex-shrink:0}
-.preview-header span{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;flex:1}
+.preview-header{padding:10px 14px;border-bottom:1px solid #f0f0ee;display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.preview-header span.ttl{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;flex:1}
 .preview-nav{display:flex;align-items:center;gap:6px}
 .preview-nav button{padding:3px 8px;border:1px solid #ddd;border-radius:6px;background:#fafafa;cursor:pointer;font-size:12px;color:#555}
 .preview-nav button:hover{background:#e8e8e6}
 .preview-nav .pg{font-size:11px;color:#999;min-width:40px;text-align:center}
-.preview-img-wrap{flex:1;overflow:auto;background:#888;display:flex;align-items:flex-start;justify-content:center;padding:8px;min-height:0}
-.preview-img-wrap img{max-width:100%;height:auto;border-radius:4px;cursor:zoom-in;transition:transform .15s;transform-origin:top center}
-.preview-img-wrap img.zoomed{cursor:zoom-out;max-width:none;width:200%}
-.preview-zoom{padding:8px 14px;border-top:1px solid #f0f0ee;display:flex;gap:6px;justify-content:center;flex-shrink:0}
+.preview-img-wrap{flex:1;overflow:hidden;background:#888;display:flex;align-items:center;justify-content:center;padding:8px;min-height:220px}
+.preview-img-wrap img{max-width:100%;max-height:100%;border-radius:4px;cursor:zoom-in;transition:transform .25s;user-select:none}
+.preview-zoom{padding:8px 14px;border-top:1px solid #f0f0ee;display:flex;gap:6px;justify-content:center;flex-shrink:0;flex-wrap:wrap}
 .preview-zoom button{padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:#fafafa;cursor:pointer;font-size:13px}
 .preview-zoom button:hover{background:#e8e8e6}
-@media(max-width:900px){.main-layout{flex-direction:column}.preview-panel{width:100%;position:relative;top:auto;max-height:50vh}}
+.preview-hint{font-size:10px;color:#aaa;text-align:center;padding:0 10px 8px}
+@media(max-width:900px){.main-layout{flex-direction:column}.preview-panel{width:100%;position:relative;top:auto;max-height:60vh}.preview-img-wrap{min-height:300px}}
 .card{background:#fff;border:1px solid #e8e8e6;border-radius:12px;padding:14px 18px;margin-bottom:12px}
 .card-title{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
 /* API KEY */
@@ -114,6 +114,16 @@ tr:hover td{background:#fafafe}
 .btn-next:disabled{background:#bbb;cursor:not-allowed}
 .btn-reset{padding:9px 14px;background:none;color:#888;border:1px solid #ddd;border-radius:8px;font-size:13px;cursor:pointer}
 .btn-reset:hover{background:#f7f7f5}
+/* PIUTANG */
+.piutang-row{display:flex;align-items:center;gap:8px;margin-top:10px;padding:8px 12px;border:1px solid #e8e8e6;border-radius:8px;background:#fafafa;cursor:pointer;user-select:none;transition:all .15s}
+.piutang-row:hover{background:#f0f0ee}
+.piutang-row.on{background:#fdf6ec;border-color:#e6b566}
+.piutang-row input{width:16px;height:16px;accent-color:#b7600a;cursor:pointer}
+.piutang-lbl{font-size:13px;font-weight:600;color:#555}
+.piutang-row.on .piutang-lbl{color:#b7600a}
+.piutang-hint{font-size:11px;color:#aaa}
+.badge-piutang{font-size:11px;background:#fdf6ec;color:#b7600a;border:1px solid #e6b566;padding:2px 10px;border-radius:20px;font-weight:600;display:none}
+.badge-piutang.show{display:inline-block}
 /* MESSAGES */
 .ok-msg{background:#f0faf4;border:1px solid #b2dfc5;border-radius:8px;padding:8px 12px;font-size:12px;color:#2d8a4e;margin-top:8px;display:none}
 .err-msg{background:#fdf5f5;border:1px solid #f5c6c6;border-radius:8px;padding:8px 12px;font-size:12px;color:#c0392b;margin-top:8px;display:none}
@@ -125,6 +135,14 @@ tr:hover td{background:#fafafe}
 .ac-item:last-child{border-bottom:none}
 .ac-item:hover,.ac-item.active{background:#e8f4fd;color:#1a6fb5}
 .ac-item .kat{font-size:10px;color:#bbb;margin-left:5px}
+/* MODAL PERBESAR FOTO */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:16px}
+.modal.show{display:flex}
+.modal img{max-width:min(80vh,92vw);max-height:min(80vh,92vw);transition:transform .15s;user-select:none;cursor:grab;touch-action:none}
+.modal img.dragging{cursor:grabbing;transition:none}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.modal-btn{padding:8px 16px;background:rgba(255,255,255,.13);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:8px;cursor:pointer;font-size:13px}
+.modal-btn:hover{background:rgba(255,255,255,.25)}
 </style>
 </head>
 <body>
@@ -197,6 +215,11 @@ tr:hover td{background:#fafafe}
     <div class="field"><label>No. nota</label><input type="text" id="noNota" placeholder="001/VI/2026"></div>
     <div class="field"><label>Keterangan (opsional)</label><input type="text" id="ket" placeholder="Catatan tambahan"></div>
   </div>
+  <label class="piutang-row" id="piutangRow">
+    <input type="checkbox" id="piutang" onchange="onPiutangChange()">
+    <span class="piutang-lbl">💳 Piutang</span>
+    <span class="piutang-hint">— centang jika nota ini belum dibayar (hutang pelanggan)</span>
+  </label>
 </div>
 
 <!-- TABEL BARANG -->
@@ -226,7 +249,7 @@ tr:hover td{background:#fafafe}
 <!-- FOOTER -->
 <div class="footer-card">
   <div>
-    <div class="total-lbl">Total nota</div>
+    <div class="total-lbl">Total nota <span class="badge-piutang" id="badgePiutang">💳 PIUTANG</span></div>
     <div class="total-val" id="grandTotal">Rp 0</div>
   </div>
   <div class="btn-group">
@@ -243,7 +266,7 @@ tr:hover td{background:#fafafe}
 <!-- PREVIEW PANEL -->
 <div class="preview-panel" id="previewPanel">
   <div class="preview-header">
-    <span>📷 Preview Nota</span>
+    <span class="ttl">📷 Preview Nota</span>
     <div class="preview-nav">
       <button onclick="previewNav(-1)">&#8249;</button>
       <span class="pg" id="previewPg">-</span>
@@ -252,13 +275,14 @@ tr:hover td{background:#fafafe}
     <button onclick="closePreview()" style="font-size:11px;padding:3px 8px;border:1px solid #ddd;border-radius:6px;background:#fafafa;cursor:pointer;color:#999">&#x2715;</button>
   </div>
   <div class="preview-img-wrap" id="previewImgWrap">
-    <img id="previewImg" src="" alt="Preview nota" onclick="toggleZoom(this)">
+    <img id="previewImg" src="" alt="Preview nota" onclick="openModal()">
   </div>
   <div class="preview-zoom">
-    <button onclick="zoomOut()">&#x2212;</button>
-    <button onclick="zoomReset()">100%</button>
-    <button onclick="zoomIn()">&#xff0b;</button>
+    <button onclick="rotatePreview(-90)" title="Putar kiri">↺ Kiri</button>
+    <button onclick="rotatePreview(90)" title="Putar kanan">↻ Kanan</button>
+    <button onclick="openModal()" title="Perbesar penuh">🔍 Perbesar</button>
   </div>
+  <div class="preview-hint">Klik gambar untuk memperbesar — bisa zoom (scroll / cubit / tombol +−) dan digeser</div>
 </div>
 
 </div><!-- /main-layout -->
@@ -266,6 +290,19 @@ tr:hover td{background:#fafafe}
 
 <!-- AUTOCOMPLETE LIST (shared) -->
 <div class="ac-list" id="acList"></div>
+
+<!-- MODAL PERBESAR FOTO -->
+<div class="modal" id="imgModal" onclick="closeModal()">
+  <img id="modalImg" src="" alt="Nota diperbesar" onclick="event.stopPropagation()">
+  <div class="modal-btns" onclick="event.stopPropagation()">
+    <button class="modal-btn" onclick="zoomModal(1.3)">🔍 Zoom +</button>
+    <button class="modal-btn" onclick="zoomModal(1/1.3)">🔍 Zoom −</button>
+    <button class="modal-btn" id="zoomLbl" onclick="resetZoom()" title="Klik untuk reset zoom">100%</button>
+    <button class="modal-btn" onclick="rotatePreview(-90)">↺ Kiri</button>
+    <button class="modal-btn" onclick="rotatePreview(90)">↻ Kanan</button>
+    <button class="modal-btn" onclick="closeModal()">✕ Tutup</button>
+  </div>
+</div>
 
 <script>
 // ===================== MASTER DATA =====================
@@ -605,7 +642,7 @@ const MASTER = [
 // ===================== STATE =====================
 const IDR = v => 'Rp ' + Math.round(v).toLocaleString('id-ID');
 const fmtTgl = d => { if(!d) return ''; const p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; };
-let queue = [];       // [{file, data(base64)}]
+let queue = [];       // [{file, data(base64), done, rot}]
 let queueIdx = -1;   // index yang sedang aktif
 let rows = [];
 let rowCounter = 0;
@@ -647,7 +684,7 @@ function fuzzyMatch(nama) {
       .replace(/c(?=[ei])/g, 's')       // "ce" -> "se"
       .replace(/th/g, 't').replace(/sh/g, 's')
       .replace(/[aeiou]+/g, 'a')        // vokal jadi satu (skeleton konsonan)
-      .replace(/(.)+/g, '$1');         // hapus dobel konsonan
+      .replace(/(.)+/g, '$1');         // hapus dobel konsonan
   }
 
   function trigrams(s) {
@@ -727,7 +764,6 @@ function findBestMatch(namaMaster, namaNota, hargaNota) {
 }
 
 // ===================== PREVIEW =====================
-let previewZoom = 1;
 let previewIdx = 0; // index dalam queue yg sedang ditampilkan
 
 function openPreview(idx) {
@@ -742,54 +778,117 @@ function closePreview() {
 
 function refreshPreviewImg() {
   if(!queue.length) return;
-  const idx = Math.max(0, Math.min(previewIdx, queue.length-1));
-  const q = queue[idx];
+  previewIdx = Math.max(0, Math.min(previewIdx, queue.length-1));
+  const q = queue[previewIdx];
   if(!q) return;
   const img = document.getElementById('previewImg');
+  const deg = q.rot || 0;
   img.src = q.data;
-  img.className = ''; // reset zoom
-  previewZoom = 1;
-  document.getElementById('previewPg').textContent = `${idx+1}/${queue.length}`;
+  img.style.transform = `rotate(${deg}deg)`;
+  const mi = document.getElementById('modalImg');
+  mi.src = q.data;
+  applyModalTransform();
+  document.getElementById('previewPg').textContent = `${previewIdx+1}/${queue.length}`;
   document.getElementById('previewPanel').classList.add('show');
 }
 
 function previewNav(dir) {
   previewIdx = Math.max(0, Math.min(previewIdx + dir, queue.length-1));
+  resetZoom();
   refreshPreviewImg();
 }
 
-function toggleZoom(img) {
-  if(img.classList.contains('zoomed')) {
-    img.classList.remove('zoomed');
-    previewZoom = 1;
-  } else {
-    img.classList.add('zoomed');
-    previewZoom = 2;
-  }
+// ===================== ROTATE =====================
+function rotatePreview(d) {
+  if(!queue.length || !queue[previewIdx]) return;
+  queue[previewIdx].rot = ((queue[previewIdx].rot || 0) + d + 360) % 360;
+  refreshPreviewImg();
 }
 
-function zoomIn() {
-  previewZoom = Math.min(previewZoom + 0.25, 3);
-  applyZoom();
+// ===================== ZOOM MODAL =====================
+let mScale = 1, mPanX = 0, mPanY = 0;
+
+function applyModalTransform() {
+  const q = queue[previewIdx];
+  const deg = q ? (q.rot || 0) : 0;
+  document.getElementById('modalImg').style.transform =
+    `translate(${mPanX}px, ${mPanY}px) rotate(${deg}deg) scale(${mScale})`;
+  document.getElementById('zoomLbl').textContent = Math.round(mScale * 100) + '%';
 }
-function zoomOut() {
-  previewZoom = Math.max(previewZoom - 0.25, 0.5);
-  applyZoom();
+function zoomModal(f) {
+  mScale = Math.min(8, Math.max(1, mScale * f));
+  if(mScale <= 1.01) { mScale = 1; mPanX = 0; mPanY = 0; }
+  applyModalTransform();
 }
-function zoomReset() {
-  previewZoom = 1;
-  applyZoom();
+function resetZoom() { mScale = 1; mPanX = 0; mPanY = 0; applyModalTransform(); }
+
+function openModal() {
+  if(!queue.length || !queue[previewIdx]) return;
+  resetZoom();
+  document.getElementById('modalImg').src = queue[previewIdx].data;
+  applyModalTransform();
+  document.getElementById('imgModal').classList.add('show');
 }
-function applyZoom() {
-  const img = document.getElementById('previewImg');
-  img.classList.remove('zoomed');
-  if(previewZoom === 1) {
-    img.style.width = '';
-    img.style.maxWidth = '100%';
-  } else {
-    img.style.maxWidth = 'none';
-    img.style.width = (previewZoom * 100) + '%';
+function closeModal() {
+  document.getElementById('imgModal').classList.remove('show');
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+// Scroll mouse = zoom
+const _modal = document.getElementById('imgModal');
+_modal.addEventListener('wheel', e => {
+  if(!_modal.classList.contains('show')) return;
+  e.preventDefault();
+  zoomModal(e.deltaY < 0 ? 1.15 : 1/1.15);
+}, {passive:false});
+
+// Drag = geser gambar
+const _mImg = document.getElementById('modalImg');
+let _drag = false, _sx = 0, _sy = 0, _tDist = 0;
+_mImg.addEventListener('mousedown', e => {
+  _drag = true; _sx = e.clientX - mPanX; _sy = e.clientY - mPanY;
+  _mImg.classList.add('dragging'); e.preventDefault();
+});
+window.addEventListener('mousemove', e => {
+  if(!_drag) return;
+  mPanX = e.clientX - _sx; mPanY = e.clientY - _sy;
+  applyModalTransform();
+});
+window.addEventListener('mouseup', () => { _drag = false; _mImg.classList.remove('dragging'); });
+
+// Double-click = zoom cepat 250% / kembali 100%
+_mImg.addEventListener('dblclick', () => {
+  if(mScale > 1) resetZoom();
+  else { mScale = 2.5; applyModalTransform(); }
+});
+
+// HP: 1 jari geser, 2 jari cubit untuk zoom
+_mImg.addEventListener('touchstart', e => {
+  if(e.touches.length === 1) {
+    _drag = true; _sx = e.touches[0].clientX - mPanX; _sy = e.touches[0].clientY - mPanY;
+  } else if(e.touches.length === 2) {
+    _drag = false;
+    _tDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
   }
+}, {passive:true});
+_mImg.addEventListener('touchmove', e => {
+  if(e.touches.length === 1 && _drag) {
+    mPanX = e.touches[0].clientX - _sx; mPanY = e.touches[0].clientY - _sy;
+    applyModalTransform();
+  } else if(e.touches.length === 2) {
+    const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    if(_tDist > 0) zoomModal(d / _tDist);
+    _tDist = d;
+  }
+  e.preventDefault();
+}, {passive:false});
+_mImg.addEventListener('touchend', () => { _drag = false; _tDist = 0; });
+
+// ===================== PIUTANG =====================
+function onPiutangChange() {
+  const on = document.getElementById('piutang').checked;
+  document.getElementById('piutangRow').classList.toggle('on', on);
+  document.getElementById('badgePiutang').classList.toggle('show', on);
 }
 
 // ===================== TANGGAL =====================
@@ -824,7 +923,7 @@ function addToQueue(inp) {
   [...inp.files].forEach(f => {
     const r = new FileReader();
     r.onload = e => {
-      queue.push({file:f, data:e.target.result, done:false});
+      queue.push({file:f, data:e.target.result, done:false, rot:0});
       renderQueue();
       if(queue.length === 1) setTimeout(()=>openPreview(0), 100);
     };
@@ -858,7 +957,9 @@ function renderQueue() {
 function removeFromQueue(i) {
   queue.splice(i, 1);
   if(queueIdx >= queue.length) queueIdx = queue.length - 1;
+  if(previewIdx >= queue.length) previewIdx = Math.max(0, queue.length - 1);
   renderQueue();
+  if(queue.length) refreshPreviewImg(); else closePreview();
 }
 
 function jumpTo(i) {
@@ -1019,6 +1120,8 @@ function goNext() {
   queueIdx = nextIdx;
   renderQueue();
   resetForm();
+  previewIdx = queueIdx;
+  refreshPreviewImg();
   extractCurrent();
 }
 
@@ -1225,10 +1328,11 @@ function copyToClipboard() {
   const kota = document.getElementById('kota').value.trim();
   const noNota = document.getElementById('noNota').value.trim();
   const ket = document.getElementById('ket').value.trim();
+  const isPiutang = document.getElementById('piutang').checked;
   const valid = rows.filter(r=>r.nama && r.qty);
   if(!valid.length) { alert('Tidak ada data barang.'); return; }
 
-  // Format: Tanggal \t Pelanggan \t Kota \t No.Nota \t Nama Barang \t Qty \t Sat \t Harga \t Subtotal \t Harga Master \t Keterangan
+  // Format: Tanggal \t Pelanggan \t Kota \t No.Nota \t Nama Barang \t Qty \t Sat \t Harga \t Subtotal \t Harga Master \t Status \t Keterangan
   const lines = valid.map(r => {
     const sub = (parseFloat(r.qty)||0)*(parseFloat(r.harga)||0);
     const m = findMaster(r.nama);
@@ -1245,12 +1349,13 @@ function copyToClipboard() {
       parseFloat(r.harga)||0,
       Math.round(sub),
       masterH||'',
+      isPiutang ? 'PIUTANG' : 'LUNAS',
       ketRow||''
     ].join('\t');
   });
 
   // Header row
-  const header = ['Tanggal','Pelanggan','Kota','No.Nota','Nama Barang','Qty','Sat','Harga','Subtotal','Harga Master','Keterangan'].join('\t');
+  const header = ['Tanggal','Pelanggan','Kota','No.Nota','Nama Barang','Qty','Sat','Harga','Subtotal','Harga Master','Status','Keterangan'].join('\t');
   const tsv = header + '\n' + lines.join('\n');
 
   navigator.clipboard.writeText(tsv).then(() => {
@@ -1281,6 +1386,8 @@ function resetForm() {
   document.getElementById('kota').value = '';
   document.getElementById('noNota').value = '';
   document.getElementById('ket').value = '';
+  document.getElementById('piutang').checked = false;
+  onPiutangChange();
   rows = []; rowCounter = 0;
   renderTable();
   document.getElementById('extBtn').className = 'ext-btn';

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Input Nota — CV Warna Indah Chemical</title>
+<title>Input Nota Penjualan & Barang Masuk — CV Warna Indah Chemical</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;background:#f5f5f3;color:#1a1a1a;min-height:100vh}
@@ -143,21 +143,57 @@ tr:hover td{background:#fafafe}
 .modal-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .modal-btn{padding:8px 16px;background:rgba(255,255,255,.13);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:8px;cursor:pointer;font-size:13px}
 .modal-btn:hover{background:rgba(255,255,255,.25)}
+
+/* ===== TAB BAR ===== */
+.tabbar{max-width:1400px;margin:0 auto;padding:12px 14px 0;display:flex;gap:8px}
+.tab-btn{padding:9px 22px;border:1px solid #ddd;border-bottom:none;border-radius:10px 10px 0 0;background:#ececea;color:#888;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+.tab-btn:hover{background:#f3f3f1}
+.tab-btn.active{background:#fff;color:#1a1a1a;border-color:#c9c9c7;box-shadow:0 -2px 6px rgba(0,0,0,.04)}
+.tab-btn.active.tab-jual{border-top:3px solid #1a6fb5}
+.tab-btn.active.tab-bm{border-top:3px solid #1e7a45}
+/* ===== KHUSUS BARANG MASUK ===== */
+.badge-bm{background:#eef6f0;color:#1e7a45}
+.fill-bm{background:#1e7a45}
+.thumb.active-bm{border-color:#1e7a45}
+.btn-copy-bm{background:#1e7a45}
+.btn-copy-bm:hover{background:#186338}
+.btn-next-bm{background:#1a6fb5}
+.btn-next-bm:hover{background:#155fa0}
+.btn-next-bm:disabled{background:#bbb}
+.ket-cell-bm{color:#e6a817}
+.meta-grid-3{display:grid;grid-template-columns:1fr 1fr 2fr;gap:8px}
+.kurs-inp{font-weight:600;background:#f5faf7 !important;border-color:#c9e5d4 !important}
+.num.usd-inp{background:#f4f8fd;border-color:#c7dcf0}
+.num.rp-auto{background:#f5faf7;border-color:#c9e5d4}
+.jual-cell{font-size:11px;color:#888;text-align:right;white-space:nowrap}
+.jual-margin{font-size:10px;color:#8fb8a0;display:block;margin-top:2px}
+.jual-margin.rugi{color:#c0392b}
+.rp-hint{font-size:10px;color:#8fb8a0;white-space:nowrap;display:block;text-align:right;margin-top:2px}
+.total-usd{font-size:12px;color:#1a6fb5;font-weight:600;margin-top:2px}
+.preview-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.rot-btns{display:flex;gap:6px}
+.rot-btn{padding:6px 12px;background:#fff;border:1px solid #ddd;border-radius:8px;font-size:13px;cursor:pointer;transition:all .15s}
+.rot-btn:hover{background:#f7f7f5;border-color:#bbb}
+.preview-box{position:relative;background:#efefed;border:1px solid #e8e8e6;border-radius:10px;height:460px;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:zoom-in}
+.preview-box img{max-width:430px;max-height:430px;transition:transform .25s;user-select:none}
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div style="flex:1">
-    <div style="font-size:15px;font-weight:600">Input Nota Penjualan</div>
+    <div style="font-size:15px;font-weight:600" id="appTitle">Input Nota Penjualan</div>
     <div class="sub">CV Warna Indah Chemical — Surabaya</div>
   </div>
   <span class="badge" id="queueBadge">0 foto</span>
 </div>
 
+<div class="tabbar">
+  <button id="tabBtnJual" class="tab-btn tab-jual active" onclick="switchTab('jual')">🧾 Penjualan</button>
+  <button id="tabBtnBM" class="tab-btn tab-bm" onclick="switchTab('bm')">📦 Barang Masuk</button>
+</div>
+
 <div class="main">
-<div class="main-layout">
-<div class="main-form">
 
 <!-- API KEY -->
 <div class="card">
@@ -169,6 +205,10 @@ tr:hover td{background:#fafafe}
   </div>
   <div class="key-hint">Gratis di <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a></div>
 </div>
+
+<div id="tabPenjualan">
+<div class="main-layout">
+<div class="main-form">
 
 <!-- UPLOAD & QUEUE -->
 <div class="card">
@@ -286,6 +326,128 @@ tr:hover td{background:#fafafe}
 </div>
 
 </div><!-- /main-layout -->
+</div><!-- /tabPenjualan -->
+
+<!-- ============ TAB BARANG MASUK ============ -->
+<div id="tabBM" style="display:none">
+
+<!-- UPLOAD & QUEUE BM -->
+<div class="card">
+  <div class="card-title">📸 Antrian Foto Nota / Surat Jalan <span class="badge badge-bm" id="bmQueueBadge">0 foto</span></div>
+  <div class="upload-zone" onclick="document.getElementById('bmImgInput').click()">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    <p>Klik atau drag foto nota / surat jalan di sini</p>
+    <p class="sub">Bisa pilih puluhan foto sekaligus — diproses satu per satu</p>
+    <input type="file" id="bmImgInput" accept="image/*" multiple onchange="bmAddToQueue(this)">
+  </div>
+  <div class="queue-thumbs" id="bmQueueThumbs"></div>
+  <div class="progress-wrap" id="bmProgressWrap">
+    <div class="progress-bar"><div class="progress-fill fill-bm" id="bmProgressFill" style="width:0%"></div></div>
+    <div class="progress-label" id="bmProgressLabel"></div>
+  </div>
+  <button class="ext-btn" id="bmExtBtn" onclick="bmProcessNext()" disabled>
+    <span id="bmExtIcon">✨</span>
+    <span id="bmExtLabel">Upload foto dulu</span>
+  </button>
+  <div class="err-msg" id="bmExtErr"></div>
+</div>
+
+<!-- PREVIEW NOTA BM -->
+<div class="card" id="bmPreviewCard" style="display:none">
+  <div class="preview-head">
+    <div class="card-title" id="bmPreviewTitle" style="margin-bottom:0">🔍 Preview Nota</div>
+    <div class="rot-btns">
+      <button class="rot-btn" onclick="bmRotatePreview(-90)" title="Putar kiri">↺ Kiri</button>
+      <button class="rot-btn" onclick="bmRotatePreview(90)" title="Putar kanan">↻ Kanan</button>
+    </div>
+  </div>
+  <div class="preview-box" onclick="bmOpenModal()">
+    <img id="bmPreviewImg" src="" alt="Preview nota">
+  </div>
+  <div class="preview-hint" style="padding:0">Klik gambar untuk memperbesar — bisa zoom (scroll / cubit / tombol +−) dan digeser</div>
+</div>
+
+<!-- INFO NOTA BM -->
+<div class="card">
+  <div class="card-title">📋 Info Nota Masuk <span id="bmNotaCounter" style="font-weight:400;color:#aaa"></span></div>
+  <div class="meta-grid">
+    <div class="field"><label>Tanggal (tahun tetap 2026)</label>
+      <div style="display:flex;gap:5px;align-items:center">
+        <input type="number" id="bmTglHari" min="1" max="31" placeholder="tgl" style="width:58px;text-align:center">
+        <span style="color:#bbb">/</span>
+        <input type="number" id="bmTglBulan" min="1" max="12" placeholder="bln" style="width:58px;text-align:center">
+        <span style="color:#666;font-weight:600;padding:0 4px;white-space:nowrap">/ 2026</span>
+      </div>
+    </div>
+    <div class="field"><label>Nama supplier</label><input type="text" id="bmSupplier" placeholder="Nama supplier / pabrik"></div>
+    <div class="field"><label>Kota / negara asal</label><input type="text" id="bmKota" placeholder="Kota atau negara"></div>
+  </div>
+  <div class="meta-grid-3">
+    <div class="field"><label>No. nota / surat jalan</label><input type="text" id="bmNoNota" placeholder="001/VI/2026"></div>
+    <div class="field"><label>Kurs USD → Rp</label><input type="number" id="bmKurs" class="kurs-inp" min="0" step="50" placeholder="cth: 16300" oninput="bmOnKursChange()"></div>
+    <div class="field"><label>Keterangan (opsional)</label><input type="text" id="bmKet" placeholder="Catatan tambahan"></div>
+  </div>
+  <div style="font-size:11px;color:#aaa;margin-top:4px">💡 Isi kurs jika nota dalam USD — Harga Rp per barang akan dihitung otomatis (USD × kurs). Untuk pembelian lokal, biarkan kurs kosong dan isi Harga Rp langsung.</div>
+</div>
+
+<!-- TABEL BARANG BM -->
+<div class="card">
+  <div class="card-title">📦 Daftar Barang Masuk</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:24px">#</th>
+          <th style="min-width:190px">Nama Barang</th>
+          <th style="width:70px;text-align:right">Qty</th>
+          <th style="width:55px">Sat</th>
+          <th style="width:90px;text-align:right">Harga USD</th>
+          <th style="width:105px;text-align:right">Harga Rp</th>
+          <th style="width:115px;text-align:right">Subtotal Rp</th>
+          <th style="width:105px;text-align:right">Harga Jual</th>
+          <th style="width:120px">Keterangan</th>
+          <th style="width:28px"></th>
+        </tr>
+      </thead>
+      <tbody id="bmTbody"></tbody>
+    </table>
+  </div>
+  <button class="add-row-btn" onclick="bmAddRow()">+ Tambah baris</button>
+</div>
+
+<!-- FOOTER BM -->
+<div class="footer-card">
+  <div>
+    <div class="total-lbl">Total nota masuk</div>
+    <div class="total-val" id="bmGrandTotal">Rp 0</div>
+    <div class="total-usd" id="bmGrandTotalUsd" style="display:none"></div>
+  </div>
+  <div class="btn-group">
+    <button class="btn-reset" onclick="bmResetForm()">🔄 Reset form</button>
+    <button class="btn-copy btn-copy-bm" onclick="bmCopyToClipboard()" id="bmBtnCopy">📋 Copy ke Google Sheet</button>
+    <button class="btn-next btn-next-bm" onclick="bmGoNext()" id="bmBtnNext" disabled>Nota berikutnya →</button>
+  </div>
+</div>
+<div class="ok-msg" id="bmCopyOk">✔ Berhasil dicopy! Langsung paste (Ctrl+V) di Google Sheet.</div>
+
+</div><!-- /tabBM -->
+
+<!-- AUTOCOMPLETE LIST BM -->
+<div class="ac-list" id="bmAcList"></div>
+
+<!-- MODAL PERBESAR FOTO BM -->
+<div class="modal" id="bmImgModal" onclick="bmCloseModal()">
+  <img id="bmModalImg" src="" alt="Nota diperbesar" onclick="event.stopPropagation()">
+  <div class="modal-btns" onclick="event.stopPropagation()">
+    <button class="modal-btn" onclick="bmZoomModal(1.3)">🔍 Zoom +</button>
+    <button class="modal-btn" onclick="bmZoomModal(1/1.3)">🔍 Zoom −</button>
+    <button class="modal-btn" id="bmZoomLbl" onclick="bmResetZoom()" title="Klik untuk reset zoom">100%</button>
+    <button class="modal-btn" onclick="bmRotatePreview(-90)">↺ Kiri</button>
+    <button class="modal-btn" onclick="bmRotatePreview(90)">↻ Kanan</button>
+    <button class="modal-btn" onclick="bmCloseModal()">✕ Tutup</button>
+  </div>
+</div>
+
 </div><!-- end main -->
 
 <!-- AUTOCOMPLETE LIST (shared) -->
@@ -569,6 +731,7 @@ const MASTER = [
   {"no":238,"nama":"RELL GUN 190 CM","kat":"Campuran","sat":"pcs","harga":19000,"total":56.0},
   {"no":239,"nama":"KARET TANGAN ENGGAL","kat":"Campuran","sat":"pcs","harga":25000,"total":109.0},
   {"no":240,"nama":"KARET TANGAN THOR","kat":"Campuran","sat":"pcs","harga":42500,"total":698.0},
+  {"no":513,"nama":"GLOVE B45 BLACK MTK","kat":"Campuran","sat":"pcs","harga":42500,"total":0.0},
   {"no":241,"nama":"GLOVE K1 WHITE MTK","kat":"Campuran","sat":"pcs","harga":12500,"total":120.0},
   {"no":242,"nama":"SILICON EMULSION","kat":"Campuran","sat":"kg","harga":70000,"total":62.0},
   {"no":243,"nama":"WHITENING CN","kat":"Campuran","sat":"kg","harga":75000,"total":30.0},
@@ -916,6 +1079,7 @@ function checkKey() {
   document.getElementById('keyStatus').textContent = ok ? '✔ Siap' : '⬤ Belum diisi';
   document.getElementById('keyStatus').style.color = ok ? '#2d8a4e' : '#bbb';
   updateExtBtn();
+  if(typeof bmUpdateExtBtn === 'function') bmUpdateExtBtn();
 }
 
 // ===================== QUEUE =====================
@@ -1407,5 +1571,626 @@ function resetForm() {
 addRow();
 renderQueue();
 </script>
+<script>
+// ═══════════════════════════════════════════════════════
+//  TAB BARANG MASUK — kode ber-prefix "bm" agar tidak bentrok
+// ═══════════════════════════════════════════════════════
+
+// ===================== MASTER DATA BARANG MASUK =====================
+const BM_MASTER = MASTER; // satu master bersama untuk kedua tab
+
+// ===================== STATE BM =====================
+const USD = v => '$' + (Math.round(v*100)/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pad2 = n => String(n).padStart(2,'0');
+// Terima koma ATAU titik sebagai desimal: "4,5" dan "4.5" sama-sama valid
+const parseNum = v => parseFloat(String(v ?? '').replace(',', '.')) || 0;
+function bmGetTglStr() {
+  const h = parseInt(document.getElementById('bmTglHari').value) || 0;
+  const b = parseInt(document.getElementById('bmTglBulan').value) || 0;
+  if(!h || !b) return '';
+  return pad2(h) + '/' + pad2(b) + '/2026';
+}
+function bmSetTglToday() {
+  const now = new Date();
+  document.getElementById('bmTglHari').value = now.getDate();
+  document.getElementById('bmTglBulan').value = now.getMonth() + 1;
+}
+let bmQueue = [];       // [{file, data(base64), done, rot}]
+let bmQueueIdx = -1;
+let bmRows = [];        // {id, nama, qty, sat, usd, harga(Rp), raw}
+let bmRowCounter = 0;
+let bmActiveAcRow = null;
+
+function bmGetKurs() { return parseFloat(document.getElementById('bmKurs').value) || 0; }
+
+function bmFindMaster(nama) {
+  if(!nama) return null;
+  return BM_MASTER.find(m => m.nama.toLowerCase() === nama.trim().toLowerCase()) || null;
+}
+
+// ===================== KURS =====================
+function bmOnKursChange() {
+  const kurs = bmGetKurs();
+  if(kurs > 0) {
+    // Hitung ulang semua baris yang punya harga USD
+    bmRows.forEach(r => {
+      const usd = parseNum(r.usd);
+      if(usd > 0) r.harga = Math.round(usd * kurs);
+    });
+  }
+  bmRenderTable();
+}
+
+// ===================== QUEUE BM =====================
+function bmAddToQueue(inp) {
+  [...inp.files].forEach(f => {
+    const r = new FileReader();
+    r.onload = e => {
+      bmQueue.push({file:f, data:e.target.result, done:false, rot:0});
+      bmRenderQueue();
+    };
+    r.readAsDataURL(f);
+  });
+  inp.value = '';
+}
+
+function bmRenderQueue() {
+  document.getElementById('bmQueueBadge').textContent = bmQueue.length + ' foto';
+  const box = document.getElementById('bmQueueThumbs');
+  box.innerHTML = bmQueue.map((q,i) => `
+    <div class="thumb${i===bmQueueIdx?' active-bm':''}${q.done?' done':''}" onclick="bmJumpTo(${i})" title="Nota ${i+1}">
+      <img src="${q.data}" alt="${i+1}">
+      <div class="num">${i+1}</div>
+      ${!q.done ? `<div class="del-th" onclick="event.stopPropagation();bmRemoveFromQueue(${i})">×</div>` : ''}
+    </div>`).join('');
+  const pw = document.getElementById('bmProgressWrap');
+  if(bmQueue.length > 0) {
+    pw.style.display = 'block';
+    const done = bmQueue.filter(q=>q.done).length;
+    const pct = bmQueue.length > 0 ? Math.round(done/bmQueue.length*100) : 0;
+    document.getElementById('bmProgressFill').style.width = pct + '%';
+    document.getElementById('bmProgressLabel').textContent = `${done} dari ${bmQueue.length} nota selesai`;
+  } else {
+    pw.style.display = 'none';
+  }
+  bmUpdateExtBtn();
+  bmRenderPreview();
+}
+
+// ===================== PREVIEW & ROTATE BM =====================
+function bmRenderPreview() {
+  const card = document.getElementById('bmPreviewCard');
+  if(bmQueueIdx < 0 || !bmQueue[bmQueueIdx]) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  const q = bmQueue[bmQueueIdx];
+  const deg = q.rot || 0;
+  const pi = document.getElementById('bmPreviewImg');
+  const mi = document.getElementById('bmModalImg');
+  pi.src = q.data; pi.style.transform = `rotate(${deg}deg)`;
+  mi.src = q.data;
+  bmApplyModalTransform();
+  document.getElementById('bmPreviewTitle').textContent = `🔍 Preview Nota ${bmQueueIdx+1} dari ${bmQueue.length}`;
+}
+
+function bmRotatePreview(d) {
+  if(bmQueueIdx < 0 || !bmQueue[bmQueueIdx]) return;
+  bmQueue[bmQueueIdx].rot = ((bmQueue[bmQueueIdx].rot || 0) + d + 360) % 360;
+  bmRenderPreview();
+}
+
+// ===================== ZOOM MODAL BM =====================
+let bmScale = 1, bmPanX = 0, bmPanY = 0;
+
+function bmApplyModalTransform() {
+  const q = bmQueue[bmQueueIdx];
+  const deg = q ? (q.rot || 0) : 0;
+  document.getElementById('bmModalImg').style.transform =
+    `translate(${bmPanX}px, ${bmPanY}px) rotate(${deg}deg) scale(${bmScale})`;
+  document.getElementById('bmZoomLbl').textContent = Math.round(bmScale * 100) + '%';
+}
+function bmZoomModal(f) {
+  bmScale = Math.min(8, Math.max(1, bmScale * f));
+  if(bmScale <= 1.01) { bmScale = 1; bmPanX = 0; bmPanY = 0; }
+  bmApplyModalTransform();
+}
+function bmResetZoom() { bmScale = 1; bmPanX = 0; bmPanY = 0; bmApplyModalTransform(); }
+
+function bmOpenModal() {
+  if(bmQueueIdx < 0 || !bmQueue[bmQueueIdx]) return;
+  bmResetZoom();
+  document.getElementById('bmImgModal').classList.add('show');
+}
+function bmCloseModal() {
+  document.getElementById('bmImgModal').classList.remove('show');
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') bmCloseModal(); });
+
+// Scroll mouse = zoom
+const _bmModal = document.getElementById('bmImgModal');
+_bmModal.addEventListener('wheel', e => {
+  if(!_bmModal.classList.contains('show')) return;
+  e.preventDefault();
+  bmZoomModal(e.deltaY < 0 ? 1.15 : 1/1.15);
+}, {passive:false});
+
+// Drag = geser gambar
+const _bmImg = document.getElementById('bmModalImg');
+let _bmDrag = false, _bmSx = 0, _bmSy = 0, _bmTDist = 0;
+_bmImg.addEventListener('mousedown', e => {
+  _bmDrag = true; _bmSx = e.clientX - bmPanX; _bmSy = e.clientY - bmPanY;
+  _bmImg.classList.add('dragging'); e.preventDefault();
+});
+window.addEventListener('mousemove', e => {
+  if(!_bmDrag) return;
+  bmPanX = e.clientX - _bmSx; bmPanY = e.clientY - _bmSy;
+  bmApplyModalTransform();
+});
+window.addEventListener('mouseup', () => { _bmDrag = false; _bmImg.classList.remove('dragging'); });
+
+// Double-click = zoom cepat 250% / kembali 100%
+_bmImg.addEventListener('dblclick', () => {
+  if(bmScale > 1) bmResetZoom();
+  else { bmScale = 2.5; bmApplyModalTransform(); }
+});
+
+// HP: 1 jari geser, 2 jari cubit untuk zoom
+_bmImg.addEventListener('touchstart', e => {
+  if(e.touches.length === 1) {
+    _bmDrag = true; _bmSx = e.touches[0].clientX - bmPanX; _bmSy = e.touches[0].clientY - bmPanY;
+  } else if(e.touches.length === 2) {
+    _bmDrag = false;
+    _bmTDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+  }
+}, {passive:true});
+_bmImg.addEventListener('touchmove', e => {
+  if(e.touches.length === 1 && _bmDrag) {
+    bmPanX = e.touches[0].clientX - _bmSx; bmPanY = e.touches[0].clientY - _bmSy;
+    bmApplyModalTransform();
+  } else if(e.touches.length === 2) {
+    const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    if(_bmTDist > 0) bmZoomModal(d / _bmTDist);
+    _bmTDist = d;
+  }
+  e.preventDefault();
+}, {passive:false});
+_bmImg.addEventListener('touchend', () => { _bmDrag = false; _bmTDist = 0; });
+
+function bmRemoveFromQueue(i) {
+  bmQueue.splice(i, 1);
+  if(bmQueueIdx >= bmQueue.length) bmQueueIdx = bmQueue.length - 1;
+  bmRenderQueue();
+}
+
+function bmJumpTo(i) {
+  if(i === bmQueueIdx) return;
+  if(!bmQueue[i].done) {
+    bmQueueIdx = i;
+    bmRenderQueue();
+    bmResetForm();
+  }
+}
+
+function bmUpdateExtBtn() {
+  const key = document.getElementById('apiKey').value.trim();
+  const hasKey = key.length > 10;
+  const hasQueue = bmQueue.length > 0 && bmQueue.some(q=>!q.done);
+  const btn = document.getElementById('bmExtBtn');
+  const lbl = document.getElementById('bmExtLabel');
+  btn.disabled = !(hasKey && hasQueue);
+  if(!hasKey) lbl.textContent = 'Isi API key dulu';
+  else if(bmQueue.length === 0) lbl.textContent = 'Upload foto dulu';
+  else if(!hasQueue) lbl.textContent = '✔ Semua nota sudah diproses';
+  else {
+    const next = bmQueue.findIndex(q=>!q.done);
+    lbl.textContent = `Proses nota ${next+1} dari ${bmQueue.length}`;
+  }
+  document.getElementById('bmBtnNext').disabled = !bmQueue.some(q=>!q.done) || bmQueueIdx < 0;
+  document.getElementById('bmNotaCounter').textContent = bmQueue.length > 0 ? `(${(bmQueueIdx>=0?bmQueueIdx:0)+1} / ${bmQueue.length})` : '';
+}
+
+// ===================== EXTRACT BM =====================
+async function bmProcessNext() {
+  const nextIdx = bmQueue.findIndex(q=>!q.done);
+  if(nextIdx < 0) return;
+  bmQueueIdx = nextIdx;
+  bmRenderQueue();
+  bmResetForm();
+  await bmExtractCurrent();
+}
+
+async function bmExtractCurrent() {
+  if(bmQueueIdx < 0 || !bmQueue[bmQueueIdx]) return;
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const btn = document.getElementById('bmExtBtn');
+  const lbl = document.getElementById('bmExtLabel');
+  const icon = document.getElementById('bmExtIcon');
+  const errEl = document.getElementById('bmExtErr');
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  icon.innerHTML = '<div class="spinner"></div>';
+  lbl.textContent = `Membaca nota ${bmQueueIdx+1}...`;
+
+  const img = bmQueue[bmQueueIdx];
+  const parts = [
+    { inline_data: { mime_type: img.file.type||'image/jpeg', data: img.data.split(',')[1] } },
+    { text: bmBuildPrompt() }
+  ];
+
+  const models = ['gemini-2.5-flash','gemini-2.5-flash-lite','gemini-3.5-flash'];
+  let data = null, lastErr = '';
+  for(const model of models) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        { method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ contents:[{parts}], generationConfig:{temperature:0, maxOutputTokens:8192} }) }
+      );
+      const json = await res.json();
+      if(!res.ok){ lastErr = json.error?.message||'HTTP '+res.status; continue; }
+      data = json; break;
+    } catch(e){ lastErr = e.message; }
+  }
+
+  if(!data) {
+    btn.className = 'ext-btn err'; icon.textContent = '✕'; lbl.textContent = 'Gagal — coba lagi';
+    errEl.textContent = 'Error: ' + lastErr; errEl.style.display = 'block';
+    btn.disabled = false; return;
+  }
+
+  try {
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    let cleaned = text.replace(/```json|```/g,"").trim();
+    const s = cleaned.indexOf("{");
+    if(s < 0) throw new Error("Tidak ada JSON");
+    let depth = 0, e2 = -1;
+    for(let ci = s; ci < cleaned.length; ci++) {
+      if(cleaned[ci] === "{") depth++;
+      else if(cleaned[ci] === "}") { depth--; if(depth === 0){ e2 = ci; break; } }
+    }
+    if(e2 < 0) throw new Error("JSON tidak lengkap");
+    const parsed = JSON.parse(cleaned.substring(s, e2+1));
+
+    if(parsed.tanggal) {
+      const p = String(parsed.tanggal).split('-');
+      if(p.length === 3) {
+        document.getElementById('bmTglHari').value = parseInt(p[2]) || '';
+        document.getElementById('bmTglBulan').value = parseInt(p[1]) || '';
+      }
+    }
+    if(parsed.supplier) document.getElementById('bmSupplier').value = parsed.supplier;
+    if(parsed.kota) document.getElementById('bmKota').value = parsed.kota;
+    if(parsed.no_nota) document.getElementById('bmNoNota').value = parsed.no_nota;
+    if(parsed.kurs && parseFloat(parsed.kurs) > 0) document.getElementById('bmKurs').value = parsed.kurs;
+
+    const kurs = bmGetKurs();
+    bmRows = []; bmRowCounter = 0;
+    (parsed.items||[]).forEach(item => {
+      const m = bmFindMaster(item.nama_master) || bmFindMaster(item.nama_nota);
+      const usd = parseFloat(item.harga_usd) || 0;
+      let rp = parseFloat(item.harga_rp) || 0;
+      if(usd > 0 && rp === 0 && kurs > 0) rp = Math.round(usd * kurs);
+      bmAddRow(m?m.nama:item.nama_nota||'', item.qty||'', usd, rp, item.satuan||(m?m.sat:'kg'), item.nama_nota||'');
+    });
+
+    btn.className = 'ext-btn success'; icon.textContent = '✔';
+    lbl.textContent = `Nota ${bmQueueIdx+1} berhasil diekstrak — ${bmRows.length} item`;
+    document.getElementById('bmBtnNext').disabled = false;
+  } catch(err) {
+    btn.className = 'ext-btn err'; icon.textContent = '✕'; lbl.textContent = 'Gagal parse — coba lagi';
+    errEl.textContent = 'Parse error: ' + err.message; errEl.style.display = 'block';
+  }
+  btn.disabled = false;
+}
+
+function bmBuildPrompt() {
+  const masterNames = BM_MASTER.map(m=>`${m.nama}|${m.kat}`).join('\n');
+  return `Kamu adalah asisten OCR nota pembelian / surat jalan barang masuk untuk toko pewarna tekstil Indonesia.
+Baca gambar nota/surat jalan dari supplier dan ekstrak data berikut dalam format JSON.
+
+MASTER PRODUK:
+${masterNames}
+
+Aturan:
+- nama_master harus persis dari master list (case-insensitive)
+- Jika tidak ada padanan, isi nama_master dengan string kosong ""
+- supplier adalah nama supplier/pabrik/pengirim barang
+- kurs adalah nilai tukar USD ke Rupiah jika tertulis di nota (angka, 0 jika tidak ada)
+- harga_usd adalah harga satuan dalam USD jika nota dalam dolar (angka desimal, 0 jika tidak ada)
+- harga_rp adalah harga satuan dalam Rupiah jika nota dalam rupiah (integer, 0 jika tidak ada)
+- qty adalah angka
+- Balas HANYA JSON tanpa penjelasan tanpa markdown
+
+{"tanggal":"YYYY-MM-DD","supplier":"","kota":"","no_nota":"","kurs":0,"items":[{"nama_nota":"","nama_master":"","qty":0,"satuan":"kg","harga_usd":0,"harga_rp":0}]}`;
+}
+
+// ===================== NEXT NOTA BM =====================
+function bmGoNext() {
+  if(bmQueueIdx >= 0) bmQueue[bmQueueIdx].done = true;
+  bmRenderQueue();
+  const nextIdx = bmQueue.findIndex(q=>!q.done);
+  if(nextIdx < 0) {
+    document.getElementById('bmExtLabel').textContent = '✔ Semua nota selesai!';
+    return;
+  }
+  bmQueueIdx = nextIdx;
+  bmRenderQueue();
+  bmResetForm();
+  bmExtractCurrent();
+}
+
+// ===================== ROWS BM =====================
+function bmAddRow(nama='', qty='', usd='', harga='', sat='kg', raw='') {
+  const id = ++bmRowCounter;
+  const m = bmFindMaster(nama);
+  bmRows.push({
+    id,
+    nama: m ? m.nama : nama,
+    qty,
+    usd: usd !== '' ? (parseFloat(usd)||0) : 0,
+    harga: harga !== '' ? (parseFloat(harga)||0) : 0,
+    sat: sat || (m ? m.sat : 'kg'),
+    raw
+  });
+  bmRenderTable();
+}
+
+function bmOnQtyInput(i, val) {
+  bmRows[i].qty = val;
+  bmUpdateRowCalc(i);
+}
+
+function bmOnUsdInput(i, val) {
+  bmRows[i].usd = val;
+  const usd = parseNum(val);
+  const kurs = bmGetKurs();
+  if(usd > 0 && kurs > 0) {
+    bmRows[i].harga = Math.round(usd * kurs);
+    const rpEl = document.getElementById('bmRp_' + bmRows[i].id);
+    if(rpEl) rpEl.value = bmRows[i].harga;
+  }
+  bmUpdateRowCalc(i);
+}
+
+function bmOnRpInput(i, val) {
+  bmRows[i].harga = val;
+  bmUpdateRowCalc(i);
+}
+
+// Sel harga jual master: tampilkan harga jual + margin vs harga beli
+function bmJualCellHtml(r) {
+  const m = bmFindMaster(r.nama);
+  if(!m) return '<span style="color:#ccc">-</span>';
+  if(!m.harga || m.harga <= 0) return '<span style="color:#ccc">belum ada</span>';
+  const beli = parseNum(r.harga);
+  let marginHtml = '';
+  if(beli > 0) {
+    const selisih = m.harga - beli;
+    if(selisih <= 0) {
+      marginHtml = `<span class="jual-margin rugi">⚠ beli ≥ jual!</span>`;
+    } else {
+      const pct = Math.round(selisih / beli * 100);
+      marginHtml = `<span class="jual-margin">margin ${IDR(selisih)} (${pct}%)</span>`;
+    }
+  }
+  const rugi = beli > 0 && beli >= m.harga;
+  return `<span${rugi?' style="color:#c0392b;font-weight:600"':''}>${IDR(m.harga)}</span>${marginHtml}`;
+}
+
+// Update subtotal, hint kurs & total tanpa render ulang tabel (agar kursor tidak hilang saat mengetik)
+function bmUpdateRowCalc(i) {
+  const r = bmRows[i]; if(!r) return;
+  const sub = parseNum(r.qty) * parseNum(r.harga);
+  const subEl = document.getElementById('bmSub_' + r.id);
+  if(subEl) subEl.textContent = sub > 0 ? IDR(sub) : '-';
+  const usd = parseNum(r.usd), kurs = bmGetKurs();
+  const hintEl = document.getElementById('bmRphint_' + r.id);
+  if(hintEl) hintEl.textContent = (usd > 0 && kurs > 0) ? `= ${USD(usd)} × ${kurs.toLocaleString('id-ID')}` : '';
+  const jualEl = document.getElementById('bmJual_' + r.id);
+  if(jualEl) jualEl.innerHTML = bmJualCellHtml(r);
+  bmUpdateTotals();
+}
+
+function bmUpdateTotals() {
+  const kurs = bmGetKurs();
+  const grandRp = bmRows.reduce((s,r)=>(s + parseNum(r.qty) * parseNum(r.harga)), 0);
+  const grandUsd = bmRows.reduce((s,r)=>(s + parseNum(r.qty) * parseNum(r.usd)), 0);
+  document.getElementById('bmGrandTotal').textContent = IDR(grandRp);
+  const usdEl = document.getElementById('bmGrandTotalUsd');
+  if(grandUsd > 0) {
+    usdEl.style.display = 'block';
+    usdEl.textContent = 'Total USD: ' + USD(grandUsd) + (kurs > 0 ? ` @ kurs ${kurs.toLocaleString('id-ID')}` : '');
+  } else {
+    usdEl.style.display = 'none';
+  }
+}
+
+function bmGetKet(r) {
+  const m = bmFindMaster(r.nama);
+  const msgs = [];
+  if(r.raw && r.nama && r.raw.toLowerCase() !== r.nama.toLowerCase()) {
+    msgs.push(`Nama di nota: "${r.raw}"`);
+  }
+  if(!m && r.nama) msgs.push('⚠ Tidak ada di master');
+  const usd = parseNum(r.usd);
+  if(usd > 0 && bmGetKurs() <= 0) msgs.push('⚠ Kurs belum diisi');
+  return msgs.join(' | ');
+}
+
+function bmRenderTable() {
+  const tbody = document.getElementById('bmTbody');
+  const kurs = bmGetKurs();
+  tbody.innerHTML = '';
+  bmRows.forEach((r,i) => {
+    const usd = parseNum(r.usd);
+    const rp = parseNum(r.harga);
+    const sub = parseNum(r.qty) * rp;
+    const m = bmFindMaster(r.nama);
+    const namaWarn = !m && r.nama;
+    const isAuto = usd > 0 && kurs > 0;
+    const ket = bmGetKet(r);
+    tbody.innerHTML += `<tr>
+      <td style="color:#ccc;text-align:center;font-size:11px">${i+1}</td>
+      <td>
+        <div class="ac-wrap">
+          <input class="nama-inp${namaWarn?' warn':m?' ok':''}" 
+            id="bmNama_${r.id}" value="${r.nama}" 
+            oninput="bmOnNamaInput(${i},this)" 
+            onblur="bmHideAc()" 
+            onfocus="bmOnNamaInput(${i},this)"
+            placeholder="Ketik nama atau pilih...">
+        </div>
+      </td>
+      <td><input class="num" type="text" inputmode="decimal" id="bmQty_${r.id}" value="${r.qty}" oninput="bmOnQtyInput(${i},this.value)" placeholder="0"></td>
+      <td><input style="width:52px;padding:4px 5px;border:1px solid #ddd;border-radius:6px;font-size:12px" value="${r.sat}" oninput="bmRows[${i}].sat=this.value"></td>
+      <td><input class="num usd-inp" type="text" inputmode="decimal" id="bmUsd_${r.id}" value="${usd>0?r.usd:''}" oninput="bmOnUsdInput(${i},this.value)" placeholder="0.00" style="width:82px"></td>
+      <td>
+        <input class="num${isAuto?' rp-auto':''}" type="text" inputmode="numeric" id="bmRp_${r.id}" value="${rp>0?r.harga:''}" oninput="bmOnRpInput(${i},this.value)" placeholder="0" style="width:100px">
+        <span class="rp-hint" id="bmRphint_${r.id}">${isAuto?`= ${USD(usd)} × ${kurs.toLocaleString('id-ID')}`:''}</span>
+      </td>
+      <td class="sub-cell" id="bmSub_${r.id}">${sub>0?IDR(sub):'-'}</td>
+      <td class="jual-cell" id="bmJual_${r.id}">${bmJualCellHtml(r)}</td>
+      <td class="ket-cell ket-cell-bm" title="${ket}">${ket||''}</td>
+      <td><button class="del-btn" onclick="bmRows.splice(${i},1);bmRenderTable()">✕</button></td>
+    </tr>`;
+  });
+  bmUpdateTotals();
+}
+
+// ===================== AUTOCOMPLETE BM =====================
+function bmOnNamaInput(idx, inp) {
+  bmActiveAcRow = idx;
+  const val = inp.value.trim().toLowerCase();
+  const list = document.getElementById('bmAcList');
+
+  const matches = val.length === 0
+    ? BM_MASTER.slice(0,30)
+    : BM_MASTER.filter(m => m.nama.toLowerCase().includes(val)).slice(0,20);
+
+  if(matches.length === 0) { list.classList.remove('show'); return; }
+
+  const rect = inp.getBoundingClientRect();
+  list.style.position = 'fixed';
+  list.style.top = (rect.bottom+2)+'px';
+  list.style.left = rect.left+'px';
+  list.style.width = Math.max(rect.width,220)+'px';
+  list.innerHTML = matches.map(m=>
+    `<div class="ac-item" onmousedown="bmSelectAc(${idx},'${m.nama.replace(/'/g,"\\'")}')">
+      ${m.nama}<span class="kat">${m.kat}</span>
+    </div>`).join('');
+  list.classList.add('show');
+
+  // Update row nama langsung saat ketik
+  bmRows[idx].nama = inp.value;
+  const exactM = bmFindMaster(inp.value);
+  if(exactM) { bmRows[idx].sat = exactM.sat; }
+}
+
+function bmSelectAc(idx, nama) {
+  bmRows[idx].nama = nama;
+  const m = bmFindMaster(nama);
+  if(m) { bmRows[idx].sat = m.sat; }
+  document.getElementById('bmAcList').classList.remove('show');
+  bmRenderTable();
+  setTimeout(()=>{ const el=document.getElementById(`bmNama_${bmRows[idx]?.id}`); if(el) el.blur(); },50);
+}
+
+function bmHideAc() {
+  setTimeout(()=>document.getElementById('bmAcList').classList.remove('show'), 150);
+}
+
+// ===================== COPY TO GOOGLE SHEET BM =====================
+function bmCopyToClipboard() {
+  const tglStr = bmGetTglStr();
+  const sup = document.getElementById('bmSupplier').value.trim();
+  const kota = document.getElementById('bmKota').value.trim();
+  const noNota = document.getElementById('bmNoNota').value.trim();
+  const ket = document.getElementById('bmKet').value.trim();
+  const kurs = bmGetKurs();
+  const valid = bmRows.filter(r=>r.nama && r.qty);
+  if(!valid.length) { alert('Tidak ada data barang.'); return; }
+
+  // Format: Tanggal \t Supplier \t Kota \t No.Nota \t Nama Barang \t Qty \t Sat \t Harga USD \t Kurs \t Harga Rp \t Subtotal Rp \t Harga Jual Master \t Keterangan
+  const lines = valid.map(r => {
+    const usd = parseNum(r.usd);
+    const rp = parseNum(r.harga);
+    const sub = parseNum(r.qty) * rp;
+    const ketRow = bmGetKet(r);
+    const m = bmFindMaster(r.nama);
+    const hJual = m && m.harga > 0 ? m.harga : '';
+    return [
+      tglStr,
+      sup,
+      kota,
+      noNota,
+      r.nama,
+      r.qty,
+      r.sat,
+      usd > 0 ? r.usd : '',
+      usd > 0 ? (kurs || '') : '',
+      rp,
+      Math.round(sub),
+      hJual,
+      [ket, ketRow].filter(Boolean).join(' | ')
+    ].join('\t');
+  });
+
+  // Header row
+  const header = ['Tanggal','Supplier','Kota','No.Nota','Nama Barang','Qty','Sat','Harga USD','Kurs','Harga Rp','Subtotal Rp','Harga Jual Master','Keterangan'].join('\t');
+  const tsv = header + '\n' + lines.join('\n');
+
+  navigator.clipboard.writeText(tsv).then(() => {
+    const ok = document.getElementById('bmCopyOk');
+    ok.style.display = 'block';
+    setTimeout(()=>ok.style.display='none', 3000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = tsv; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    const ok = document.getElementById('bmCopyOk');
+    ok.style.display = 'block';
+    setTimeout(()=>ok.style.display='none', 3000);
+  });
+}
+
+// ===================== RESET BM =====================
+function bmResetForm() {
+  bmSetTglToday();
+  document.getElementById('bmSupplier').value = '';
+  document.getElementById('bmKota').value = '';
+  document.getElementById('bmNoNota').value = '';
+  document.getElementById('bmKet').value = '';
+  // Kurs sengaja TIDAK direset — biasanya sama untuk beberapa nota berturut-turut
+  bmRows = []; bmRowCounter = 0;
+  bmRenderTable();
+  document.getElementById('bmExtBtn').className = 'ext-btn';
+  document.getElementById('bmExtIcon').textContent = '✨';
+  document.getElementById('bmExtErr').style.display = 'none';
+  document.getElementById('bmCopyOk').style.display = 'none';
+  bmUpdateExtBtn();
+}
+
+// ===================== TAB SWITCHING =====================
+function switchTab(t) {
+  const isJual = t === 'jual';
+  document.getElementById('tabPenjualan').style.display = isJual ? '' : 'none';
+  document.getElementById('tabBM').style.display = isJual ? 'none' : '';
+  document.getElementById('tabBtnJual').classList.toggle('active', isJual);
+  document.getElementById('tabBtnBM').classList.toggle('active', !isJual);
+  document.getElementById('appTitle').textContent = isJual ? 'Input Nota Penjualan' : 'Input Nota Barang Masuk';
+  document.getElementById('queueBadge').style.display = isJual ? '' : 'none';
+  // Tutup dropdown & modal yang mungkin masih terbuka
+  document.getElementById('acList').classList.remove('show');
+  document.getElementById('bmAcList').classList.remove('show');
+  closeModal(); bmCloseModal();
+}
+
+// ===================== INIT BM =====================
+bmSetTglToday();
+bmAddRow();
+bmRenderQueue();
+</script>
+
 </body>
 </html>
